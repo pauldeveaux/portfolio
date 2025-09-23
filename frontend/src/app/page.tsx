@@ -4,11 +4,10 @@ import { useState } from "react";
 
 import Header from "@/components/features/Header";
 import Section from "@/components/ui/Section";
+import TitleSection from "@/components/features/sections/variants/TitleSection";
 
 
 export default function HomePage() {
-    const [headerHeight, setHeaderHeight] = useState(0);
-
     return (
       <div className="bg-background min-h-screen">
         <Header title={"Paul Deveaux"} navLinks={[
@@ -19,14 +18,15 @@ export default function HomePage() {
             {"label": "Contact", "href": "Test"},
             {"label": "A propos", "href": "Test"},
         ]}
-        onHeightMeasured={setHeaderHeight}
         />
 
-          <Section id={"Main Section"} bgColor={"secondary-background" } height={`calc(100vh - 64px)`} >
-              <h1>Test test</h1>
-          </Section>
+          <TitleSection
+              bgColor={"bg-gradient-to-tr from-background to-secondary-background"}
+              height={`calc(100vh - 82px)`}
+              title={"Paul Deveaux"}
+              description={"Développeur Full Stack | Passionné par la création de solutions web innovantes et performantes."}
+          />
 
-          <Section id={"Main Section"} bgColor={"background"} >
 
 
           </Section>
