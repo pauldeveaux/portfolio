@@ -1,7 +1,8 @@
 'use client';
 
 import Section, {SectionProps} from "@/components/features/sections/Section";
-import ContactLink, {ContactLinkProps} from "@/components/ui/ContactLink";
+import ContactLink, {ContactLinkProps} from "@/components/ui/contact/ContactLink";
+import ContactForm from "@/components/ui/contact/ContactForm";
 
 
 interface ContactSectionProps extends SectionProps {
@@ -20,6 +21,7 @@ export default function ContactSection({ title, contacts, ...sectionProps}: Cont
                         <ContactLink key={contact.social_media} {...contact} />
                     ))}
                 </div>
+                < ContactForm/>
             </div>
         </Section>
     );

@@ -7,12 +7,14 @@
 
 
 @theme {
-  --color-primary: #107E7D;
-  --color-secondary: #F4D35E;
-  --color-accent: #EE6C4D;
-  --color-main-text: #333333;
-  --color-background: #DDDDDD;
-  --color-secondary-background: #CFCFCD;
+    --color-primary: #107E7D;
+    --color-primary-60: #0D5E5D;
+    --color-secondary: #F4D35E;
+    --color-accent: #EE6C4D;
+    --color-main-text: #333333;
+    --color-secondary-text: #DDDDDD;
+    --color-background: #DDDDDD;
+    --color-secondary-background: #CFCFCD;
 }
 
 

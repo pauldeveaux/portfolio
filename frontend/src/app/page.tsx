@@ -50,7 +50,7 @@ export default function HomePage() {
                         link: "https://www.linkedin.com/in/paul-deveaux-7a731a202/"
                     }
                 ]}
-                bgColor={"bg-gradient-to-tr from-background to-secondary-background"}
+                bgColor={"bg-radial from-background to-secondary-background"}
                 height={"60vh"}
           />
       </div>
