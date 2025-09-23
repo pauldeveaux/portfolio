@@ -3,9 +3,6 @@
 
 import React from "react";
 
-import "@/components/style/patterns/test_pattern.css"
-
-
 
 export interface SectionProps {
     children?: React.ReactNode;
