@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 import Header from "@/components/features/Header";
-import Section from "@/components/ui/Section";
 import TitleSection from "@/components/features/sections/variants/TitleSection";
+import ContactSection from "@/components/features/sections/variants/ContactSection";
 
 
 export default function HomePage() {
