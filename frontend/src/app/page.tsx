@@ -5,6 +5,7 @@ import { useState } from "react";
 import Header from "@/components/features/Header";
 import TitleSection from "@/components/features/sections/variants/TitleSection";
 import ContactSection from "@/components/features/sections/variants/ContactSection";
+import CopyrightSection from "@/components/features/sections/variants/CopyrightSection";
 
 
 export default function HomePage() {
@@ -51,8 +52,11 @@ export default function HomePage() {
                     }
                 ]}
                 bgColor={"bg-radial from-background to-secondary-background"}
-                height={"60vh"}
+                height={"65vh"}
           />
+
+
+          <CopyrightSection/>
       </div>
   );
 }
