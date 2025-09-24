@@ -6,6 +6,8 @@ import Header from "@/components/features/Header";
 import TitleSection from "@/components/features/sections/variants/TitleSection";
 import ContactSection from "@/components/features/sections/variants/ContactSection";
 import CopyrightSection from "@/components/features/sections/variants/CopyrightSection";
+import Section from "@/components/features/sections/Section";
+import SkillsSection from "@/components/features/sections/variants/SkillsSection";
 
 
 export default function HomePage() {
@@ -22,11 +24,25 @@ export default function HomePage() {
         />
 
           <TitleSection
-              bgColor={"bg-gradient-to-tr from-background to-secondary-background"}
+              bgColor={"bg-gradient-to-tl from-primary via-primary-60 to-secondary-background"}
               height={`calc(100vh - 82px)`}
               title={"Paul Deveaux"}
               description={"Développeur Full Stack | Passionné par la création de solutions web innovantes et performantes."}
           />
+
+
+          <SkillsSection
+              bgColor={"bg-gradient-to-tr from-secondary-background via-primary to-primary-60"}
+              section_title={"Développement"} skills={
+              [
+                  {name: "Python", description:"Python est un langage de programmation polyvalent et puissant, largement utilisé pour le développement web, l'analyse de données, l'intelligence artificielle, l'automatisation et bien plus encore."},
+                  {name: "Test", description:"desc"},
+              ]}/>
+
+
+
+
+
 
 
           <ContactSection
