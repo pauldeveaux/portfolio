@@ -3,12 +3,12 @@
 import Section, {SectionProps} from "@/components/ui/Section";
 
 
-interface TitleSectionProps extends SectionProps {
+interface HeroSectionProps extends SectionProps {
     title: string
     description: string
 }
 
-export default function TitleSection({ title, description, ...sectionProps}: TitleSectionProps) {
+export default function HeroSection({ title, description, ...sectionProps}: HeroSectionProps) {
     return (
         <Section {...sectionProps}>
             <div  className="h-full flex flex-col items-center justify-start text-center pt-40 gap-15 ">

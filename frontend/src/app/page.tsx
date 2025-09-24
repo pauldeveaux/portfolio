@@ -1,7 +1,7 @@
 'use client';
 
 import Header from "@/components/features/Header";
-import TitleSection from "@/components/features/sections/TitleSection";
+import HeroSection from "@/components/features/sections/HeroSection";
 import ContactSection from "@/components/features/sections/ContactSection";
 import CopyrightSection from "@/components/features/sections/CopyrightSection";
 import SkillsSection from "@/components/features/sections/SkillsSection";
@@ -20,7 +20,7 @@ export default function HomePage() {
         ]}
         />
 
-          <TitleSection
+          <HeroSection
               bgColor={"bg-gradient-to-tl from-primary via-primary-60 to-secondary-background"}
               height={`calc(100vh - 82px)`}
               title={"Paul Deveaux"}
