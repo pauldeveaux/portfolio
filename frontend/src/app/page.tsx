@@ -30,14 +30,23 @@ export default function HomePage() {
 
           <SkillsSection
               bgColor={"bg-gradient-to-tr from-secondary-background via-primary to-primary-60"}
-              section_title={"Développement"} skills={
-              [
-                  {name: "Python", description:"Python est un langage de programmation polyvalent et puissant, largement utilisé pour le développement web, l'analyse de données, l'intelligence artificielle, l'automatisation et bien plus encore."},
-                  {name: "Test", description:"desc"},
-                  {name: "Test2", description:"desc"},
-              ]}/>
-
-
+              title={"Compétences"} categories={[
+              { title: "Développement",
+                  skills: [
+                      {name: "Python", description:"Python est un langage de programmation polyvalent et puissant, largement utilisé pour le développement web, l'analyse de données, l'intelligence artificielle, l'automatisation et bien plus encore."},
+                      {name: "React", description:"desc"},
+                      {name: "Next.JS", description:"desc"},
+                  ]
+              },
+              { title: "IA",
+                  skills: [
+                      {name: "IA", description:", l'automatisation et bien plus encore."},
+                      {name: "Langchain", description:"desc"},
+                      {name: "RAG", description:"desc"},
+                  ]
+              },
+            ]}
+          />
 
 
 

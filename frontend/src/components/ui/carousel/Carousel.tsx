@@ -90,7 +90,7 @@ export default function Carousel({ cards }: CarouselProps) {
             onMouseDown={(e) => { setIsDragging(true); onMouseDown(e); }}
         >
             {skillsArray.map((skill, index) => (
-                <div key={index} ref={index === 0 ? cardRef : null} className="shrink-0 select-none">
+                <div key={index} ref={index === 0 ? cardRef : null} className="shrink-0 select-none h-64">
                     <CarouselCard key={index} name={skill.name} description={skill.description}/>
                 </div>
             ))}
