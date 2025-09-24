@@ -1,13 +1,10 @@
 'use client';
 
-import { useState } from "react";
-
 import Header from "@/components/features/Header";
-import TitleSection from "@/components/features/sections/variants/TitleSection";
-import ContactSection from "@/components/features/sections/variants/ContactSection";
-import CopyrightSection from "@/components/features/sections/variants/CopyrightSection";
-import Section from "@/components/features/sections/Section";
-import SkillsSection from "@/components/features/sections/variants/SkillsSection";
+import TitleSection from "@/components/features/sections/TitleSection";
+import ContactSection from "@/components/features/sections/ContactSection";
+import CopyrightSection from "@/components/features/sections/CopyrightSection";
+import SkillsSection from "@/components/features/sections/SkillsSection";
 
 
 export default function HomePage() {
@@ -37,9 +34,8 @@ export default function HomePage() {
               [
                   {name: "Python", description:"Python est un langage de programmation polyvalent et puissant, largement utilisé pour le développement web, l'analyse de données, l'intelligence artificielle, l'automatisation et bien plus encore."},
                   {name: "Test", description:"desc"},
+                  {name: "Test2", description:"desc"},
               ]}/>
-
-
 
 
 

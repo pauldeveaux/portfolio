@@ -1,6 +1,6 @@
 "use client";
 
-import Section, {SectionProps} from "@/components/features/sections/Section";
+import Section, {SectionProps} from "@/components/ui/Section";
 
 
 interface TitleSectionProps extends SectionProps {

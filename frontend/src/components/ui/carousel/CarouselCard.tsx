@@ -2,13 +2,13 @@
 
 import { motion } from "framer-motion";
 
-export interface SkillCardProps {
+export interface CarouselCardProps {
     name: string;
     description?: string;
 }
 
 
-export default function SkillCard({ name, description }: SkillCardProps) {
+export default function CarouselCard({ name, description }: CarouselCardProps) {
     return (
         <motion.div
             className="bg-white h-full flex flex-col flex-shrink-0 items-center text-center w-64 rounded-xl shadow-lg text-xl font-semibold"
