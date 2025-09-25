@@ -16,11 +16,10 @@ interface NavLink {
 interface HeaderProps {
     title: string;
     navLinks?: NavLink[];
-    onHeightMeasured?: (height: number) => void;
 }
 
 
-export default function Header({ title, navLinks, onHeightMeasured }: HeaderProps) {
+export default function Header({ title, navLinks }: HeaderProps) {
     const { scrollYProgress } = useScroll()
 
     return (

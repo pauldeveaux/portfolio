@@ -3,7 +3,7 @@
 import Header from "@/components/features/Header";
 import HeroSection from "@/components/features/sections/HeroSection";
 import ContactSection from "@/components/features/sections/ContactSection";
-import CopyrightSection from "@/components/features/sections/CopyrightSection";
+import FooterSection from "@/components/features/sections/FooterSection";
 import SkillsSection from "@/components/features/sections/SkillsSection";
 
 
@@ -24,7 +24,7 @@ export default function HomePage() {
               bgColor={"bg-gradient-to-tl from-primary via-primary-60 to-secondary-background"}
               height={`calc(100vh - 82px)`}
               title={"Paul Deveaux"}
-              description={"Développeur Full Stack | Passionné par la création de solutions web innovantes et performantes."}
+              description={"Développeur IA - Junior | Passionné par l'innovation technologique et la création de solutions intelligentes."}
           />
 
 
@@ -40,7 +40,7 @@ export default function HomePage() {
               },
               { title: "IA",
                   skills: [
-                      {name: "IA", description:", l'automatisation et bien plus encore."},
+                      {name: "IA", description:"Test test"},
                       {name: "Langchain", description:"desc"},
                       {name: "RAG", description:"desc"},
                   ]
@@ -77,7 +77,7 @@ export default function HomePage() {
           />
 
 
-          <CopyrightSection/>
+          <FooterSection/>
       </div>
   );
 }

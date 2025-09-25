@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import CarouselCard, {CarouselCardProps} from "@/components/ui/carousel/CarouselCard";
 
 
@@ -20,7 +20,7 @@ export default function Carousel({ cards }: CarouselProps) {
         if (!scrollContainer) return;
 
         let animationFrameId: number;
-        let scrollSpeed = 1;
+        const scrollSpeed = 1;
 
 
         const scrollStep = () => {
@@ -44,17 +44,17 @@ export default function Carousel({ cards }: CarouselProps) {
         animationFrameId = requestAnimationFrame(scrollStep);
 
         return () => cancelAnimationFrame(animationFrameId);
-    }, [isDragging]);
+    }, [isDragging, cards.length]);
 
 
     // Drag to scroll functionality
-    const onMouseDown = (e: any  ) => {
+    const onMouseDown = (e: React.MouseEvent<HTMLDivElement>  ) => {
         const scrollContainer = scrollRef.current;
         if (!scrollContainer) return;
 
         setIsDragging(true);
-        let startX = e.pageX;
-        let scrollLeftStart = scrollContainer.scrollLeft;
+        const startX = e.pageX;
+        const scrollLeftStart = scrollContainer.scrollLeft;
 
         const onMouseMove = (eMove : MouseEvent) => {
             // Calculate the distance moved
