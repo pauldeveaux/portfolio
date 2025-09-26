@@ -20,7 +20,7 @@ const Section = forwardRef<HTMLDivElement, SectionProps>(
             <section
                 id={id}
                 ref={ref}
-                className={`relative ${className}`}
+                className={`${className}`}
                 style={{ height: height }}
             >
                 {children}
