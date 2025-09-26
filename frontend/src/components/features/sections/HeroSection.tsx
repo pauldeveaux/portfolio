@@ -2,8 +2,9 @@
 
 import Section, {SectionProps} from "@/components/ui/Section";
 import {ArrowDown} from "lucide-react";
-import {useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {motion, animate} from "motion/react";
+import { useHeaderHeight } from "@/utils/headerHeight";
 
 
 interface HeroSectionProps extends SectionProps {
@@ -13,27 +14,39 @@ interface HeroSectionProps extends SectionProps {
 
 export default function HeroSection({ title, description, ...sectionProps}: HeroSectionProps) {
     const sectionRef = useRef<HTMLDivElement>(null);
+    const { className: sectionClassName, ...restSectionProps } = sectionProps;
+    const headerHeight = useHeaderHeight();
+
+    const [heroHeight, setHeroHeight] = useState("100vh");
+
+    useEffect(() => {
+        if (headerHeight) {
+          setHeroHeight(`calc(100vh - ${headerHeight}px)`);
+        }
+    }, [headerHeight]);
+
 
 
     const scrollToNextSection = () => {
-        if (!sectionRef.current?.nextElementSibling) return;
+        const next = sectionRef.current?.nextElementSibling as HTMLElement | null;
+        if (!next) return;
 
-        const target = (sectionRef.current.nextElementSibling as HTMLElement).offsetTop;
+        const target = next.offsetTop - headerHeight;
 
         animate(window.scrollY, target, {
             duration: 1.5,
             onUpdate: (value) => window.scrollTo(0, value),
-            ease: "easeInOut", // ou easeIn, easeOut...
+            ease: "easeInOut",
         });
     };
 
-    const { className: sectionClassName, ...restSectionProps } = sectionProps;
 
 
     return (
         <Section ref={sectionRef}
                  className={`relative ${sectionClassName ?? ""}`}
-                {...restSectionProps}
+                 style={{ height: heroHeight }}
+                 {...restSectionProps}
         >
             <div  className="h-full flex flex-col items-center justify-start text-center pt-40 gap-15 ">
                 <h2 className="text-7xl font-bold mb-4">{title}</h2>
