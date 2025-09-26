@@ -27,8 +27,14 @@ export default function HeroSection({ title, description, ...sectionProps}: Hero
         });
     };
 
+    const { className: sectionClassName, ...restSectionProps } = sectionProps;
+
+
     return (
-        <Section ref={sectionRef} {...sectionProps}>
+        <Section ref={sectionRef}
+                 className={`relative ${sectionClassName ?? ""}`}
+                {...restSectionProps}
+        >
             <div  className="h-full flex flex-col items-center justify-start text-center pt-40 gap-15 ">
                 <h2 className="text-7xl font-bold mb-4">{title}</h2>
                 <div className="text-lg max-w-2xl">
