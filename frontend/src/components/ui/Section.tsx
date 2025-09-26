@@ -4,23 +4,20 @@
 import React, {forwardRef} from "react";
 
 
-export interface SectionProps {
+export interface SectionProps extends React.HTMLAttributes<HTMLElement>{
     id: string;
-    children?: React.ReactNode;
     height?: string;
-
-    [key: string]: any;
 }
 
 
 const Section = forwardRef<HTMLDivElement, SectionProps>(
-    ({id, children, className, height, ...other}, ref) => {
+    ({id, children, className, height, style, ...other}, ref) => {
         return (
             <section
                 id={id}
                 ref={ref}
-                className={`${className}`}
-                style={{height: height}}
+                className={className}
+                style={{height: height, ...style}}
                 {...other}
             >
                 {children}
