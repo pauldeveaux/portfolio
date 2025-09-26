@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { motion } from "motion/react";
+import ButtonLink from "@/components/ui/ButtonLink";
 
 interface NavLink {
     label: string;
@@ -20,12 +21,12 @@ export default function NavLinks({ navLinks }: NavLinksProps) {
                     whileHover="hover"
                     className="relative group"
                 >
-                    <Link
+                    <ButtonLink
                         href={href}
                         className="text-main-text group-hover:text-accent transition-colors"
                     >
                         {label}
-                    </Link>
+                    </ButtonLink>
                     <motion.span
                         className="absolute block left-0 -bottom-1 h-[2px] bg-accent"
                         variants={{

@@ -1,5 +1,6 @@
 import {ArrowUp} from "lucide-react";
 import Section, {SectionProps} from "@/components/ui/Section";
+import ButtonLink from "@/components/ui/ButtonLink";
 
 
 interface FooterSectionProps extends SectionProps {
@@ -32,16 +33,13 @@ export default function FooterSection({navLinks, ...sectionProps}: FooterSection
                         {/* Navigation Links */}
                         <div className="flex flex-wrap justify-center gap-8 mb-8">
                             {navLinks.map((link) => (
-                                <button
+                                <ButtonLink
                                     key={link.label}
-                                    onClick={() => {
-                                        const element = document.getElementById(link.href);
-                                        if (element) element.scrollIntoView({behavior: "smooth", block: "center"});
-                                    }}
-                                    className="text-white transition-colors duration-300 hover:text-secondary-background hover:cursor-pointer"
+                                    href={link.href}
+                                    className={`text-white transition-colors duration-300 hover:text-secondary-background`}
                                 >
                                     {link.label}
-                                </button>
+                                </ButtonLink>
                             ))}
                         </div>
 
