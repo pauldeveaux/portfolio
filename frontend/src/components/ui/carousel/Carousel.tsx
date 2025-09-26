@@ -82,27 +82,40 @@ export default function Carousel({cards}: CarouselProps) {
         };
     }, [isDragging, cards.length]);
 
-    /** --- Mouse drag (no momentum) --- **/
+    /** --- Mouse drag --- **/
     const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         const scrollContainer = scrollRef.current;
         if (!scrollContainer) return;
 
         setIsDragging(true);
-        velocityRef.current = 0; // disable momentum for mouse
+        velocityRef.current = 0;
 
         const startX = e.pageX;
         const scrollLeftStart = scrollContainer.scrollLeft;
+        let lastX = startX;
+        let lastTime = performance.now();
 
         const onMouseMove = (ev: MouseEvent) => {
-            const dx = ev.pageX - startX;
+            const curX = ev.pageX;
+            const now = performance.now();
+
+            const dx = curX - startX;
             const scrollPos = scrollLeftStart - dx;
 
+            // Infinite loop while dragging
             if (scrollPos < 0) {
                 scrollContainer.scrollLeft =
                     scrollBreakpointRef.current + (scrollPos % scrollBreakpointRef.current);
             } else {
                 scrollContainer.scrollLeft = scrollPos % scrollBreakpointRef.current;
             }
+
+            // Update velocity for momentum
+            const dt = Math.max(1, now - lastTime);
+            const delta = curX - lastX;
+            velocityRef.current = (delta / dt) * 0.2;
+            lastX = curX;
+            lastTime = now;
         };
 
         const onMouseUp = () => {
@@ -115,7 +128,7 @@ export default function Carousel({cards}: CarouselProps) {
         window.addEventListener("mouseup", onMouseUp);
     };
 
-    /** --- Touch drag (with momentum) --- **/
+    /** --- Touch drag --- **/
     const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
         const scrollContainer = scrollRef.current;
         if (!scrollContainer) return;
@@ -176,7 +189,7 @@ export default function Carousel({cards}: CarouselProps) {
         >
             {skillsArray.map((skill, index) => (
                 <div
-                    key={index}
+                    key={`${skill.name}-${index}`}
                     ref={index === 0 ? cardRef : null}
                     className="shrink-0 select-none h-64"
                 >
