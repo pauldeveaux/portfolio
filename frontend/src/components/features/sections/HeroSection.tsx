@@ -50,7 +50,7 @@ export default function HeroSection({ title, description, ...sectionProps}: Hero
         >
             <div  className="h-full flex flex-col items-center justify-start text-center pt-40 gap-15 ">
                 <h2 className="text-7xl font-bold mb-4">{title}</h2>
-                <div className="text-lg max-w-2xl">
+                <div className="text-lg max-w-2xl whitespace-pre-line px-10 sm:px-20 lg:px-0 ">
                     {description}
                 </div>
             </div>

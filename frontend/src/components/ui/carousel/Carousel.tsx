@@ -1,97 +1,186 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
+import React, {useRef, useEffect, useState} from "react";
 import CarouselCard, {CarouselCardProps} from "@/components/ui/carousel/CarouselCard";
-
 
 interface CarouselProps {
     cards: Array<CarouselCardProps>;
 }
 
-export default function Carousel({ cards }: CarouselProps) {
+export default function Carousel({cards}: CarouselProps) {
     const scrollRef = useRef<HTMLDivElement>(null);
     const cardRef = useRef<HTMLDivElement>(null);
     const scrollBreakpointRef = useRef(0);
     const [isDragging, setIsDragging] = useState(false);
 
-    // Auto-scroll effect, and infinite loop
+    // Velocity (px/ms) for momentum (touch only)
+    const velocityRef = useRef(0);
+
+    // Keep track of requestAnimationFrame and timestamps
+    const rafRef = useRef<number | null>(null);
+    const lastTsRef = useRef<number | null>(null);
+
+    // Auto-scroll + momentum loop
     useEffect(() => {
         const scrollContainer = scrollRef.current;
         const firstCard = cardRef.current;
-        if (!scrollContainer) return;
+        if (!scrollContainer || !firstCard) return;
 
-        let animationFrameId: number;
-        const scrollSpeed = 1;
+        const AUTO_SPEED = 0.05; // px/ms (~50px/s)
+        const FRICTION = 0.005; // friction per ms
+        const MIN_VELOCITY = 0.02; // px/ms (20px/s) threshold to stop momentum
 
+        const step = (ts: number) => {
+            if (!scrollContainer || !firstCard) return;
 
-        const scrollStep = () => {
-            if(!scrollContainer || !firstCard) return;
+            if (lastTsRef.current === null) lastTsRef.current = ts;
+            const dt = Math.max(0, ts - lastTsRef.current); // ms since last frame
+            lastTsRef.current = ts;
 
-            // Calculate the breakpoint loop based on card width and gap
             const style = getComputedStyle(scrollContainer);
             const gap = parseFloat(style.columnGap || style.gap || "0");
 
+            // Compute loop breakpoint (width of all original cards)
             scrollBreakpointRef.current = cards.length * (firstCard.offsetWidth + gap);
 
-            scrollContainer.scrollLeft = scrollContainer.scrollLeft % scrollBreakpointRef.current;
+            if (!isDragging) {
+                if (Math.abs(velocityRef.current) >= MIN_VELOCITY) {
+                    // Momentum phase with bidirectional loop
+                    let nextScroll = scrollContainer.scrollLeft - velocityRef.current * dt;
 
-            // Only auto-scroll if not dragging
-            if(!isDragging) {
-                scrollContainer.scrollLeft += scrollSpeed;
+                    if (nextScroll < 0) {
+                        scrollContainer.scrollLeft =
+                            scrollBreakpointRef.current + (nextScroll % scrollBreakpointRef.current);
+                    } else {
+                        scrollContainer.scrollLeft = nextScroll % scrollBreakpointRef.current;
+                    }
+
+                    // Apply friction
+                    velocityRef.current *= Math.exp(-FRICTION * dt);
+
+                    if (Math.abs(velocityRef.current) < MIN_VELOCITY) velocityRef.current = 0;
+                } else {
+                    // Regular auto-scroll
+                    scrollContainer.scrollLeft += AUTO_SPEED * dt;
+                }
             }
-            animationFrameId = requestAnimationFrame(scrollStep);
-        }
 
-        animationFrameId = requestAnimationFrame(scrollStep);
+            // Infinite loop effect
+            if (scrollBreakpointRef.current > 0) {
+                scrollContainer.scrollLeft =
+                    scrollContainer.scrollLeft % scrollBreakpointRef.current;
+            }
 
-        return () => cancelAnimationFrame(animationFrameId);
+            rafRef.current = requestAnimationFrame(step);
+        };
+
+        rafRef.current = requestAnimationFrame(step);
+
+        return () => {
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+            rafRef.current = null;
+            lastTsRef.current = null;
+        };
     }, [isDragging, cards.length]);
 
-
-    // Drag to scroll functionality
-    const onMouseDown = (e: React.MouseEvent<HTMLDivElement>  ) => {
+    /** --- Mouse drag (no momentum) --- **/
+    const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         const scrollContainer = scrollRef.current;
         if (!scrollContainer) return;
 
         setIsDragging(true);
+        velocityRef.current = 0; // disable momentum for mouse
+
         const startX = e.pageX;
         const scrollLeftStart = scrollContainer.scrollLeft;
 
-        const onMouseMove = (eMove : MouseEvent) => {
-            // Calculate the distance moved
-            const dx = eMove.pageX - startX;
-            const scrollPosition = scrollLeftStart - dx
+        const onMouseMove = (ev: MouseEvent) => {
+            const dx = ev.pageX - startX;
+            const scrollPos = scrollLeftStart - dx;
 
-            // Handle infinite scroll effect when dragging
-            if (scrollPosition < 0)
-                scrollContainer.scrollLeft = scrollBreakpointRef.current + (scrollPosition % scrollBreakpointRef.current);
-            else
-                scrollContainer.scrollLeft = scrollPosition % scrollBreakpointRef.current;
-        }
+            if (scrollPos < 0) {
+                scrollContainer.scrollLeft =
+                    scrollBreakpointRef.current + (scrollPos % scrollBreakpointRef.current);
+            } else {
+                scrollContainer.scrollLeft = scrollPos % scrollBreakpointRef.current;
+            }
+        };
 
-        // Cleanup event listeners on mouse up
         const onMouseUp = () => {
-            window.removeEventListener('mousemove', onMouseMove);
-            window.removeEventListener('mouseup', onMouseUp);
+            window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("mouseup", onMouseUp);
             setIsDragging(false);
-        }
+        };
 
-        window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('mouseup', onMouseUp);
-    }
+        window.addEventListener("mousemove", onMouseMove);
+        window.addEventListener("mouseup", onMouseUp);
+    };
 
-    // To ensure there are enough cards to fill the carousel width, we repeat the cards array
+    /** --- Touch drag (with momentum) --- **/
+    const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+        const scrollContainer = scrollRef.current;
+        if (!scrollContainer) return;
+
+        setIsDragging(true);
+        velocityRef.current = 0;
+
+        const startX = e.touches[0].pageX;
+        const scrollLeftStart = scrollContainer.scrollLeft;
+        let lastX = startX;
+        let lastTime = performance.now();
+
+        const onTouchMove = (ev: TouchEvent) => {
+            const curX = ev.touches[0]?.pageX ?? lastX;
+            const now = performance.now();
+
+            const dx = curX - startX;
+            const scrollPos = scrollLeftStart - dx;
+
+            if (scrollPos < 0) {
+                scrollContainer.scrollLeft =
+                    scrollBreakpointRef.current + (scrollPos % scrollBreakpointRef.current);
+            } else {
+                scrollContainer.scrollLeft = scrollPos % scrollBreakpointRef.current;
+            }
+
+            // Velocity in px/ms
+            const dt = Math.max(1, now - lastTime);
+            const delta = curX - lastX;
+            velocityRef.current = delta / dt;
+            lastX = curX;
+            lastTime = now;
+        };
+
+        const onTouchEnd = () => {
+            window.removeEventListener("touchmove", onTouchMove as EventListener);
+            window.removeEventListener("touchend", onTouchEnd as EventListener);
+            setIsDragging(false);
+        };
+
+        window.addEventListener("touchmove", onTouchMove as EventListener, {
+            passive: true,
+        });
+        window.addEventListener("touchend", onTouchEnd as EventListener);
+    };
+
+    // Repeat cards to fill carousel
     const repeatCount = cards.length === 1 ? 5 : cards.length <= 3 ? 3 : 2;
-    const skillsArray = Array.from({ length: repeatCount }).flatMap(() => cards);
+    const skillsArray = Array.from({length: repeatCount}).flatMap(() => cards);
 
     return (
         <div
             ref={scrollRef}
-            className={`flex max-w-4xl mx-auto justify-start gap-6 py-5 overflow-x-hidden scrollbar-hide cursor-grab`}
-            onMouseDown={(e) => { setIsDragging(true); onMouseDown(e); }}
+            className="flex max-w-4xl mx-auto justify-start gap-6 py-5 overflow-x-hidden scrollbar-hide touch-pan-x"
+            onMouseDown={onMouseDown}
+            onTouchStart={onTouchStart}
+            style={{cursor: "grab"}}
         >
             {skillsArray.map((skill, index) => (
-                <div key={index} ref={index === 0 ? cardRef : null} className="shrink-0 select-none h-64">
-                    <CarouselCard key={index} name={skill.name} description={skill.description}/>
+                <div
+                    key={index}
+                    ref={index === 0 ? cardRef : null}
+                    className="shrink-0 select-none h-64"
+                >
+                    <CarouselCard name={skill.name} description={skill.description}/>
                 </div>
             ))}
         </div>
