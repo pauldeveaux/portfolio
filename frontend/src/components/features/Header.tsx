@@ -23,7 +23,7 @@ export default function Header({ title, navLinks }: HeaderProps) {
     const { scrollYProgress } = useScroll()
 
     return (
-    <header className="bg-background shadow-md sm:sticky top-0">
+    <header id="header" className="bg-background shadow-md sm:sticky top-0 z-50">
         <div className="flex flex-wrap justify-between items-center px-6 md:pr-[10%] py-4">
 
             {/* Title */}
