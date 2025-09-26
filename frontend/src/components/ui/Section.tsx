@@ -17,7 +17,7 @@ const Section = forwardRef<HTMLDivElement, SectionProps>(
                 id={id}
                 ref={ref}
                 className={className}
-                style={{height: height, ...style}}
+                style={{minHeight: height, ...style}}
                 {...other}
             >
                 {children}

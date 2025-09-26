@@ -1,7 +1,5 @@
-import { ArrowUp } from "lucide-react";
+import {ArrowUp} from "lucide-react";
 import Section, {SectionProps} from "@/components/ui/Section";
-
-
 
 
 interface FooterSectionProps extends SectionProps {
@@ -9,12 +7,11 @@ interface FooterSectionProps extends SectionProps {
 }
 
 
-export default function FooterSection( { navLinks, ...sectionProps }: FooterSectionProps ) {
+export default function FooterSection({navLinks, ...sectionProps}: FooterSectionProps) {
 
     const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({top: 0, behavior: 'smooth'});
     }
-
 
     return (
         <Section {...sectionProps}>
@@ -25,7 +22,7 @@ export default function FooterSection( { navLinks, ...sectionProps }: FooterSect
                     onClick={scrollToTop}
                     className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-600 via-cyan-500 to-emerald-500 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:cursor-pointer"
                 >
-                    <ArrowUp size={24} />
+                    <ArrowUp size={24}/>
                 </button>
 
                 {/* Container */}
@@ -34,23 +31,24 @@ export default function FooterSection( { navLinks, ...sectionProps }: FooterSect
 
                         {/* Navigation Links */}
                         <div className="flex flex-wrap justify-center gap-8 mb-8">
-                        { navLinks.map((link) => (
-                          <button
-                            key={link.label}
-                            onClick = {() => {
-                                const element = document.getElementById(link.href);
-                                if (element) element.scrollIntoView({ behavior: "smooth", block: "center" });
-                            }}
-                            className="text-white transition-colors duration-300 hover:text-secondary-background hover:cursor-pointer"
-                          >
-                            {link.label}
-                          </button>
-                        ))}
+                            {navLinks.map((link) => (
+                                <button
+                                    key={link.label}
+                                    onClick={() => {
+                                        const element = document.getElementById(link.href);
+                                        if (element) element.scrollIntoView({behavior: "smooth", block: "center"});
+                                    }}
+                                    className="text-white transition-colors duration-300 hover:text-secondary-background hover:cursor-pointer"
+                                >
+                                    {link.label}
+                                </button>
+                            ))}
                         </div>
 
 
                         {/* Divider */}
-                        <div className="w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto mb-8"></div>
+                        <div
+                            className="w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent mx-auto mb-8"></div>
 
                         {/* Copyright */}
                         <div className="container mx-auto text-center">
