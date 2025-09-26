@@ -22,7 +22,7 @@ export default function HomePage() {
 
           <HeroSection
               id={"hero"}
-              bgColor={"bg-gradient-to-tl from-primary via-primary-60 to-secondary-background"}
+              className={"bg-gradient-to-tl from-primary via-primary-60 to-secondary-background"}
               height={`calc(100vh - 82px)`}
               title={"Paul Deveaux"}
               description={"Développeur IA - Junior | Passionné par l'innovation technologique et la création de solutions intelligentes."}
@@ -31,7 +31,7 @@ export default function HomePage() {
 
           <SkillsSection
               id="competences"
-              bgColor={"bg-gradient-to-tr from-secondary-background via-primary to-primary-60"}
+              className={"bg-gradient-to-tr from-secondary-background via-primary to-primary-60"}
               title={"Compétences"} categories={[
               { title: "Développement",
                   skills: [
@@ -74,12 +74,14 @@ export default function HomePage() {
                         link: "https://github.com/pauldeveaux"
                     }
                 ]}
-                bgColor={"bg-radial from-background to-secondary-background"}
+                className={"bg-radial from-background to-secondary-background"}
                 height={"65vh"}
           />
 
 
-          <FooterSection navLinks={[
+          <FooterSection
+              className={"bg-primary-60"}
+              navLinks={[
                 {"label": "hero", "href": "hero"},
                 {"label": "Compétences", "href": "competences"},
                 {"label": "Expérience", "href": "Test"},
