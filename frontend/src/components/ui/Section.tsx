@@ -1,24 +1,32 @@
 'use client';
 
 
-import React from "react";
+import React, { forwardRef } from "react";
+
 
 
 export interface SectionProps {
+    id?: string;
     children?: React.ReactNode;
-    bgColor?: string;
+    className?: string;
     height?: string;
 }
 
 
 
-export default function Section({children, bgColor, height}: SectionProps) {
-    return (
-        <section
-            className={`${bgColor}`}
-            style={{height: height}}
-        >
-            {children}
-        </section>
-    );
-}
+const Section = forwardRef<HTMLDivElement, SectionProps>(
+    ({ id, children, className, height }, ref) => {
+        return (
+            <section
+                id={id}
+                ref={ref}
+                className={`${className}`}
+                style={{ height: height }}
+            >
+                {children}
+            </section>
+        );
+    }
+);
+
+export default Section;
