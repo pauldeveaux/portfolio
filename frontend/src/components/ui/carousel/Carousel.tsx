@@ -27,7 +27,6 @@ export default function Carousel({cards}: CarouselProps) {
 
         const AUTO_SPEED = 0.05; // px/ms (~50px/s)
         const FRICTION = 0.005; // friction per ms
-        const MIN_VELOCITY = 0.02; // px/ms (20px/s) threshold to stop momentum
 
         const step = (ts: number) => {
             if (!scrollContainer || !firstCard) return;
