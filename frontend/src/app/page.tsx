@@ -6,7 +6,6 @@ import ContactSection from "@/components/features/sections/ContactSection";
 import FooterSection from "@/components/features/sections/FooterSection";
 import SkillsSection from "@/components/features/sections/SkillsSection";
 import TextSection from "@/components/features/sections/TextSection";
-import Head from "next/head";
 
 
 export default function HomePage() {
