@@ -43,26 +43,44 @@ export default function Carousel({cards}: CarouselProps) {
             scrollBreakpointRef.current = cards.length * (firstCard.offsetWidth + gap);
 
             if (!isDragging) {
-                if (Math.abs(velocityRef.current) >= MIN_VELOCITY) {
-                    // Momentum phase with bidirectional loop
-                    const nextScroll = scrollContainer.scrollLeft - velocityRef.current * dt;
+                const autoDirection = velocityRef.current !== 0 ? Math.sign(velocityRef.current) : 1;
 
-                    if (nextScroll < 0) {
-                        scrollContainer.scrollLeft =
-                            scrollBreakpointRef.current + (nextScroll % scrollBreakpointRef.current);
-                    } else {
-                        scrollContainer.scrollLeft = nextScroll % scrollBreakpointRef.current;
-                    }
-
+                // Apply momentum
+                if (Math.abs(velocityRef.current) > 0) {
                     // Apply friction
                     velocityRef.current *= Math.exp(-FRICTION * dt);
 
-                    if (Math.abs(velocityRef.current) < MIN_VELOCITY) velocityRef.current = 0;
+                    // Clamp velocity to at least AUTO_SPEED in the same direction
+                    if (Math.abs(velocityRef.current) < AUTO_SPEED) {
+                        velocityRef.current = AUTO_SPEED * autoDirection;
+                    }
+
+                    // Next scroll position
+                    let nextScroll = scrollContainer.scrollLeft - velocityRef.current * dt;
+
+                    // Infinite loop logic
+                    if (nextScroll < 0) {
+                        nextScroll = scrollBreakpointRef.current + (nextScroll % scrollBreakpointRef.current);
+                    } else if (nextScroll > scrollBreakpointRef.current) {
+                        nextScroll = nextScroll % scrollBreakpointRef.current;
+                    }
+
+                    scrollContainer.scrollLeft = nextScroll;
                 } else {
                     // Regular auto-scroll
-                    scrollContainer.scrollLeft += AUTO_SPEED * dt;
+                    let nextScroll = scrollContainer.scrollLeft - AUTO_SPEED * dt;
+
+                    // Infinite loop
+                    if (nextScroll < 0) {
+                        nextScroll = scrollBreakpointRef.current + (nextScroll % scrollBreakpointRef.current);
+                    } else if (nextScroll > scrollBreakpointRef.current) {
+                        nextScroll = nextScroll % scrollBreakpointRef.current;
+                    }
+
+                    scrollContainer.scrollLeft = nextScroll;
                 }
             }
+
 
             // Infinite loop effect
             if (scrollBreakpointRef.current > 0) {
