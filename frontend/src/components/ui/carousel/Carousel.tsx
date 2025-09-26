@@ -189,7 +189,7 @@ export default function Carousel({cards}: CarouselProps) {
         >
             {skillsArray.map((skill, index) => (
                 <div
-                    key={`${skill.name}-${index}`}
+                    key={index}
                     ref={index === 0 ? cardRef : null}
                     className="shrink-0 select-none h-64"
                 >
