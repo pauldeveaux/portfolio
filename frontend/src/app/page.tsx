@@ -94,7 +94,7 @@ export default function HomePage() {
                         link: "https://github.com/pauldeveaux"
                     }
                 ]}
-                className={"bg-radial from-background to-secondary-background"}
+                className={"bg-radial from-white to-secondary-background"}
                 height={"65vh"}
             />
 
