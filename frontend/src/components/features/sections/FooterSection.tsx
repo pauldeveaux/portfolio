@@ -1,40 +1,47 @@
 import { ArrowUp } from "lucide-react";
 
 
-export default function FooterSection() {
+
+
+interface FooterSectionProps {
+    navLinks: { label: string; href: string }[];
+}
+
+
+export default function FooterSection( { navLinks }: FooterSectionProps ) {
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
 
-
     return (
         <div id={"Footer"} className="w-full bg-primary-60 text-white pt-12 pb-5 relative">
+
             {/* Scroll to Top Button */}
             <button
                 onClick={scrollToTop}
-                className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-600 via-cyan-500 to-emerald-500 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+                className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-600 via-cyan-500 to-emerald-500 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:cursor-pointer"
             >
                 <ArrowUp size={24} />
             </button>
 
+            {/* Container */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center">
 
-
                     {/* Navigation Links */}
                     <div className="flex flex-wrap justify-center gap-8 mb-8">
-                    {['Home', 'About', 'Skills', 'Education', 'Contact'].map((link) => (
+                    { navLinks.map((link) => (
                       <button
-                        key={link}
-                        onClick={() => {
-                          const element = document.getElementById(link.toLowerCase() === 'about' ? 'presentation' : link.toLowerCase() === 'education' ? 'formation' : link.toLowerCase());
-                          if (element) element.scrollIntoView({ behavior: 'smooth' });
+                        key={link.label}
+                        onClick = {() => {
+                            const element = document.getElementById(link.href);
+                            if (element) element.scrollIntoView({ behavior: "smooth", block: "center" });
                         }}
-                        className="text-white hover:text-secondary-background transition-colors duration-300"
+                        className="text-white transition-colors duration-300 hover:text-secondary-background hover:cursor-pointer"
                       >
-                        {link}
+                        {link.label}
                       </button>
                     ))}
                     </div>

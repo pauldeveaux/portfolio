@@ -21,6 +21,7 @@ export default function HomePage() {
         />
 
           <HeroSection
+              id={"hero"}
               bgColor={"bg-gradient-to-tl from-primary via-primary-60 to-secondary-background"}
               height={`calc(100vh - 82px)`}
               title={"Paul Deveaux"}
@@ -29,6 +30,7 @@ export default function HomePage() {
 
 
           <SkillsSection
+              id="competences"
               bgColor={"bg-gradient-to-tr from-secondary-background via-primary to-primary-60"}
               title={"Compétences"} categories={[
               { title: "Développement",
@@ -55,21 +57,21 @@ export default function HomePage() {
                 contacts={[
                     {
                         social_media: "email",
-                        image_url: "https://cdn-icons-png.flaticon.com/512/561/561127.png",
+                        image_url: "/logos/mail-icon.svg",
                         text: "paul.deveaux1@gmail.com",
                         link: "mailto:paul.deveaux1@gmail.com"
                     },
                     {
                         social_media: "linkedin",
-                        image_url: "https://cdn-icons-png.flaticon.com/512/174/174857.png",
+                        image_url: "/logos/linkedin-icon.svg",
                         text: "linkedin.com/in/paul-deveaux",
                         link: "https://www.linkedin.com/in/paul-deveaux-7a731a202/"
                     },
                     {
-                        social_media: "linkedi",
-                        image_url: "https://cdn-icons-png.flaticon.com/512/174/174857.png",
-                        text: "linkedin.com/in/paul-deveaux",
-                        link: "https://www.linkedin.com/in/paul-deveaux-7a731a202/"
+                        social_media: "github",
+                        image_url: "/logos/github-icon.svg",
+                        text: "github.com/pauldeveaux",
+                        link: "https://github.com/pauldeveaux"
                     }
                 ]}
                 bgColor={"bg-radial from-background to-secondary-background"}
@@ -77,7 +79,12 @@ export default function HomePage() {
           />
 
 
-          <FooterSection/>
+          <FooterSection navLinks={[
+                {"label": "hero", "href": "hero"},
+                {"label": "Compétences", "href": "competences"},
+                {"label": "Expérience", "href": "Test"},
+                {"label": "Formation", "href": "Test"},
+          ]}/>
       </div>
   );
 }
