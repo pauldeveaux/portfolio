@@ -45,7 +45,7 @@ export default function Carousel({cards}: CarouselProps) {
             if (!isDragging) {
                 if (Math.abs(velocityRef.current) >= MIN_VELOCITY) {
                     // Momentum phase with bidirectional loop
-                    let nextScroll = scrollContainer.scrollLeft - velocityRef.current * dt;
+                    const nextScroll = scrollContainer.scrollLeft - velocityRef.current * dt;
 
                     if (nextScroll < 0) {
                         scrollContainer.scrollLeft =
