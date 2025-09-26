@@ -1,7 +1,8 @@
 'use client';
 
 
-import React from "react";
+import React, { forwardRef } from "react";
+
 
 
 export interface SectionProps {
@@ -13,14 +14,19 @@ export interface SectionProps {
 
 
 
-export default function Section({id, children, className, height}: SectionProps) {
-    return (
-        <section
-            id={id}
-            className={`relative ${className}`}
-            style={{height: height}}
-        >
-            {children}
-        </section>
-    );
-}
+const Section = forwardRef<HTMLDivElement, SectionProps>(
+    ({ id, children, className, height }, ref) => {
+        return (
+            <section
+                id={id}
+                ref={ref}
+                className={`relative ${className}`}
+                style={{ height: height }}
+            >
+                {children}
+            </section>
+        );
+    }
+);
+
+export default Section;
