@@ -31,13 +31,13 @@ export default function SkillsSection({ title,  categories, ...sectionProps }: S
     return (
         <Section {...sectionProps}>
             <div className="pt-16 overflow-hidden">
-                <h2 className="text-3xl font-bold mb-8 text-center justify-center">{title}</h2>
+                <h2 className="text-5xl font-bold mb-15 text-center justify-center">{title}</h2>
 
                 {/* Category Navigation */}
-                <div className="flex items-center justify-center mb-12">
+                <div className="flex items-center justify-center">
                     <button
                         onClick={prevCategory}
-                        className="p-2 text-gray-400 hover:text-cyan-600 transition-colors duration-200"
+                        className="p-2 text-gray-400 hover:text-cyan-600 transition-colors duration-200 hover:cursor-pointer"
                     >
                         <ChevronLeft size={24} />
                     </button>
@@ -60,7 +60,7 @@ export default function SkillsSection({ title,  categories, ...sectionProps }: S
 
                     <button
                         onClick={nextCategory}
-                        className="p-2 text-gray-400 hover:text-cyan-600 transition-colors duration-200"
+                        className="p-2 text-gray-400 hover:text-cyan-600 transition-colors duration-200 hover:cursor-pointer"
                     >
                         <ChevronRight size={24} />
                     </button>

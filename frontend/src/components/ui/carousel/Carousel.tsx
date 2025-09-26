@@ -86,7 +86,7 @@ export default function Carousel({ cards }: CarouselProps) {
     return (
         <div
             ref={scrollRef}
-            className={`flex max-w-4xl mx-auto justify-start gap-6 py-12 overflow-x-hidden scrollbar-hide cursor-grab`}
+            className={`flex max-w-4xl mx-auto justify-start gap-6 py-5 overflow-x-hidden scrollbar-hide cursor-grab`}
             onMouseDown={(e) => { setIsDragging(true); onMouseDown(e); }}
         >
             {skillsArray.map((skill, index) => (

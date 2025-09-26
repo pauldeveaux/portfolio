@@ -15,7 +15,7 @@ export default function ContactSection({ title, contacts, ...sectionProps}: Cont
     return (
         <Section {...sectionProps}>
             <div className="w-full max-w-5xl mx-auto px-4">
-                <h2 className="text-4xl font-bold mb-8 text-center pt-16">{title}</h2>
+                <h2 className="text-5xl font-bold mb-8 text-center pt-16">{title}</h2>
                 <div className="flex flex-wrap justify-center gap-6">
                     {contacts.map((contact) => (
                         <ContactLink key={contact.social_media} {...contact} />
