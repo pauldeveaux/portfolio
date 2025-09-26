@@ -31,9 +31,9 @@ export default function ContactForm() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="w-full max-w-3xl mx-auto mt-12 space-y-4"
+            className="px-15 w-full max-w-3xl mx-auto mt-12 space-y-4 sm:px-4"
         >
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
                 <input
                     type="text"
                     name="firstName"
@@ -41,7 +41,7 @@ export default function ContactForm() {
                     value={formData.firstName}
                     onChange={handleChange}
                     required
-                    className="flex-1 bg-transparent border-b py-2 focus:outline-none"
+                    className="flex-1 w-full bg-transparent border-b py-2 focus:outline-none"
                 />
                 <input
                     type="text"
@@ -50,7 +50,7 @@ export default function ContactForm() {
                     value={formData.lastName}
                     onChange={handleChange}
                     required
-                    className="flex-1 bg-transparent border-b py-2 focus:outline-none "
+                    className="flex-1 w-full bg-transparent border-b py-2 focus:outline-none "
                 />
             </div>
 
