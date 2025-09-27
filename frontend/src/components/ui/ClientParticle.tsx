@@ -13,12 +13,11 @@ import {loadSlim} from "@tsparticles/slim";
 
 interface ClientParticlesProps {
     className?: string;
-    particleCount?: number;
-    enableEffects?: boolean;
+    isMobile?: boolean;
 }
 
 
-export default function ClientParticles({className, particleCount = 120, enableEffects = true}: ClientParticlesProps) {
+export default function ClientParticles({className, isMobile}: ClientParticlesProps) {
     const [init, setInit] = useState(false);
     const particlesRef = useRef<Container | null>(null);
 
@@ -46,7 +45,7 @@ export default function ClientParticles({className, particleCount = 120, enableE
                         enable: false,
                     },
                     onHover: {
-                        enable: enableEffects,
+                        enable: !isMobile,
                         mode: "repulse",
                     },
                 },
@@ -61,13 +60,13 @@ export default function ClientParticles({className, particleCount = 120, enableE
             },
             particles: {
                 color: {
-                    value: ["#ffffff", "#a3d5ff", "#b0e0e6"], // couleurs de bulles pastel
+                    value: ["#ffffff", "#a3d5ff", "#b0e0e6"],
                 },
                 links: {
-                    enable: false, // pas de liens entre bulles
+                    enable: false,
                 },
                 move: {
-                    direction: MoveDirection.top, // bulles qui montent
+                    direction: MoveDirection.top,
                     enable: true,
                     outModes: {
                         default: OutMode.out,
@@ -76,13 +75,13 @@ export default function ClientParticles({className, particleCount = 120, enableE
                     speed: 1,
                     straight: false,
                     wobble: {
-                        enable: true,
+                        enable: !isMobile,
                         distance: 5,
                         speed: 0.5
                     }
                 },
                 number: {
-                    value: particleCount,
+                    value: isMobile? 10:100,
                 },
                 opacity: {
                     value: 0.4,
@@ -108,12 +107,12 @@ export default function ClientParticles({className, particleCount = 120, enableE
                     }
                 },
                 collisions: {
-                    enable: true
+                    enable: !isMobile
                 }
             },
-            detectRetina: true,
+            detectRetina: !isMobile,
         }),
-        [particleCount, enableEffects],
+        [isMobile],
     );
 
 
