@@ -1,11 +1,12 @@
 "use client";
 
 import Section, {SectionProps} from "@/components/ui/Section";
-import {ArrowDown} from "lucide-react";
+import {ArrowDown, MessageCircle} from "lucide-react";
 import {useEffect, useRef, useState} from "react";
 import {motion, animate} from "motion/react";
 import {useHeaderHeight} from "@/utils/headerHeight";
 import ClientParticles from "@/components/ui/ClientParticle";
+import ButtonLink from "@/components/ui/ButtonLink";
 
 
 interface HeroSectionProps extends SectionProps {
@@ -50,14 +51,33 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
             {/* Particles */}
             <ClientParticles className="absolute inset-0 z-0 pointer-events-none" />
 
-
             <div
-                className="relative z-10 h-full flex flex-col items-center justify-start text-center pt-40 gap-15"
+                className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4 gap-15 md:px-8"
             >
-                <h2 className="text-5xl md:text-6xl font-extrabold drop-shadow-lg repulse-div">{title}</h2>
-                <div className="mt-4 text-lg md:text-xl text-gray-300 max-w-xl repulse-div">
+                {/* Blurry mask */}
+                <div className="absolute bg-black/20 backdrop-blur-[2px] rounded-2xl -inset-8 pointer-events-none"/>
+
+                <h2 className="relative text-5xl md:text-6xl font-extrabold drop-shadow-lg">{title}</h2>
+                <div className="relative mt-4 text-lg md:text-xl text-gray-300 max-w-xl">
                     {description}
                 </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 mt-8 relative">
+                    <ButtonLink
+                        href="chatbot"
+                        className="px-8 py-4 bg-white/90 backdrop-blur-sm text-[#107E7D] rounded-xl font-semibold hover:bg-white hover:scale-105 hover:shadow-2xl hover:shadow-[#107E7D]/20 transition-all duration-300 flex items-center justify-center gap-3 shadow-lg border border-white/50"
+                    >
+                        <MessageCircle size={22} />
+                        Parlez à mon IA
+                    </ButtonLink>
+                    <ButtonLink
+                        href="portfolio"
+                        className="px-8 py-4 bg-[#107E7D]/20 backdrop-blur-sm border-2 border-white/40 text-white rounded-xl font-semibold hover:bg-[#107E7D]/40 hover:border-white/60 hover:scale-105 hover:shadow-xl transition-all duration-300"
+                    >
+                        Voir mes projets
+                    </ButtonLink>
+                </div>
+
             </div>
 
             {/* Scroll Down */}
@@ -70,7 +90,7 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
                 p-3 rounded-full
                 shadow-xl shadow-[#107E7D]/40
                 border-2 border-white/50
-                hover:scale-110 hover:shadow-2xl
+                hover:scale-110 hover:shadow-2xl hover:cursor-pointer
                 transition-all duration-300
                 "
                 animate={{
