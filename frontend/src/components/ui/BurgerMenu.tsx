@@ -18,7 +18,7 @@ export function BurgerMenu({ navLinks }: BurgerMenuProps) {
     const [open, setOpen] = useState(false);
 
     return (
-        <div className="sm:hidden relative">
+        <div className="md:hidden relative">
             {/* Burger button */}
             <button
                 onClick={() => setOpen(!open)}
