@@ -52,9 +52,6 @@ export default function Header({ title, navLinks }: HeaderProps) {
             className="bg-white shadow-md top-0 z-50 sticky"
             animate={isMobile ? { y: showHeader ? 0 : "-100%" } : { y: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            onUpdate={(latest) => {
-            }}
-
         >
             <div className="flex justify-between items-center px-6 md:pr-[10%] py-4">
                 {/* Burger menu */}
@@ -83,7 +80,7 @@ export default function Header({ title, navLinks }: HeaderProps) {
             {/* Scroll Progress Bar */}
             <motion.div
                 style={{ scaleX: scrollYProgress }}
-                className="h-[2px] bg-primary origin-left"
+                className="hidden sm:block h-[2px] bg-blue-400 origin-left"
             />
         </motion.header>
     );

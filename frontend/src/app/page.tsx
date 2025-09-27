@@ -24,7 +24,7 @@ export default function HomePage() {
 
             <HeroSection
                 id={"hero"}
-                className={"bg-gradient-to-br from-[#107E7D] via-[#129190] to-[#14A3A2] text-white  "}
+                className={"bg-gradient-to-b from-[#14A3A2] via-[#129190] to-[#107E7D] text-white  "}
                 title={"Paul Deveaux"}
                 description={"Développeur IA - Junior | Passionné par l'innovation technologique et la création de solutions intelligentes."}
             />
