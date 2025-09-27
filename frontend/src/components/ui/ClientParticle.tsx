@@ -13,37 +13,26 @@ import {loadSlim} from "@tsparticles/slim";
 
 interface ClientParticlesProps {
     className?: string;
+    particleCount?: number;
+    enableEffects?: boolean;
 }
 
 
-export default function ClientParticles({className}: ClientParticlesProps) {
+export default function ClientParticles({className, particleCount = 120, enableEffects = true}: ClientParticlesProps) {
     const [init, setInit] = useState(false);
     const particlesRef = useRef<Container | null>(null);
 
 
-
     useEffect(() => {
         initParticlesEngine(async (engine) => {
-            // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
-            // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-            // starting from v2 you can add only the features you need reducing the bundle size
-            //await loadAll(engine);
-            //await loadFull(engine);
             await loadSlim(engine);
-            //await loadBasic(engine);
         }).then(() => {
             setInit(true);
         });
     }, []);
 
 
-
-
-
-
-
     const particlesLoaded = async (container?: Container): Promise<void> => {
-        console.log(particlesRef.current);
         particlesRef.current = container || null;
     };
 
@@ -57,7 +46,7 @@ export default function ClientParticles({className}: ClientParticlesProps) {
                         enable: false,
                     },
                     onHover: {
-                        enable: true,
+                        enable: enableEffects,
                         mode: "repulse",
                     },
                 },
@@ -93,15 +82,11 @@ export default function ClientParticles({className}: ClientParticlesProps) {
                     }
                 },
                 number: {
-                    density: {
-                        enable: true,
-                        area: 800,
-                    },
-                    value: 120,
+                    value: particleCount,
                 },
                 opacity: {
                     value: 0.4,
-                    random: { enable: true, minimumValue: 0.2 },
+                    random: {enable: true, minimumValue: 0.2},
                     animation: {
                         enable: true,
                         speed: 0.5,
@@ -113,7 +98,7 @@ export default function ClientParticles({className}: ClientParticlesProps) {
                     type: "circle",
                 },
                 size: {
-                    value: { min: 5, max: 10 }, // taille plus grande pour des bulles
+                    value: {min: 5, max: 10},
                     random: true,
                     anim: {
                         enable: true,
@@ -128,7 +113,7 @@ export default function ClientParticles({className}: ClientParticlesProps) {
             },
             detectRetina: true,
         }),
-        [],
+        [particleCount, enableEffects],
     );
 
 

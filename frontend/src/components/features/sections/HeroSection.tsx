@@ -7,6 +7,7 @@ import {motion, animate} from "motion/react";
 import {useHeaderHeight} from "@/utils/headerHeight";
 import ClientParticles from "@/components/ui/ClientParticle";
 import ButtonLink from "@/components/ui/ButtonLink";
+import {useIsMobile} from "@/utils/useIsMobile";
 
 
 interface HeroSectionProps extends SectionProps {
@@ -18,6 +19,8 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
     const sectionRef = useRef<HTMLDivElement>(null);
     const {className: sectionClassName, ...restSectionProps} = sectionProps;
     const headerHeight = useHeaderHeight();
+    const isMobile = useIsMobile();
+
 
     const [heroHeight, setHeroHeight] = useState("100vh");
 
@@ -43,7 +46,6 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
         });
     };
 
-
     return (
         <Section ref={sectionRef}
                  className={`relative overflow-hidden ${sectionClassName ?? ""}`}
@@ -51,8 +53,11 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
                  {...restSectionProps}
         >
             {/* Particles */}
-            <ClientParticles className="absolute inset-0 z-0 pointer-events-none"/>
-
+            <ClientParticles
+                className="absolute inset-0 z-0 pointer-events-none"
+                particleCount={isMobile ? 30 : 120}
+                enableEffects={!isMobile}
+            />
             <div
                 className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4 gap-15 md:px-8"
             >
