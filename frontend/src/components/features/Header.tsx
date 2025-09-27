@@ -89,7 +89,7 @@ export default function Header({ title, navLinks }: HeaderProps) {
                 {/* Centered title */}
                 <Link
                     href="/"
-                    className="text-primary no-underline mx-4 flex-1 md:flex-none text-center md:text-left transition-colors hover:text-primary/80"
+                    className="text-primary no-underline mx-4 flex-1 md:flex-none text-center md:text-left transition-colors "
                 >
                     <AnimatedTitle title={title} />
                 </Link>
