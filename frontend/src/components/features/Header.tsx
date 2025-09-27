@@ -37,9 +37,6 @@ export default function Header({ title, navLinks }: HeaderProps) {
 
 
     useMotionValueEvent(scrollY, "change", (latest) => {
-        console.log("Scroll Y:", latest);
-        console.log("Last Scroll Y:", lastScrollY);
-
         if (latest > lastScrollY && latest > 50) {
             console.log("Scrolling down - hide header");
             setShowHeader(false);
@@ -51,13 +48,15 @@ export default function Header({ title, navLinks }: HeaderProps) {
         setLastScrollY(latest);
     });
 
-    console.log(isMobile)
     return (
         <motion.header
             id="header"
-            className="bg-background shadow-md top-0 z-50 sm:sticky"
+            className="bg-white shadow-md top-0 z-50 sticky"
             animate={isMobile ? { y: showHeader ? 0 : "-100%" } : { y: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            onUpdate={(latest) => {
+                console.log("Animation update:", latest);
+            }}
 
         >
             <div className="flex justify-between items-center px-6 md:pr-[10%] py-4">
@@ -65,7 +64,7 @@ export default function Header({ title, navLinks }: HeaderProps) {
                 {navLinks && <BurgerMenu navLinks={navLinks} />}
 
                 {/* Centered title */}
-                <Link href="/public" className="no-underline mx-4 flex-1 text-center">
+                <Link href="/public" className="text-primary no-underline mx-4 flex-1 text-center">
                     <AnimatedTitle title={title} />
                 </Link>
 
