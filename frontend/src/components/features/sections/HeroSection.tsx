@@ -55,7 +55,7 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
             {/* Particles */}
             <ClientParticles
                 className="absolute inset-0 z-0 pointer-events-none"
-                particleCount={isMobile ? 30 : 120}
+                particleCount={isMobile ? 10 : 120}
                 enableEffects={!isMobile}
             />
             <div
