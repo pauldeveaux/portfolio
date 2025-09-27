@@ -32,7 +32,9 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
         const next = sectionRef.current?.nextElementSibling as HTMLElement | null;
         if (!next) return;
 
-        const target = next.offsetTop - headerHeight;
+        const isMobile = window.innerWidth < 768;
+        const offset = isMobile ? 0 : headerHeight;
+        const target = next.offsetTop - offset;
 
         animate(window.scrollY, target, {
             duration: 1.5,
@@ -49,7 +51,7 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
                  {...restSectionProps}
         >
             {/* Particles */}
-            <ClientParticles className="absolute inset-0 z-0 pointer-events-none" />
+            <ClientParticles className="absolute inset-0 z-0 pointer-events-none"/>
 
             <div
                 className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4 gap-15 md:px-8"
@@ -67,7 +69,7 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
                         href="chatbot"
                         className="px-8 py-4 bg-white/90 backdrop-blur-sm text-[#107E7D] rounded-xl font-semibold hover:bg-white hover:scale-105 hover:shadow-2xl hover:shadow-[#107E7D]/20 transition-all duration-300 flex items-center justify-center gap-3 shadow-lg border border-white/50"
                     >
-                        <MessageCircle size={22} />
+                        <MessageCircle size={22}/>
                         Parlez à mon IA
                     </ButtonLink>
                     <ButtonLink

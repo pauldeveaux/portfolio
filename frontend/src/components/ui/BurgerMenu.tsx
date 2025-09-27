@@ -35,7 +35,7 @@ export function BurgerMenu({ navLinks }: BurgerMenuProps) {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 50 }}
                         transition={{ duration: 0.3 }}
-                        className="absolute top-full left-0 w-64 bg-background shadow-lg flex flex-col gap-4 p-4 rounded-md z-40"
+                        className="absolute top-full left-0 w-64 bg-white shadow-lg flex flex-col gap-4 p-4 rounded-md z-40 "
                     >
                         {navLinks.map(link => (
                             <motion.div
