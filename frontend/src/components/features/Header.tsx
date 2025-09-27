@@ -38,11 +38,9 @@ export default function Header({ title, navLinks }: HeaderProps) {
 
     useMotionValueEvent(scrollY, "change", (latest) => {
         if (latest > lastScrollY && latest > 50) {
-            console.log("Scrolling down - hide header");
             setShowHeader(false);
         }
         else {
-            console.log("Scrolling up - show header");
             setShowHeader(true);
         }
         setLastScrollY(latest);
@@ -55,7 +53,6 @@ export default function Header({ title, navLinks }: HeaderProps) {
             animate={isMobile ? { y: showHeader ? 0 : "-100%" } : { y: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             onUpdate={(latest) => {
-                console.log("Animation update:", latest);
             }}
 
         >
