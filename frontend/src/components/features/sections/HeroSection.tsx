@@ -61,8 +61,11 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
                 className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4 gap-15 md:px-8"
             >
                 {/* Blurry mask */}
-                <div className="absolute bg-black/20 backdrop-blur-[1px] rounded-2xl -inset-8 pointer-events-none sm:backdrop-blur-[2px]"/>
-
+                {isMobile ?
+                    <div className="absolute bg-gradient-to-b from-black/25 via-black/15 to-black/25 rounded-2xl -inset-8 pointer-events-none md:backdrop-blur-[1px]"/>
+                    :
+                    <div className="absolute bg-black/20 backdrop-blur-[1px] rounded-2xl -inset-8 pointer-events-none sm:backdrop-blur-[2px]"/>
+                }
                 <h2 className="relative text-5xl md:text-6xl font-extrabold drop-shadow-lg">{title}</h2>
                 <div className="relative mt-4 text-lg md:text-xl text-gray-300 max-w-xl">
                     {description}
