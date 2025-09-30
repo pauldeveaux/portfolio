@@ -6,6 +6,8 @@ import ContactSection from "@/components/features/sections/ContactSection";
 import FooterSection from "@/components/features/sections/FooterSection";
 import SkillsSection from "@/components/features/sections/SkillsSection";
 import TextSection from "@/components/features/sections/TextSection";
+import TimelineSection, {TimelineElementType} from "@/components/features/sections/TimelineSection";
+import {Star} from "lucide-react";
 
 
 export default function HomePage() {
@@ -71,9 +73,77 @@ export default function HomePage() {
             />
 
 
+            <TimelineSection
+                id="timeline"
+                title="Mes formations"
+                elements={[
+                    {
+                        title: "WORK",
+                        subtitle: "Telecom Nancy",
+                        text: "Obtention du diplôme d'ingénieur en Intelligence Artificielle & Masse de données." +
+                            " Prêt à relever de nouveaux défis professionnels !",
+                        date: "Septembre 2025",
+                        type: "Work",
+                    },
+                    {
+                        title: "Ingénieur diplômé 🎓",
+                        subtitle: "Telecom Nancy",
+                        text: "Obtention du diplôme d'ingénieur en Intelligence Artificielle & Masse de données." +
+                            " Prêt à relever de nouveaux défis professionnels !",
+                        date: "Septembre 2025",
+                        type: "Graduate",
+                        tag: "DIPLÔMÉ",
+                    },
+                    {
+                        title: "Stage de fin d'études",
+                        subtitle: "SFEIR Luxembourg",
+                        text: "blabla",
+                        date: "mars 2025 - août 2025",
+                        type: "Internship",
+                        tag: "STAGE",
+                        subtags: ["VLM", "API REST"]
+                    },
+                    {
+                        title: "Stage Laboratoire ERPI",
+                        subtitle: "SFEIR Luxembourg",
+                        text: "blabla",
+                        date: "mars 2025 - août 2025",
+                        type: "Internship",
+                        tag: "STAGE",
+                        subtags: ["VLM", "API REST"]
+                    },
+                    {
+                        title: "Ecole d'ingénieur",
+                        subtitle: "Telecom Nancy",
+                        text: "Blabla",
+                        date: "Septembre 2025",
+                        type: "School",
+                    },
+                    {
+                        title: "Stage IUT",
+                        subtitle: "SFEIR Luxembourg",
+                        text: "blabla",
+                        date: "mars 2025 - août 2025",
+                        type: "Internship",
+                        tag: "STAGE",
+                        subtags: ["VLM", "API REST"]
+                    },
+                    {
+                        title: "DUT Informatique",
+                        subtitle: "IUT Nancy Charlemagne",
+                        text: "Blabla",
+                        date: "Septembre 2025",
+                        type: "School",
+                    },
+                ]}
+            />
+
+
             <ContactSection
                 id="contact"
                 title={"Contactez-moi"}
+                className={"bg-radial from-white to-secondary-background"}
+                height={"65vh"}
                 contacts={[
                     {
                         social_media: "email",
@@ -94,8 +164,6 @@ export default function HomePage() {
                         link: "https://github.com/pauldeveaux"
                     }
                 ]}
-                className={"bg-radial from-white to-secondary-background"}
-                height={"65vh"}
             />
 
 
@@ -103,10 +171,8 @@ export default function HomePage() {
                 id="footer"
                 className={"bg-primary-60"}
                 navLinks={[
-                    {"label": "hero", "href": "hero"},
-                    {"label": "Compétences", "href": "competences"},
-                    {"label": "Expérience", "href": "Test"},
-                    {"label": "Formation", "href": "Test"},
+                    {"label": "Compétences", "href": "skills"},
+                    {"label": "Formation", "href": "timeline"},
                 ]}/>
         </div>
     );

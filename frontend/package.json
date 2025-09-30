@@ -17,6 +17,7 @@
     "next": "15.5.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-vertical-timeline-component": "^3.5.3",
     "tsparticles": "^3.9.1"
   },
   "devDependencies": {
@@ -25,6 +26,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/react-vertical-timeline-component": "^3.3.6",
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
