@@ -154,6 +154,7 @@ export default function Carousel({cards}: CarouselProps) {
         velocityRef.current = 0;
 
         const startX = e.touches[0].pageX;
+        const startY = e.touches[0].pageY;
         const scrollLeftStart = scrollContainer.scrollLeft;
         let lastX = startX;
         let lastTime = performance.now();
@@ -202,7 +203,7 @@ export default function Carousel({cards}: CarouselProps) {
             className="flex max-w-4xl mx-auto justify-start gap-6 py-5 overflow-x-hidden scrollbar-hide touch-pan-x"
             onMouseDown={onMouseDown}
             onTouchStart={onTouchStart}
-            style={{cursor: "grab"}}
+            style={{ touchAction: 'pan-y', cursor: "grab"}}
         >
             {skillsArray.map((skill, index) => (
                 <div
