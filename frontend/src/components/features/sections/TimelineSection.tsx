@@ -50,7 +50,7 @@ function createTimelineElement(props: TimelineElementProps, key: React.Key) {
     const hoverClasses = "transition-transform duration-300 hover:scale-110 hover:shadow-xl rounded-lg";
 
     // Content style
-    let contentStyle = {
+    const contentStyle = {
         background: "linear-gradient(135deg, #14C5C3 0%, #13B9B7 50%, #12AEA9 100%)",
         color: "#fff",
         boxShadow: "0 15px 40px rgba(20, 195, 193, 0.5)",

@@ -6,8 +6,7 @@ import ContactSection from "@/components/features/sections/ContactSection";
 import FooterSection from "@/components/features/sections/FooterSection";
 import SkillsSection from "@/components/features/sections/SkillsSection";
 import TextSection from "@/components/features/sections/TextSection";
-import TimelineSection, {TimelineElementType} from "@/components/features/sections/TimelineSection";
-import {Star} from "lucide-react";
+import TimelineSection from "@/components/features/sections/TimelineSection";
 
 
 export default function HomePage() {

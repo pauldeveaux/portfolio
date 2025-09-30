@@ -154,7 +154,6 @@ export default function Carousel({cards}: CarouselProps) {
         velocityRef.current = 0;
 
         const startX = e.touches[0].pageX;
-        const startY = e.touches[0].pageY;
         const scrollLeftStart = scrollContainer.scrollLeft;
         let lastX = startX;
         let lastTime = performance.now();
