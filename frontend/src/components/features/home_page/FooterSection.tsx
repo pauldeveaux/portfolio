@@ -1,6 +1,6 @@
 import {ArrowUp} from "lucide-react";
-import Section, {SectionProps} from "@/components/ui/Section";
-import ButtonLink from "@/components/ui/ButtonLink";
+import Section, {SectionProps} from "@/components/ui/miscellaneous/Section";
+import ButtonLink from "@/components/ui/buttons/ButtonLink";
 
 
 interface FooterSectionProps extends SectionProps {

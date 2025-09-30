@@ -1,4 +1,4 @@
-import Section, {SectionProps} from "@/components/ui/Section";
+import Section, {SectionProps} from "@/components/ui/miscellaneous/Section";
 import {
     VerticalTimeline,
     VerticalTimelineElement

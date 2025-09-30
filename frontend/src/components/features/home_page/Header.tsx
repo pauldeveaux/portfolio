@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
-import AnimatedTitle from "@/components/ui/AnimatedTitle";
-import { BurgerMenu } from "@/components/ui/BurgerMenu";
-import ButtonLink from "@/components/ui/ButtonLink";
+import AnimatedTitle from "@/components/ui/miscellaneous/AnimatedTitle";
+import { BurgerMenu } from "@/components/ui/buttons/BurgerMenu";
+import ButtonLink from "@/components/ui/buttons/ButtonLink";
 import { useEffect, useState, useCallback } from "react";
 
 interface NavLink {
@@ -88,7 +88,7 @@ export default function Header({ title, navLinks }: HeaderProps) {
 
                 {/* Centered title */}
                 <Link
-                    href="/"
+                    href="/public"
                     className="text-primary no-underline mx-4 flex-1 md:flex-none text-center md:text-left transition-colors "
                 >
                     <AnimatedTitle title={title} />

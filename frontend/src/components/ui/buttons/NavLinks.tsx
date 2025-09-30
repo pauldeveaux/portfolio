@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import ButtonLink from "@/components/ui/ButtonLink";
+import ButtonLink from "@/components/ui/buttons/ButtonLink";
 
 interface NavLink {
     label: string;

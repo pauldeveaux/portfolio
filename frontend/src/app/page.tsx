@@ -1,12 +1,12 @@
 'use client';
 
-import Header from "@/components/features/Header";
-import HeroSection from "@/components/features/sections/HeroSection";
-import ContactSection from "@/components/features/sections/ContactSection";
-import FooterSection from "@/components/features/sections/FooterSection";
-import SkillsSection from "@/components/features/sections/SkillsSection";
-import TextSection from "@/components/features/sections/TextSection";
-import TimelineSection from "@/components/features/sections/TimelineSection";
+import Header from "@/components/features/home_page/Header";
+import HeroSection from "@/components/features/home_page/HeroSection";
+import ContactSection from "@/components/features/home_page/ContactSection";
+import FooterSection from "@/components/features/home_page/FooterSection";
+import SkillsSection from "@/components/features/home_page/SkillsSection";
+import TextSection from "@/components/features/home_page/TextSection";
+import TimelineSection from "@/components/features/home_page/TimelineSection";
 
 
 export default function HomePage() {

@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import ButtonLink from "@/components/ui/ButtonLink";
+import ButtonLink from "@/components/ui/buttons/ButtonLink";
 
 interface NavLink {
     label: string;

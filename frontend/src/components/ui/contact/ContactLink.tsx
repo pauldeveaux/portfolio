@@ -1,4 +1,4 @@
-import ExternalLink from "@/components/features/ExternalLink";
+import ExternalLink from "@/components/ui/buttons/ExternalLink";
 import Image from "next/image";
 
 

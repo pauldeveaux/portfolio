@@ -1,5 +1,5 @@
 "use client";
-import Section, {SectionProps} from "@/components/ui/Section";
+import Section, {SectionProps} from "@/components/ui/miscellaneous/Section";
 import Carousel from "@/components/ui/carousel/Carousel";
 import {CarouselCardProps} from "@/components/ui/carousel/CarouselCard";
 import {useState} from "react";

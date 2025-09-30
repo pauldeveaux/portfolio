@@ -1,6 +1,6 @@
 'use client';
 
-import Section, {SectionProps} from "@/components/ui/Section";
+import Section, {SectionProps} from "@/components/ui/miscellaneous/Section";
 import ContactLink, {ContactLinkProps} from "@/components/ui/contact/ContactLink";
 import ContactForm from "@/components/ui/contact/ContactForm";
 import clsx from "clsx";
