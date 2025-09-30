@@ -7,6 +7,7 @@ import FooterSection from "@/components/features/home_page/FooterSection";
 import SkillsSection from "@/components/features/home_page/SkillsSection";
 import TextSection from "@/components/features/home_page/TextSection";
 import TimelineSection from "@/components/features/home_page/TimelineSection";
+import ChatSection from "@/components/features/home_page/ChatSection";
 
 
 export default function HomePage() {
@@ -41,6 +42,12 @@ export default function HomePage() {
                     "Vestibulum maximus ultricies justo nec pharetra. Vestibulum vulputate molestie leo id semper. Ut consequat maximus justo ut hendrerit. Phasellus suscipit ex eu massa ornare gravida. Nam nisl mi, convallis in justo in, sodales ullamcorper sapien. Mauris consectetur consectetur lorem in vestibulum. Sed auctor elementum commodo. Fusce luctus quam et eleifend vestibulum. Suspendisse egestas ante a massa mollis vulputate.\n" +
                     "\n" +
                     "Nunc mollis at ipsum at consectetur. Donec sollicitudin lorem ut aliquet sollicitudin. Curabitur est risus, efficitur ut turpis facilisis, vulputate ullamcorper felis. Proin suscipit consequat augue a hendrerit. Nulla facilisi. Praesent euismod quam a ante ornare molestie. Sed bibendum enim at purus efficitur tempor. Aliquam id sem finibus lorem egestas rutrum a ornare sapien. Vestibulum faucibus turpis ac euismod tincidunt. Phasellus sit amet pretium urna."}
+            />
+
+
+            < ChatSection
+                id="chat"
+                title={"Pose moi des questions"}
             />
 
 
