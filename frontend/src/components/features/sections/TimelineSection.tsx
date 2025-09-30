@@ -6,6 +6,7 @@ import {
 import "react-vertical-timeline-component/style.min.css";
 import {GraduationCap, Briefcase, Star, LucideIcon} from "lucide-react";
 import React from "react";
+import {useIsMobile} from "@/utils/useIsMobile";
 
 
 export type TimelineElementType = "School" | "Graduate" | "Internship" | "Work" | "Final";
@@ -42,7 +43,6 @@ function createTimelineElement(props: TimelineElementProps, key: React.Key) {
         Work: { icon: <Briefcase />, position: "left" },
         Final: { icon: <Star /> },
     };
-
 
     const { icon, position, tagIcon } = timelineTypeIcons[props.type];
 
@@ -116,6 +116,7 @@ function createTimelineElement(props: TimelineElementProps, key: React.Key) {
 
 
 export default function TimelineSection({title, elements, ...sectionProps}: TimelineSectionProps) {
+    const isMobile = useIsMobile();
 
     /* Element to add at the end of the elements */
     const finalElementProps = { type: "Final" as TimelineElementType, title: "", subtitle: "", text: "", date: ""}
@@ -126,8 +127,7 @@ export default function TimelineSection({title, elements, ...sectionProps}: Time
             <h2 className="text-5xl font-bold mb-20 text-center pt-16">{title}</h2>
 
 
-            <VerticalTimeline lineColor="#107E7D">
-
+            <VerticalTimeline lineColor="#107E7D"  animate={!isMobile}>
                 {[...elements, finalElementProps].map((el, i) => (
                     createTimelineElement(el, i)
                 ))}
