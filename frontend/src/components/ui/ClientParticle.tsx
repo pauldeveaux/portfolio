@@ -60,7 +60,7 @@ export default function ClientParticles({className, isMobile}: ClientParticlesPr
             },
             particles: {
                 color: {
-                    value: ["#ffffff", "#a3d5ff", "#b0e0e6"],
+                    value: ["#ffffff", "#a3d5ff", "#b0e0e6", "#00ced1"],
                 },
                 links: {
                     enable: false,
@@ -81,7 +81,7 @@ export default function ClientParticles({className, isMobile}: ClientParticlesPr
                     }
                 },
                 number: {
-                    value: isMobile? 10:100,
+                    value: isMobile? 30:100,
                 },
                 opacity: {
                     value: 0.4,
