@@ -8,6 +8,7 @@ import SkillsSection from "@/components/features/home_page/SkillsSection";
 import TextSection from "@/components/features/home_page/TextSection";
 import TimelineSection from "@/components/features/home_page/TimelineSection";
 import ChatSection from "@/components/features/home_page/ChatSection";
+import PortfolioSection from "@/components/features/home_page/PortfolioSection";
 
 
 export default function HomePage() {
@@ -26,7 +27,7 @@ export default function HomePage() {
 
             <HeroSection
                 id={"hero"}
-                className={"bg-gradient-to-b from-[#14A3A2] via-[#129190] to-[#107E7D] text-white  "}
+                className={"bg-gradient-to-b from-[#14A3A2] via-[#129190] to-[#107E7D] text-white"}
                 title={"Paul Deveaux"}
                 description={"Développeur IA - Junior | Passionné par l'innovation technologique et la création de solutions intelligentes."}
             />
@@ -141,6 +142,24 @@ export default function HomePage() {
                         date: "Septembre 2025",
                         type: "School",
                     },
+                ]}
+            />
+
+
+            <PortfolioSection
+                id={"portfolio"}
+                title={"Mes projets"}
+                className={"bg-gradient-to-b from-[#14A3A2] via-[#129190] to-[#107E7D] text-black"}
+                projects={[
+                    {title: "Sea of Thieves !", description: "test description", imageUrl: "/logos/github-icon.svg", tags: ["Pirate", "Bateaux"], size:"medium"},
+                    {title: "Test projet", description: "test description", imageUrl: "screen_portfolio.png", size:"small"},
+                    {title: "Test projet", description: "test description", imageUrl: "/logos/github-icon.svg", size: "small"},
+                    {title: "Test projet", description: "test description", imageUrl: "/logos/github-icon.svg", size:"medium"},
+                    {title: "Test projet2", description: "test description", imageUrl: "/logos/github-icon.svg"},
+                    {title: "Test projet", description: "test description", imageUrl: "/logos/github-icon.svg"},
+                    {title: "Test projet", description: "test description", imageUrl: "/logos/github-icon.svg"},
+                    {title: "Test projet", description: "test description", imageUrl: "/logos/github-icon.svg"}
+
                 ]}
             />
 
