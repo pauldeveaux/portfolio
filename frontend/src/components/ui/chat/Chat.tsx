@@ -5,7 +5,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 const AIMessage : ChatMessageProps = {
     type: "ai",
-    text: "Posez-moi une question pour commencer..."
+    text: "Bonjour ! Je suis l’assistant virtuel de mon portfolio. Posez-moi des questions sur mes projets, compétences ou expériences.",
 }
 
 export default function Chat() {
@@ -53,7 +53,8 @@ export default function Chat() {
 
     return (
         <div
-            className="flex flex-col max-h-[60vh] mx-auto p-6 border rounded-2xl shadow-xl
+            className="flex flex-col max-h-[60vh] mx-auto p-6
+            border border-black/20 rounded-2xl shadow-xl
             bg-gradient-to-b from-white/80 via-white/60 to-white/30 backdrop-blur-md
             w-full max-w-2xl
             md:w-2xl">
@@ -67,17 +68,17 @@ export default function Chat() {
                 <div ref={messagesEndRef}/>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-2 mt-2 items-end">
+            <div className="flex flex-row sm:flex-row gap-2 mt-2 items-end">
                   < TextareaAutosize
                       ref={textareaRef}
-                      placeholder="Pose moi une question..."
-                      className="w-full p-3 rounded-2xl border border-gray-300 bg-white/50 backdrop-blur-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#14A3A2]"
+                      placeholder="Posez une question ici..."
+                      className="flex-1 w-full p-3 rounded-2xl border border-gray-300 bg-white/50 backdrop-blur-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#14A3A2]"
                       maxRows={5}
                       minRows={1}
                       onKeyDown={handleKeyDown}
                   />
                 <button
-                    className="px-5 py-3 rounded-2xl bg-[#107E7D] text-white font-semibold hover:bg-[#0E6B6B] flex-shrink-0"
+                    className="flex-shrink-0 px-5 py-3 rounded-2xl bg-[#107E7D] text-white font-semibold hover:bg-[#0E6B6B]"
                     onClick={handleSend}
                 >
                     Envoyer
