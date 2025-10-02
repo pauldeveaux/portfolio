@@ -60,7 +60,7 @@ export default function PortfolioSection({
                             onClick={() => setExpanded(false)}
                             className="px-6 py-3 bg-white border border-gray-300 text-gray-800 rounded-lg shadow hover:bg-gray-50 transition hover:cursor-pointer"
                         >
-                            Voir moins
+                            Afficher moins
                         </motion.button>
                     )}
                 </div>

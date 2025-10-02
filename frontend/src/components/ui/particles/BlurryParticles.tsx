@@ -15,7 +15,7 @@ export default function BlurryParticles(){
             {isMobile ?
                 <div className="absolute bg-gradient-to-b from-black/25 via-black/15 to-black/25 rounded-2xl -inset-8 pointer-events-none md:backdrop-blur-[1px]"/>
                 :
-                <div className="absolute bg-black/20 backdrop-blur-[1px] rounded-2xl -inset-8 pointer-events-none sm:backdrop-blur-[2px]"/>
+                <div className="absolute bg-black/10 backdrop-blur-[1px] rounded-2xl -inset-8 pointer-events-none sm:backdrop-blur-[2px]"/>
             }
         </div>
     )
