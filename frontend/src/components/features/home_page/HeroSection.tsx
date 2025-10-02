@@ -6,8 +6,6 @@ import {useEffect, useRef, useState} from "react";
 import {motion, animate} from "motion/react";
 import {useHeaderHeight} from "@/utils/headerHeight";
 import ButtonLink from "@/components/ui/buttons/ButtonLink";
-import {useIsMobile} from "@/utils/useIsMobile";
-
 
 interface HeroSectionProps extends SectionProps {
     title: string
@@ -18,8 +16,6 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
     const sectionRef = useRef<HTMLDivElement>(null);
     const {className: sectionClassName, ...restSectionProps} = sectionProps;
     const headerHeight = useHeaderHeight();
-    const isMobile = useIsMobile();
-
 
     const [heroHeight, setHeroHeight] = useState("100vh");
 

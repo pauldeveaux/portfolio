@@ -157,8 +157,8 @@ export default function HomePage() {
                 title={"Mes projets"}
                 className={"bg-gradient-to-b from-[#14A3A2] via-[#129190] to-[#107E7D] text-black"}
                 projects={[
-                    {title: "Sea of Thieves !", description: "test description", imageUrl: "/logos/github-icon.svg", tags: ["Pirate", "Bateaux"], size:"medium"},
-                    {title: "Test projet", description: "test description", imageUrl: "screen_portfolio.png", size:"small"},
+                    {title: "Sea of Thieves !", description: "test description", imageUrl: "/logos/wallpaper.png", tags: ["Pirate", "Bateaux"], size:"medium", markdownUrl: "/test"},
+                    {title: "Test projet", description: "test description", imageUrl: "/screen_portfolio.png", size:"small"},
                     {title: "Test projet", description: "test description", imageUrl: "/logos/github-icon.svg", size: "small"},
                     {title: "Test projet", description: "test description", imageUrl: "/logos/github-icon.svg", size:"medium"},
                     {title: "Test projet2", description: "test description", imageUrl: "/logos/github-icon.svg"},

@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import {useEffect} from "react";
+import Image from "next/image";
 
 interface PortfolioModalProps {
     isOpen: boolean;
@@ -10,10 +11,9 @@ interface PortfolioModalProps {
     title: string;
     imageUrl: string;
     markdownContent: string;
-    links?: { label: string; url: string }[];
 }
 
-export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markdownContent, links }: PortfolioModalProps) {
+export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markdownContent }: PortfolioModalProps) {
 
     useEffect(() => {
         if (isOpen){
@@ -46,13 +46,19 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
                         initial={{ opacity: 0 }} // initial state: invisible
                         animate={{ opacity: 0.6  }} // animate to fully visible
                         exit={{ opacity: 0 }} // fade out when removed
+                        transition={{ duration: 0.25 }}
                         onClick={onClose} // click on backdrop closes the modal
                     />
 
                     {/* Modal container */}
                     <motion.div
-                        className="relative bg-white rounded-xl max-w-4xl w-full z-5 max-h-[90vh] flex flex-col overflow-hidden"
+                        className="relative bg-white rounded-xl flex flex-col overflow-hidden
+                        mx-10 my-15 sm:my-0 max-w-4xl w-full z-5 max-h-[90vh]"
                         onClick={(e) => {e.stopPropagation()}}
+                        initial={{ scale: 0.5 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0.5 }}
+                        transition={{ duration: 0.25 }}
                     >
 
                         {/* Sticky Header */}
@@ -72,34 +78,23 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
                         {/* Scrollable content */}
                         <div className="flex-1 overflow-y-auto p-6 scrollbar-thin">
                             {/* Main project image */}
-                            <img src={imageUrl} alt={title} className="w-full  mb-4 rounded-lg" />
-
+                            <Image
+                                src={imageUrl}
+                                alt={title}
+                                width={800}
+                                height={400}
+                                className="w-full max-h-[50vh] object-contain mb-4 rounded-lg border border-gray-200 shadow-md"
+                            />
 
                             {/* Markdown content */}
-                            <div className="prose mb-4">
+                            <div className="prose !max-w-none mb-4">
                                 <ReactMarkdown
-                                    children={markdownContent}
                                     remarkPlugins={[remarkGfm]} // support GitHub-flavored Markdown (tables, lists, etc.)
                                     rehypePlugins={[rehypeRaw]} // allow HTML inside Markdown
-                                />
+                                >
+                                    {markdownContent}
+                                </ReactMarkdown>
                             </div>
-
-                            {/* Optional links (GitHub, live demo, etc.) */}
-                            {links && links.length > 0 && (
-                                <div className="flex gap-4 flex-wrap">
-                                    {links.map((link, idx) => (
-                                        <a
-                                            key={idx}
-                                            href={link.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-                                        >
-                                            {link.label}
-                                        </a>
-                                    ))}
-                                </div>
-                            )}
                         </div>
 
                     </motion.div>
