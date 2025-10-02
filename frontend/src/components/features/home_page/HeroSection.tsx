@@ -5,7 +5,6 @@ import {ArrowDown, MessageCircle} from "lucide-react";
 import {useEffect, useRef, useState} from "react";
 import {motion, animate} from "motion/react";
 import {useHeaderHeight} from "@/utils/headerHeight";
-import ClientParticles from "@/components/ui/particles/ClientParticle";
 import ButtonLink from "@/components/ui/buttons/ButtonLink";
 import {useIsMobile} from "@/utils/useIsMobile";
 
