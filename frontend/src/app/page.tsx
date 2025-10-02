@@ -157,14 +157,14 @@ export default function HomePage() {
                 title={"Mes projets"}
                 className={"bg-gradient-to-b from-[#14A3A2] via-[#129190] to-[#107E7D] text-black"}
                 projects={[
-                    {title: "Sea of Thieves !", description: "test description", imageUrl: "/logos/wallpaper.png", tags: ["Pirate", "Bateaux"], size:"medium", markdownUrl: "/test"},
-                    {title: "Test projet", description: "test description", imageUrl: "/screen_portfolio.png", size:"small"},
-                    {title: "Test projet", description: "test description", imageUrl: "/logos/github-icon.svg", size: "small"},
-                    {title: "Test projet", description: "test description", imageUrl: "/logos/github-icon.svg", size:"medium"},
-                    {title: "Test projet2", description: "test description", imageUrl: "/logos/github-icon.svg"},
-                    {title: "Test projet", description: "test description", imageUrl: "/logos/github-icon.svg"},
-                    {title: "Test projet", description: "test description", imageUrl: "/logos/github-icon.svg"},
-                    {title: "Test projet", description: "test description", imageUrl: "/logos/github-icon.svg"}
+                    {title: "Mon projet !", description: "test description", imageUrl: "/nothing", tags: ["CSS", "React"], size:"medium", markdownUrl: "/test"},
+                    {title: "Test projet", description: "test description", imageUrl: "/nothing", size:"small"},
+                    {title: "Test projet", description: "test description", imageUrl: "/nothing", size: "small"},
+                    {title: "Test projet", description: "test description", imageUrl: "/nothing", size:"medium"},
+                    {title: "Test projet2", description: "test description", imageUrl: "/nothing"},
+                    {title: "Test projet", description: "test description", imageUrl: "/nothing"},
+                    {title: "Test projet", description: "test description", imageUrl: "/nothing"},
+                    {title: "Test projet", description: "test description", imageUrl: "/nothing"}
 
                 ]}
             />
@@ -178,19 +178,19 @@ export default function HomePage() {
                 contacts={[
                     {
                         social_media: "email",
-                        image_url: "/logos/mail-icon.svg",
+                        image_url: "/images/logos/mail-icon.svg",
                         text: "paul.deveaux1@gmail.com",
                         link: "mailto:paul.deveaux1@gmail.com"
                     },
                     {
                         social_media: "linkedin",
-                        image_url: "/logos/linkedin-icon.svg",
+                        image_url: "/images/logos/linkedin-icon.svg",
                         text: "linkedin.com/in/paul-deveaux",
                         link: "https://www.linkedin.com/in/paul-deveaux-7a731a202/"
                     },
                     {
                         social_media: "github",
-                        image_url: "/logos/github-icon.svg",
+                        image_url: "/images/logos/github-icon.svg",
                         text: "github.com/pauldeveaux",
                         link: "https://github.com/pauldeveaux"
                     }

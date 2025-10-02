@@ -1,20 +1,41 @@
 import { AnimatePresence, motion } from "motion/react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeRaw from "rehype-raw";
-import {useEffect} from "react";
+import {useEffect, ReactNode, useState} from "react";
 import Image from "next/image";
 
+
+/**
+ * Props for the PortfolioModal component.
+ */
 interface PortfolioModalProps {
+    /** Whether the modal is open */
     isOpen: boolean;
+    /** Function to close the modal */
     onClose: () => void;
+    /** Title of the project/modal */
     title: string;
+    /** URL of the main image to display */
     imageUrl: string;
-    markdownContent: string;
+    /** Pre-rendered Markdown content as a ReactNode */
+    markdownNode: ReactNode;
 }
 
-export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markdownContent }: PortfolioModalProps) {
 
+/**
+ * PortfolioModal component.
+ *
+ * Displays a modal with a project title, image, and Markdown content.
+ * The modal disables body scroll when open and supports fade/scale animations.
+ *
+ * @param props - Props for the modal
+ * @returns JSX.Element
+ */
+export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markdownNode }: PortfolioModalProps) {
+    const [imageError, setImageError] = useState(false);
+
+    const fallBackUrl="/images/fallback.png"
+
+
+    // Disable body scroll when modal is open
     useEffect(() => {
         if (isOpen){
             document.body.style.overflow = "hidden";
@@ -29,7 +50,6 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
     }, [isOpen])
 
     return (
-        // AnimatePresence allows us to animate the modal when it enters or leaves the DOM
         <AnimatePresence>
             {isOpen && (
 
@@ -79,21 +99,17 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
                         <div className="flex-1 overflow-y-auto p-6 scrollbar-thin">
                             {/* Main project image */}
                             <Image
-                                src={imageUrl}
+                                src={imageError ? fallBackUrl : imageUrl }
                                 alt={title}
                                 width={800}
                                 height={400}
+                                onError={() => setImageError(true)}
                                 className="w-full max-h-[50vh] object-contain mb-4 rounded-lg border border-gray-200 shadow-md"
                             />
 
                             {/* Markdown content */}
                             <div className="prose !max-w-none mb-4">
-                                <ReactMarkdown
-                                    remarkPlugins={[remarkGfm]} // support GitHub-flavored Markdown (tables, lists, etc.)
-                                    rehypePlugins={[rehypeRaw]} // allow HTML inside Markdown
-                                >
-                                    {markdownContent}
-                                </ReactMarkdown>
+                                {markdownNode}
                             </div>
                         </div>
 

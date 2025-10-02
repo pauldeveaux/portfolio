@@ -1,46 +1,67 @@
-import { motion } from "motion/react";
-import { useState} from "react";
+import {motion} from "motion/react";
+import {useState} from "react";
+import Image from "next/image";
 import PortfolioModal from "@/components/features/portfolio/PortfolioModal";
+import useMarkdownLoader from "@/utils/markdownLoader";
 
 
+/**
+ * Props for the PortfolioCard component.
+ */
 export interface PortfolioCardProps {
+    /** Title of the project */
     title: string;
+    /** URL of the project's main image */
     imageUrl: string;
+    /** Short description of the project */
     description: string;
+    /** Optional list of tags for the project */
     tags?: string[];
+    /** Optional size specifier (currently unused) */
     size?: "small" | "medium" | "large";
+    /** Optional additional CSS classes */
     className?: string;
+    /** Optional URL to fetch Markdown content for the modal */
     markdownUrl?: string;
 }
 
-
-
-
-export default function PortfolioCard({ title, imageUrl, description, tags, className, markdownUrl }: PortfolioCardProps) {
+/**
+ * PortfolioCard component.
+ *
+ * Displays a card with project image, title, description, and tags.
+ * When clicked, opens a modal with more details and lazy-loaded Markdown content.
+ *
+ * @param props - Props for the PortfolioCard component
+ * @returns JSX.Element
+ */
+export default function PortfolioCard({
+                                          title,
+                                          imageUrl,
+                                          description,
+                                          tags,
+                                          className,
+                                          markdownUrl
+                                      }: PortfolioCardProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [markdownContent, setMarkdownContent] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false);
+
+    const [imageError, setImageError] = useState(false);
 
 
+    // Custom hook to lazy-load Markdown content when modal is opened
+    const { content, loading, loadMarkdown } = useMarkdownLoader({});
+
+
+    const fallBackUrl="/images/fallback.png"
+
+    /**
+     * Opens the modal and loads Markdown content if not already loaded.
+     */
     const openModal = async () => {
         setIsModalOpen(true);
 
-        // Lazy load Markdown only if not already loaded
-        if (markdownUrl && !markdownContent) {
-            setLoading(true);
-            try {
-                const res = await fetch(markdownUrl);
-                if (!res.ok) throw new Error(`Failed to fetch Markdown: ${res.status}`);
-                const data = await res.text();
-                setMarkdownContent(data);
-            } catch (err) {
-                console.error(err);
-                setMarkdownContent("Failed to load content.");
-            } finally {
-                setLoading(false);
-            }
-        }
-    };
+        if (!content)
+            await loadMarkdown(markdownUrl)
+    }
 
     return (
         <>
@@ -48,10 +69,17 @@ export default function PortfolioCard({ title, imageUrl, description, tags, clas
                 className={`relative group flex flex-col rounded-xl 
                 overflow-hidden shadow-xl bg-white hover:shadow-lg p-1 hover:cursor-pointer
                 transition-shadow duration-300 w-full ${className}`}
-                onClick={ openModal}
+                onClick={openModal}
             >
                 {/* Image */}
-                <motion.img src={imageUrl} alt={title} className="w-full h-56 object-cover"/>
+                <Image
+                    src={imageError ? fallBackUrl : imageUrl }
+                    alt={title}
+                    width={800}
+                    height={400}
+                    onError={() => setImageError(true)}
+                    className="w-full h-56 object-cover"
+                />
 
                 {/* Title + description + tags */}
                 <div className="p-4 flex flex-col flex-grow">
@@ -77,7 +105,7 @@ export default function PortfolioCard({ title, imageUrl, description, tags, clas
                 onClose={() => setIsModalOpen(false)}
                 title={title}
                 imageUrl={imageUrl}
-                markdownContent={loading ? "Loading..." : markdownContent ?? ""}
+                markdownNode={loading ? "Loading..." : content ?? ""}
             />
         </>
     );
