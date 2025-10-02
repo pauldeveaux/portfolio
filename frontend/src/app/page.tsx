@@ -9,6 +9,7 @@ import TextSection from "@/components/features/home_page/TextSection";
 import TimelineSection from "@/components/features/home_page/TimelineSection";
 import ChatSection from "@/components/features/home_page/ChatSection";
 import PortfolioSection from "@/components/features/home_page/PortfolioSection";
+import BlurryParticles from "@/components/ui/particles/BlurryParticles";
 
 
 export default function HomePage() {
@@ -25,16 +26,19 @@ export default function HomePage() {
             ]}
             />
 
+            <BlurryParticles/>
+
             <HeroSection
                 id={"hero"}
-                className={"bg-gradient-to-b from-[#14A3A2] via-[#129190] to-[#107E7D] text-white"}
+                className={"text-white"}
                 title={"Paul Deveaux"}
                 description={"Développeur IA - Junior | Passionné par l'innovation technologique et la création de solutions intelligentes."}
             />
 
+
             < TextSection
                 id="about"
-                className="bg-gradient-to-tl from-secondary-background via-primary to-primary-60"
+                className="bg-gray-200"
                 title={"Plus sur moi"}
                 text={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quam quam, varius eget magna sit amet, volutpat luctus arcu. Proin imperdiet vitae lectus et volutpat. Nulla at ante ex. Nam rhoncus sapien nec elementum viverra. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas bibendum dapibus euismod. Suspendisse maximus finibus risus. Quisque scelerisque non diam et iaculis. Duis eget accumsan tortor. Ut accumsan quam ex, rutrum porta augue suscipit vel. Curabitur elit dolor, posuere id feugiat a, pellentesque eu diam. Proin vitae luctus ante. Mauris elementum mattis felis vel convallis. Vivamus rutrum ac mi in lacinia. Sed accumsan, erat ac ultricies pulvinar, arcu diam varius quam, a porttitor diam nulla non metus." +
                     "Proin tempor egestas felis, sit amet tincidunt tortor auctor in. Nulla cursus felis nunc, sed iaculis ipsum placerat sit amet. Praesent efficitur, eros fermentum tincidunt dignissim, erat magna molestie dolor, quis aliquam urna mauris vitae nulla. Nam elementum tristique rhoncus. Morbi in placerat orci. Mauris facilisis, ipsum vel tristique fermentum, tortor neque dictum magna, id fringilla quam nunc at orci. Fusce scelerisque ut magna sit amet feugiat." +
@@ -48,14 +52,15 @@ export default function HomePage() {
 
             < ChatSection
                 id="chat"
+                className="bg-white"
                 title={"Pose moi des questions"}
             />
 
 
             <SkillsSection
                 id="skills"
-                className={"bg-gradient-to-tr from-secondary-background via-primary to-primary-60"}
                 title={"Compétences"}
+                className="text-white"
                 categories={[
                     {
                         title: "Développement",
@@ -83,6 +88,7 @@ export default function HomePage() {
             <TimelineSection
                 id="timeline"
                 title="Mes formations"
+                className="bg-white"
                 elements={[
                     {
                         title: "WORK",

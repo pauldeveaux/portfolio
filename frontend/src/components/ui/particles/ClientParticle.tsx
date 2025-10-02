@@ -38,7 +38,7 @@ export default function ClientParticles({className, isMobile}: ClientParticlesPr
     const options: ISourceOptions = useMemo(
         () => ({
             fpsLimit: 60,
-            fullScreen: false,
+            fullScreen: true,
             interactivity: {
                 events: {
                     onClick: {
