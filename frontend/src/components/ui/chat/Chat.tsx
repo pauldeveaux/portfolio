@@ -1,6 +1,8 @@
 import Message, {ChatMessageProps} from "@/components/ui/chat/Message";
 import React, {useEffect, useRef, useState} from "react";
 import TextareaAutosize from 'react-textarea-autosize';
+import { Send } from "lucide-react"
+import {useIsMobile} from "@/utils/useIsMobile";
 
 
 const AIMessage : ChatMessageProps = {
@@ -13,6 +15,7 @@ export default function Chat() {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
     const [messages, setMessages] = useState<ChatMessageProps[]>([AIMessage]);
+    const isMobile = useIsMobile();
 
     // Auto scroll
     const scrollToBottom = () => {
@@ -78,10 +81,10 @@ export default function Chat() {
                       onKeyDown={handleKeyDown}
                   />
                 <button
-                    className="flex-shrink-0 px-5 py-3 rounded-2xl bg-[#107E7D] text-white font-semibold hover:bg-[#0E6B6B]"
+                    className="flex-shrink-0 px-5 py-3 rounded-2xl bg-[#107E7D] text-white font-semibold hover:bg-[#0E6B6B] hover:cursor-pointer"
                     onClick={handleSend}
                 >
-                    Envoyer
+                    {isMobile ? <Send/> : <>Envoyer</>}
                 </button>
             </div>
         </div>
