@@ -79,7 +79,6 @@ export default function WaveStyleSeparator(
     }: WaveStyleSeparatorProps)
 {
 
-    const heightClassName = `h-${height}`;
     const rotationClassName = `rotate-${rotation}`
     const flipXClassName = flipX? "scale-x-[-1]" : ""
     const flipYClassName = flipY? "scale-y-[-1]" : ""
@@ -87,7 +86,8 @@ export default function WaveStyleSeparator(
     return (
         <div className="w-full overflow-hidden leading-none">
             <svg
-                className={clsx("w-full", heightClassName, rotationClassName, flipXClassName, flipYClassName)}
+                className={clsx("w-full", rotationClassName, flipXClassName, flipYClassName)}
+                style={{ height: `${height}px` }}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 1440 320"
                 preserveAspectRatio="none"
