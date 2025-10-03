@@ -73,7 +73,7 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
                     {/* Modal container */}
                     <motion.div
                         className="relative bg-white rounded-xl flex flex-col overflow-hidden
-                        mx-4  sm:mx-10 sm:my-0 max-w-4xl w-full z-5 max-h-[90vh]"
+                        mx-4  sm:mx-10 sm:my-0 max-w-4xl w-full z-5 max-h-[85vh] sm:max-h-[90vh]"
                         onClick={(e) => {e.stopPropagation()}}
                         initial={{ scale: 0.5 }}
                         animate={{ scale: 1 }}
