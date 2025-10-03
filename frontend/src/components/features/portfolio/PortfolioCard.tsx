@@ -70,6 +70,8 @@ export default function PortfolioCard({
                 overflow-hidden shadow-xl bg-white hover:shadow-lg p-1 hover:cursor-pointer
                 transition-shadow duration-300 w-full ${className}`}
                 onClick={openModal}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
             >
                 {/* Image */}
                 <Image

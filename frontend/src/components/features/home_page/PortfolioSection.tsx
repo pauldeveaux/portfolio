@@ -50,7 +50,8 @@ export default function PortfolioSection({
 
     const rowHeightPx = 320; // corresponds to auto-rows-[320px]
     const gapPx = 24; // gap-6 => 24px
-    const collapsedMaxHeight = rowsToShow * rowHeightPx + (rowsToShow - 1) * gapPx;
+    const padding = 2;
+    const collapsedMaxHeight = rowsToShow * rowHeightPx + (rowsToShow - 1) * (gapPx + padding*8);
 
     return (
         <Section {...sectionProps}>
@@ -62,7 +63,8 @@ export default function PortfolioSection({
 
                 {/* Project grid */}
                 <div
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[320px] grid-flow-dense w-full transition-[max-height] duration-300 ease-in-out"
+                    className="grid grid-cols-1 grid-flow-dense sm:grid-cols-2 lg:grid-cols-3 auto-rows-[320px] gap-6
+                    p-1 sm:p-2 w-full transition-[max-height] duration-300 ease-in-out"
                     style={{
                         maxHeight: expanded ? undefined : `${collapsedMaxHeight}px`,
                         overflow: expanded ? "visible" : "hidden",
