@@ -78,7 +78,7 @@ export default function HomePage() {
             <SkillsSection
                 id="skills"
                 title={"Compétences"}
-                className="text-white"
+                className="text-white mb-5"
                 categories={[
                     {
                         title: "Développement",
@@ -101,14 +101,6 @@ export default function HomePage() {
                     },
                 ]}
             />
-
-            < WaveStyleSeparator
-                nextBackground={"fill-white"}
-                height={70}
-                className={"bg-gradient-to-t from-white/60 to-white/0 "}
-                shape={"M0,32L80,69.3C160,107,320,181,480,186.7C640,192,800,128,960,128C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"}
-            />
-
 
             <TimelineSection
                 id="timeline"

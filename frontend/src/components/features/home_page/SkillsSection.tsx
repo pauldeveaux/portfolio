@@ -37,7 +37,7 @@ export default function SkillsSection({ title,  categories, ...sectionProps }: S
                 <div className="flex items-center justify-center">
                     <button
                         onClick={prevCategory}
-                        className="p-2 text-gray-400 hover:text-cyan-600 transition-colors duration-200 hover:cursor-pointer"
+                        className="p-2 text-white hover:text-[#39B3AA] transition-colors duration-200 hover:cursor-pointer"
                     >
                         <ChevronLeft size={24} />
                     </button>
@@ -60,7 +60,7 @@ export default function SkillsSection({ title,  categories, ...sectionProps }: S
 
                     <button
                         onClick={nextCategory}
-                        className="p-2 text-gray-400 hover:text-cyan-600 transition-colors duration-200 hover:cursor-pointer"
+                        className="p-2 text-white hover:text-[#39B3AA] transition-colors duration-200 hover:cursor-pointer"
                     >
                         <ChevronRight size={24} />
                     </button>

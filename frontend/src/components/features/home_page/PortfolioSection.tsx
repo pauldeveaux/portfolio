@@ -89,7 +89,7 @@ export default function PortfolioSection({
                             }
                             setExpanded(!expanded);
                         }}
-                        className="px-6 py-3 bg-white border border-gray-300 text-gray-800 rounded-lg shadow transition cursor-pointer"
+                        className="px-6 py-3 bg-white border border-gray-300 text-gray-800 font-bold rounded-lg shadow transition cursor-pointer"
                         whileHover={{
                             scale: 1.05, // slightly grow
                             boxShadow: "0px 10px 20px rgba(0,0,0,0.15)", // more pronounced shadow
