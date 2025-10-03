@@ -27,12 +27,13 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
 
 
     const scrollToNextSection = () => {
-        const next = sectionRef.current?.nextElementSibling as HTMLElement | null;
-        if (!next) return;
+        const targetSection = document.getElementById("about");
+        if (!targetSection) return;
+
 
         const isMobile = window.innerWidth < 768;
         const offset = isMobile ? 0 : headerHeight;
-        const target = next.offsetTop - offset;
+        const target = targetSection.offsetTop - offset;
 
         animate(window.scrollY, target, {
             duration: 1.5,
@@ -99,7 +100,6 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
             >
                 <ArrowDown size={24}/>
             </motion.button>
-
         </Section>
     );
 }

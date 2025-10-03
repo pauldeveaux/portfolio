@@ -10,6 +10,8 @@ import TimelineSection from "@/components/features/home_page/TimelineSection";
 import ChatSection from "@/components/features/home_page/ChatSection";
 import PortfolioSection from "@/components/features/home_page/PortfolioSection";
 import BlurryParticles from "@/components/ui/particles/BlurryParticles";
+import WaveStyleSeparator from "@/components/ui/SectionSeparator/WaveStyleSeparator";
+import GradientStyleSeparator from "@/components/ui/SectionSeparator/GradientStyleSeparator";
 
 
 export default function HomePage() {
@@ -35,6 +37,8 @@ export default function HomePage() {
                 description={"Développeur IA - Junior | Passionné par l'innovation technologique et la création de solutions intelligentes."}
             />
 
+            < GradientStyleSeparator firstColorClassName={"[#107E7D]"} secondColorClassName={"gray-200"}/>
+
 
             < TextSection
                 id="about"
@@ -49,6 +53,8 @@ export default function HomePage() {
                     "Nunc mollis at ipsum at consectetur. Donec sollicitudin lorem ut aliquet sollicitudin. Curabitur est risus, efficitur ut turpis facilisis, vulputate ullamcorper felis. Proin suscipit consequat augue a hendrerit. Nulla facilisi. Praesent euismod quam a ante ornare molestie. Sed bibendum enim at purus efficitur tempor. Aliquam id sem finibus lorem egestas rutrum a ornare sapien. Vestibulum faucibus turpis ac euismod tincidunt. Phasellus sit amet pretium urna."}
             />
 
+            <div className="bottom-0 left-0 w-full h-20 bg-gradient-to-b from-gray-200 to-white"></div>
+
 
             < ChatSection
                 id="chat"
@@ -56,6 +62,13 @@ export default function HomePage() {
                 title={"Pose moi des questions"}
             />
 
+            < WaveStyleSeparator
+                nextBackground={"fill-white"}
+                height={24}
+                flipY={true}
+                flipX={true}
+                shape={"M0,32L80,69.3C160,107,320,181,480,186.7C640,192,800,128,960,128C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"}
+            />
 
             <SkillsSection
                 id="skills"
@@ -82,6 +95,12 @@ export default function HomePage() {
                         ]
                     },
                 ]}
+            />
+
+            < WaveStyleSeparator
+                nextBackground={"fill-white"}
+                height={24}
+                shape={"M0,32L80,69.3C160,107,320,181,480,186.7C640,192,800,128,960,128C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"}
             />
 
 
