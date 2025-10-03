@@ -16,7 +16,7 @@ export default function CarouselCard({ name, description }: CarouselCardProps) {
         >
             <h3 className="font-semibold text-xl m-4 text-black">{name}</h3>
 
-            <p className="text-sm text-gray-500 mx-5 my-3">{description}</p>
+            <p className="text-sm text-gray-500 mx-5 my-3 overflow-auto">{description}</p>
         </motion.div>
     );
 }

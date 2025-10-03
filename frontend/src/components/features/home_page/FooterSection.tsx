@@ -37,7 +37,7 @@ export default function FooterSection({navLinks, ...sectionProps}: FooterSection
                                     key={link.label}
                                     href={link.href}
                                     block="start"
-                                    className={`text-white transition-colors duration-300 hover:text-secondary-background`}
+                                    className={`text-white transition-colors duration-300 hover:text-gray-200`}
                                 >
                                     {link.label}
                                 </ButtonLink>

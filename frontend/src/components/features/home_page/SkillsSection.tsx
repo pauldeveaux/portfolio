@@ -66,7 +66,7 @@ export default function SkillsSection({ title,  categories, ...sectionProps }: S
                     </button>
                 </div>
 
-
+                {/* Carousel */}
                 <div  className="mb-12">
                     < Carousel cards={activeCategory.skills} />
                 </div>
