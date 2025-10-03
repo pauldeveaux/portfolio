@@ -59,7 +59,7 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
 
                 <div className="flex flex-col sm:flex-row gap-4 mt-8 relative">
                     <ButtonLink
-                        href="chatbot"
+                        href="chat"
                         className="px-8 py-4 bg-white/90 backdrop-blur-sm text-[#107E7D] rounded-xl font-semibold hover:bg-white hover:scale-105 hover:shadow-2xl hover:shadow-[#107E7D]/20 transition-all duration-300 flex items-center justify-center gap-3 shadow-lg border border-white/50"
                     >
                         <MessageCircle size={22}/>
@@ -68,6 +68,7 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
                     <ButtonLink
                         href="portfolio"
                         className="px-8 py-4 bg-[#107E7D]/20 backdrop-blur-sm border-2 border-white/40 text-white rounded-xl font-semibold hover:bg-[#107E7D]/40 hover:border-white/60 hover:scale-105 hover:shadow-xl transition-all duration-300"
+                        block={"start"}
                     >
                         Voir mes projets
                     </ButtonLink>

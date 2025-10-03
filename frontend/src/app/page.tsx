@@ -19,11 +19,11 @@ export default function HomePage() {
     return (
         <div className="bg-background min-h-screen">
             <Header title={"Paul Deveaux"} navLinks={[
-                {"label": "A propos", "href": "about"},
+                {"label": "À propos", "href": "about"},
                 {"label": "Compétences", "href": "skills"},
-                {"label": "Expérience", "href": "Test"},
-                {"label": "Formation", "href": "Test"},
-                {"label": "Portfolio", "href": "Test"},
+                {"label": "Chat IA", "href": "chat"},
+                {"label": "Parcours", "href": "timeline"},
+                {"label": "Portfolio", "href": "portfolio"},
                 {"label": "Contact", "href": "contact"},
             ]}
             />
@@ -114,7 +114,7 @@ export default function HomePage() {
 
             <TimelineSection
                 id="timeline"
-                title="Mes formations"
+                title="Mon Parcours"
                 className="bg-white"
                 elements={[
                     {
@@ -229,8 +229,12 @@ export default function HomePage() {
                 id="footer"
                 className={"bg-[#107E7D]"}
                 navLinks={[
+                    {"label": "À propos", "href": "about"},
                     {"label": "Compétences", "href": "skills"},
-                    {"label": "Formation", "href": "timeline"},
+                    {"label": "Chat IA", "href": "chat"},
+                    {"label": "Parcours", "href": "timeline"},
+                    {"label": "Portfolio", "href": "portfolio"},
+                    {"label": "Contact", "href": "contact"},
                 ]}/>
         </div>
     );
