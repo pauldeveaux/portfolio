@@ -38,14 +38,13 @@ export default function HomePage() {
             />
 
             < GradientStyleSeparator
-                bgClassName={"bg-gradient-to-b from-[#107E7D] to-gray-200" }
-                maskBgClassName={"bg-gradient-to-b from-black/10 to-black/0"}
+                bgClassName={"bg-gradient-to-b from-[#107E7D]/10 to-[#39B3AA]" }
            />
 
 
             < TextSection
                 id="about"
-                className="bg-gray-200"
+                className="bg-[#39B3AA]"
                 title={"Plus sur moi"}
                 text={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quam quam, varius eget magna sit amet, volutpat luctus arcu. Proin imperdiet vitae lectus et volutpat. Nulla at ante ex. Nam rhoncus sapien nec elementum viverra. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas bibendum dapibus euismod. Suspendisse maximus finibus risus. Quisque scelerisque non diam et iaculis. Duis eget accumsan tortor. Ut accumsan quam ex, rutrum porta augue suscipit vel. Curabitur elit dolor, posuere id feugiat a, pellentesque eu diam. Proin vitae luctus ante. Mauris elementum mattis felis vel convallis. Vivamus rutrum ac mi in lacinia. Sed accumsan, erat ac ultricies pulvinar, arcu diam varius quam, a porttitor diam nulla non metus." +
                     "Proin tempor egestas felis, sit amet tincidunt tortor auctor in. Nulla cursus felis nunc, sed iaculis ipsum placerat sit amet. Praesent efficitur, eros fermentum tincidunt dignissim, erat magna molestie dolor, quis aliquam urna mauris vitae nulla. Nam elementum tristique rhoncus. Morbi in placerat orci. Mauris facilisis, ipsum vel tristique fermentum, tortor neque dictum magna, id fringilla quam nunc at orci. Fusce scelerisque ut magna sit amet feugiat." +
@@ -57,7 +56,8 @@ export default function HomePage() {
             />
 
             < GradientStyleSeparator
-                bgClassName={"bg-gradient-to-b from-gray-200 to-white"}
+                bgClassName={"bg-gradient-to-b from-[#39B3AA] to-white/60"}
+                height={44}
             />
 
 
@@ -67,11 +67,13 @@ export default function HomePage() {
                 title={"Pose moi des questions"}
             />
 
+
             < WaveStyleSeparator
                 nextBackground={"fill-white"}
                 height={70}
                 flipY={true}
                 flipX={true}
+                className={"bg-gradient-to-t from-white/80 to-white/0 "}
                 shape={"M0,32L80,69.3C160,107,320,181,480,186.7C640,192,800,128,960,128C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"}
             />
 
@@ -105,6 +107,7 @@ export default function HomePage() {
             < WaveStyleSeparator
                 nextBackground={"fill-white"}
                 height={70}
+                className={"bg-gradient-to-t from-white/60 to-white/0 "}
                 shape={"M0,32L80,69.3C160,107,320,181,480,186.7C640,192,800,128,960,128C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"}
             />
 
@@ -197,7 +200,7 @@ export default function HomePage() {
             <ContactSection
                 id="contact"
                 title={"Contactez-moi"}
-                className={"bg-radial from-white to-secondary-background"}
+                className={"bg-white"}
                 height={"65vh"}
                 contacts={[
                     {
@@ -224,7 +227,7 @@ export default function HomePage() {
 
             <FooterSection
                 id="footer"
-                className={"bg-primary-60"}
+                className={"bg-[#107E7D]"}
                 navLinks={[
                     {"label": "Compétences", "href": "skills"},
                     {"label": "Formation", "href": "timeline"},

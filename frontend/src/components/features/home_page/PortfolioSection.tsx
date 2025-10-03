@@ -25,7 +25,7 @@ export default function PortfolioSection({
     return (
         <Section {...sectionProps}>
             <div className="flex flex-col items-center py-20 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 className="text-5xl font-bold mb-20 text-center">{title}</h2>
+                <h2 className="text-5xl font-bold mb-20 text-center text-white">{title}</h2>
 
                 {/* Grille des projets */}
                 <div

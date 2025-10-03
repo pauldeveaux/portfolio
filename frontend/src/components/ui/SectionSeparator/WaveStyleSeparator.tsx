@@ -41,6 +41,11 @@ export interface WaveStyleSeparatorProps {
      * Default is `false`.
      */
     flipY?: boolean;
+
+    /**
+     * Additional className
+     */
+    className?: string;
 }
 
 
@@ -55,7 +60,9 @@ export interface WaveStyleSeparatorProps {
  * @param rotation - Rotation of the SVG in degrees.
  * @param flipX - Whether to flip the SVG horizontally.
  * @param flipY - Whether to flip the SVG vertically.
+ * @param className - Additional className
  *
+ * @param className
  * @example
  * ```tsx
  * <WaveStyleSeparator
@@ -76,6 +83,7 @@ export default function WaveStyleSeparator(
         rotation = 0,
         flipX = false,
         flipY = false,
+        className = ""
     }: WaveStyleSeparatorProps)
 {
 
@@ -86,7 +94,7 @@ export default function WaveStyleSeparator(
     return (
         <div className="w-full overflow-hidden leading-none">
             <svg
-                className={clsx("w-full", rotationClassName, flipXClassName, flipYClassName)}
+                className={clsx("w-full", className, rotationClassName, flipXClassName, flipYClassName)}
                 style={{ height: `${height}px` }}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 1440 320"

@@ -78,7 +78,7 @@ export default function ContactForm() {
                 type="submit"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full py-2 px-4 rounded-md transition-colors bg-primary text-secondary-text"
+                className="w-full py-2 px-4 rounded-md transition-colors bg-[#107E7D] text-white"
             >
                 Envoyer
             </motion.button>
