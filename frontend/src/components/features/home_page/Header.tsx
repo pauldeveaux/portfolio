@@ -5,7 +5,8 @@ import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import AnimatedTitle from "@/components/ui/miscellaneous/AnimatedTitle";
 import { BurgerMenu } from "@/components/ui/buttons/BurgerMenu";
 import ButtonLink from "@/components/ui/buttons/ButtonLink";
-import { useEffect, useState, useCallback } from "react";
+import { useState } from "react";
+import {useIsMobile} from "@/utils/useIsMobile";
 
 interface NavLink {
     label: string;
@@ -21,18 +22,8 @@ export default function Header({ title, navLinks }: HeaderProps) {
     const { scrollYProgress, scrollY } = useScroll();
     const [showHeader, setShowHeader] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
-    const [isMobile, setIsMobile] = useState(false);
+    const isMobile = useIsMobile(1024);
 
-    // Memoized mobile check function
-    const checkMobile = useCallback(() => {
-        setIsMobile(window.innerWidth < 768); // Changed to md breakpoint
-    }, []);
-
-    useEffect(() => {
-        checkMobile();
-        window.addEventListener("resize", checkMobile);
-        return () => window.removeEventListener("resize", checkMobile);
-    }, [checkMobile]);
 
     // Improved scroll handler with debouncing
     useMotionValueEvent(scrollY, "change", (latest) => {
@@ -78,24 +69,24 @@ export default function Header({ title, navLinks }: HeaderProps) {
                 backfaceVisibility: "hidden",
             }}
         >
-            <div className="container mx-auto flex justify-between items-center px-4 md:px-6 lg:px-8 py-2 md:py-3">
+            <div className="container flex justify-between items-center px-4 md:px-6 lg:px-8 py-2 lg:py-3 lg:mx-auto">
                 {/* Burger menu for mobile */}
                 {navLinks && (
-                    <div className="md:hidden">
+                    <div className="lg:hidden">
                         <BurgerMenu navLinks={navLinks} />
                     </div>
                 )}
 
                 {/* Centered title */}
                 <Link
-                    href="/public"
-                    className="text-primary no-underline mx-4 flex-1 md:flex-none text-center md:text-left transition-colors "
+                    href="/"
+                    className="text-primary no-underline mx-4 flex-1 lg:flex-none text-center lg:text-left transition-colors "
                 >
                     <AnimatedTitle title={title} />
                 </Link>
 
                 {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center gap-8">
+                <nav className="hidden lg:flex items-center gap-8">
                     {navLinks?.map((link) => (
                         <ButtonLink
                             key={`${link.label}-${link.href}`}
