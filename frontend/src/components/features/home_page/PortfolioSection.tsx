@@ -59,7 +59,7 @@ export default function PortfolioSection({
                 ref={sectionRef}
                 className="flex flex-col items-center py-20 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8"
             >
-                <h2 className="text-5xl font-bold mb-20 text-center text-white">{title}</h2>
+                <h2 className="text-5xl font-bold mb-20 text-center text-font-light-1">{title}</h2>
 
                 {/* Project grid */}
                 <div
@@ -89,7 +89,7 @@ export default function PortfolioSection({
                             }
                             setExpanded(!expanded);
                         }}
-                        className="px-6 py-3 bg-white border border-gray-300 text-gray-800 font-bold rounded-lg shadow transition cursor-pointer"
+                        className="px-6 py-3 bg-button-light-1 border border-button-light-2 text-font-dark-1 font-bold rounded-lg shadow transition cursor-pointer"
                         whileHover={{
                             scale: 1.05, // slightly grow
                             boxShadow: "0px 10px 20px rgba(0,0,0,0.15)", // more pronounced shadow

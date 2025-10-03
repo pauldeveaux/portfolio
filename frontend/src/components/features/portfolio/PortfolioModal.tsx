@@ -72,7 +72,7 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
 
                     {/* Modal container */}
                     <motion.div
-                        className="relative bg-white rounded-xl flex flex-col overflow-hidden
+                        className="relative bg-main-5 rounded-xl flex flex-col overflow-hidden
                         mx-4  sm:mx-10 sm:my-0 max-w-4xl w-full z-5 max-h-[85vh] sm:max-h-[90vh]"
                         onClick={(e) => {e.stopPropagation()}}
                         initial={{ scale: 0.5 }}
@@ -82,10 +82,10 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
                     >
 
                         {/* Sticky Header */}
-                        <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-300 rounded-t-xl">
+                        <div className="sticky top-0 bg-main-5 z-10 p-6 border-b border-separator-light rounded-t-xl">
                             {/* Close button */}
                             <button
-                                className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 hover:cursor-pointer"
+                                className="absolute top-4 right-4 text-separator-light hover:text-separator-dark hover:cursor-pointer"
                                 onClick={onClose}
                             >
                                 ✕
@@ -104,7 +104,7 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
                                 width={800}
                                 height={400}
                                 onError={() => setImageError(true)}
-                                className="w-full max-h-[50vh] object-contain mb-4 rounded-lg border border-gray-200 shadow-md"
+                                className="w-full max-h-[50vh] object-contain mb-4 rounded-lg border border-button-light-2 shadow-md"
                             />
 
                             {/* Markdown content */}

@@ -32,19 +32,19 @@ export default function HomePage() {
 
             <HeroSection
                 id={"hero"}
-                className={"text-white"}
+                className={"text-font-light-1"}
                 title={"Paul Deveaux"}
                 description={"Développeur IA - Junior | Passionné par l'innovation technologique et la création de solutions intelligentes."}
             />
 
             < GradientStyleSeparator
-                bgClassName={"bg-gradient-to-b from-[#107E7D]/10 to-[#39B3AA]" }
+                bgClassName={"bg-gradient-to-b from-main-3/10 to-main-4" }
            />
 
 
             < TextSection
                 id="about"
-                className="bg-[#39B3AA]"
+                className="bg-main-4 text-font-dark-1"
                 title={"Plus sur moi"}
                 text={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quam quam, varius eget magna sit amet, volutpat luctus arcu. Proin imperdiet vitae lectus et volutpat. Nulla at ante ex. Nam rhoncus sapien nec elementum viverra. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas bibendum dapibus euismod. Suspendisse maximus finibus risus. Quisque scelerisque non diam et iaculis. Duis eget accumsan tortor. Ut accumsan quam ex, rutrum porta augue suscipit vel. Curabitus"+
                     "\n\n" +
@@ -54,31 +54,31 @@ export default function HomePage() {
             />
 
             < GradientStyleSeparator
-                bgClassName={"bg-gradient-to-b from-[#39B3AA] to-white/60"}
+                bgClassName={"bg-gradient-to-b from-main-4 to-main-5/60"}
                 height={44}
             />
 
 
             < ChatSection
                 id="chat"
-                className="bg-white"
+                className="bg-main-5"
                 title={"Pose moi des questions"}
             />
 
 
             < WaveStyleSeparator
-                nextBackground={"fill-white"}
+                nextBackground={"fill-main-5"}
                 height={70}
                 flipY={true}
                 flipX={true}
-                className={"bg-gradient-to-t from-white/80 to-white/0 "}
+                className={"bg-gradient-to-t from-main-5/80 to-main-5/0 "}
                 shape={"M0,32L80,69.3C160,107,320,181,480,186.7C640,192,800,128,960,128C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"}
             />
 
             <SkillsSection
                 id="skills"
                 title={"Compétences"}
-                className="text-white mb-5"
+                className="text-font-light-1 mb-5"
                 categories={[
                     {
                         title: "Développement",
@@ -105,7 +105,7 @@ export default function HomePage() {
             <TimelineSection
                 id="timeline"
                 title="Mon Parcours"
-                className="bg-white"
+                className="bg-main-5"
                 elements={[
                     {
                         title: "WORK",
@@ -172,7 +172,7 @@ export default function HomePage() {
             <PortfolioSection
                 id={"portfolio"}
                 title={"Mes projets"}
-                className={"bg-gradient-to-b from-[#14A3A2] via-[#129190] to-[#107E7D] text-black"}
+                className={"bg-gradient-to-b from-main-1 via-main-2 to-main-3 text-font-dark-1"}
                 projects={[
                     {title: "Mon projet !", description: "test description", imageUrl: "/nothing", tags: ["CSS", "React"], size:"medium", markdownUrl: "/test"},
                     {title: "Test projet", description: "test description", imageUrl: "/nothing", size:"small"},
@@ -190,7 +190,7 @@ export default function HomePage() {
             <ContactSection
                 id="contact"
                 title={"Contactez-moi"}
-                className={"bg-white"}
+                className={"bg-main-5"}
                 height={"65vh"}
                 contacts={[
                     {
@@ -217,7 +217,7 @@ export default function HomePage() {
 
             <FooterSection
                 id="footer"
-                className={"bg-[#107E7D]"}
+                className={"bg-main-3"}
                 navLinks={[
                     {"label": "À propos", "href": "about"},
                     {"label": "Compétences", "href": "skills"},

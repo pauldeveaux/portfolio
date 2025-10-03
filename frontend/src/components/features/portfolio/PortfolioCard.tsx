@@ -67,7 +67,7 @@ export default function PortfolioCard({
         <>
             <motion.div
                 className={`relative group flex flex-col rounded-xl 
-                overflow-hidden shadow-xl bg-white hover:shadow-lg p-1 hover:cursor-pointer
+                overflow-hidden shadow-xl bg-main-5 hover:shadow-lg p-1 hover:cursor-pointer
                 transition-shadow duration-300 w-full ${className}`}
                 onClick={openModal}
                 whileHover={{ scale: 1.02 }}
@@ -87,12 +87,12 @@ export default function PortfolioCard({
                 <div className="p-4 flex flex-col flex-grow">
                     <h3 className="text-lg font-semibold mb-2">{title}</h3>
                     <div className="flex items-center justify-between">
-                        <p className="text-gray-600 italic">{description}</p>
+                        <p className="text-font-dark-2 italic">{description}</p>
                         <div className="flex flex-wrap gap-2">
                             {tags && tags.map((tag, idx) => (
                                 <span
                                     key={idx}
-                                    className="text-sm px-2 py-1 rounded-full bg-gray-100 text-gray-800 shadow-xl"
+                                    className="text-sm px-2 py-1 rounded-full bg-main-5 text-font-dark-2 shadow-xl"
                                 >
                                     {tag}
                                 </span>

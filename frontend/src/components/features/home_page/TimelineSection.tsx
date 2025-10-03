@@ -73,7 +73,7 @@ function createTimelineElement(props: TimelineElementProps, key: React.Key) {
     return (
         <VerticalTimelineElement
             key={key}
-            dateClassName="text-gray-800 font-medium"
+            dateClassName="text-font-dark-2 font-medium"
             iconClassName={hoverClasses}
             contentStyle={contentStyle}
             contentArrowStyle={{ borderRight: "7px solid #14C5C3" }}

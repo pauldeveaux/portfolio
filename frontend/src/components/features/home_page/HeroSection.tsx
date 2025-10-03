@@ -53,21 +53,27 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
                 className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4 gap-15 md:px-8"
             >
                 <h2 className="relative text-5xl md:text-6xl font-extrabold drop-shadow-lg">{title}</h2>
-                <div className="relative mt-4 text-lg md:text-xl text-gray-300 max-w-xl">
+                <div className="relative mt-4 text-lg md:text-xl text-font-light-2 max-w-xl">
                     {description}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 mt-8 relative">
                     <ButtonLink
                         href="chat"
-                        className="px-8 py-4 bg-white/90 backdrop-blur-sm text-[#107E7D] rounded-xl font-semibold hover:bg-white hover:scale-105 hover:shadow-2xl hover:shadow-[#107E7D]/20 transition-all duration-300 flex items-center justify-center gap-3 shadow-lg border border-white/50"
+                        className="px-8 py-4 backdrop-blur-sm rounded-xl
+                            bg-button-light-1/90  border-button-light-1/50  text-main-3  font-semibold
+                            hover:bg-button-light hover:scale-105 hover:shadow-2xl hover:shadow-main-3/20
+                            transition-all duration-300 flex items-center justify-center gap-3 shadow-lg border "
                     >
                         <MessageCircle size={22}/>
                         Parlez à mon IA
                     </ButtonLink>
                     <ButtonLink
                         href="portfolio"
-                        className="px-8 py-4 bg-[#107E7D]/20 backdrop-blur-sm border-2 border-white/40 text-white rounded-xl font-semibold hover:bg-[#107E7D]/40 hover:border-white/60 hover:scale-105 hover:shadow-xl transition-all duration-300"
+                        className="px-8 py-4 backdrop-blur-sm border-2
+                        bg-main-3/20  border-button-light-1/40 text-font-light-1
+                        hover:bg-[#107E7D]/40 hover:border-white/60 hover:scale-105 hover:shadow-xl
+                        rounded-xl font-semibold  transition-all duration-300"
                         block={"start"}
                     >
                         Voir mes projets
@@ -81,8 +87,8 @@ export default function HeroSection({title, description, ...sectionProps}: HeroS
                 onClick={scrollToNextSection}
                 className="
                 absolute z-10 bottom-6 left-1/2 -translate-x-1/2
-                bg-gradient-to-r from-[#E0F7F7] via-[#B2FFFF] to-[#A0FFFF]
-                text-[#107E7D]
+                bg-gradient-to-r from-white via-[#B2FFFF] to-[#A0FFFF]
+                text-main-3
                 p-3 rounded-full
                 shadow-xl shadow-[#107E7D]/40
                 border-2 border-white/50

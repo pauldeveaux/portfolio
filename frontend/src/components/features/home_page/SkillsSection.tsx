@@ -37,7 +37,7 @@ export default function SkillsSection({ title,  categories, ...sectionProps }: S
                 <div className="flex items-center justify-center">
                     <button
                         onClick={prevCategory}
-                        className="p-2 text-white hover:text-[#39B3AA] transition-colors duration-200 hover:cursor-pointer"
+                        className="p-2 text-button-light-1 hover:text-button-light-accent transition-colors duration-200 hover:cursor-pointer"
                     >
                         <ChevronLeft size={24} />
                     </button>
@@ -49,7 +49,7 @@ export default function SkillsSection({ title,  categories, ...sectionProps }: S
                                 onClick={() => setActiveIndex(index)}
                                 className={`px-6 py-3 rounded-full font-medium transition-all duration-300 hover:cursor-pointer ${
                                     index === activeIndex
-                                        ? 'bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-white shadow-lg'
+                                        ? 'bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-font-light-1 shadow-lg'
                                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                 }`}
                             >
@@ -60,7 +60,7 @@ export default function SkillsSection({ title,  categories, ...sectionProps }: S
 
                     <button
                         onClick={nextCategory}
-                        className="p-2 text-white hover:text-[#39B3AA] transition-colors duration-200 hover:cursor-pointer"
+                        className="p-2 text-button-light-1 hover:text-button-light-accent transition-colors duration-200 hover:cursor-pointer"
                     >
                         <ChevronRight size={24} />
                     </button>

@@ -80,7 +80,7 @@ export default function Header({ title, navLinks }: HeaderProps) {
                 {/* Centered title */}
                 <Link
                     href="/"
-                    className="text-primary no-underline mx-4 flex-1 lg:flex-none text-center lg:text-left transition-colors "
+                    className="text-main-2 no-underline mx-4 flex-1 lg:flex-none text-center lg:text-left transition-colors "
                 >
                     <AnimatedTitle title={title} />
                 </Link>
@@ -92,7 +92,7 @@ export default function Header({ title, navLinks }: HeaderProps) {
                             key={`${link.label}-${link.href}`}
                             href={link.href}
                             block="start"
-                            className="text-gray-700 hover:text-primary font-medium transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 hover:after:w-full"
+                            className="text-font-dark-2 hover:text-main-2 font-medium transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-main-2 after:transition-all after:duration-200 hover:after:w-full"
                         >
                             {link.label}
                         </ButtonLink>
@@ -103,7 +103,7 @@ export default function Header({ title, navLinks }: HeaderProps) {
             {/* Scroll Progress Bar */}
             <motion.div
                 style={{ scaleX: scrollYProgress }}
-                className="hidden md:block h-1 bg-gradient-to-r from-primary to-primary/60 origin-left"
+                className="hidden md:block h-1 bg-gradient-to-r from-main-2 to-main-2/60 origin-left"
             />
         </motion.header>
     );

@@ -115,7 +115,7 @@ export default function Chat() {
                 < TextareaAutosize
                     ref={textareaRef}
                     placeholder="Posez une question ici..."
-                    className="flex-1 w-full p-3 rounded-2xl border border-gray-300 bg-white/50 backdrop-blur-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#14A3A2]"
+                    className="flex-1 w-full p-3 rounded-2xl border border-separator-light-1 bg-main-5/50 backdrop-blur-sm resize-none focus:outline-none focus:ring-2 focus:ring-main-1"
                     maxRows={5}
                     minRows={1}
                     onKeyDown={handleKeyDown}

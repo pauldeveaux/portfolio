@@ -16,7 +16,7 @@ export default function FooterSection({navLinks, ...sectionProps}: FooterSection
 
     return (
         <Section {...sectionProps}>
-            <div className="w-full  text-white pt-12 pb-5 relative">
+            <div className="w-full  text-font-light-1 pt-12 pb-5 relative">
 
                 {/* Scroll to Top Button */}
                 <button
@@ -37,7 +37,7 @@ export default function FooterSection({navLinks, ...sectionProps}: FooterSection
                                     key={link.label}
                                     href={link.href}
                                     block="start"
-                                    className={`text-white transition-colors duration-300 hover:text-gray-200`}
+                                    className={`text-font-light-1 transition-colors duration-300 hover:text-font-light-accent`}
                                 >
                                     {link.label}
                                 </ButtonLink>
