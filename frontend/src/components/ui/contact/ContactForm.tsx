@@ -31,7 +31,7 @@ export default function ContactForm() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="px-15 w-full max-w-3xl mx-auto mt-12 space-y-4 sm:px-4"
+            className="px-7 w-full max-w-3xl mx-auto mt-12 space-y-4 sm:px-4"
         >
             <div className="flex flex-col sm:flex-row gap-4">
                 <input
