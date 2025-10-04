@@ -1,15 +1,23 @@
-import Link from "next/link";
 import { motion } from "motion/react";
+import ButtonLink from "@/components/ui/buttons/ButtonLink";
 
+/** Single navigation link */
 interface NavLink {
     label: string;
     href: string;
 }
 
+/** Props for the NavLinks component */
 interface NavLinksProps {
+    /** Array of navigation links */
     navLinks: NavLink[];
 }
 
+/**
+ * NavLinks component.
+ *
+ * Renders a horizontal list of navigation links with hover underline animation.
+ */
 export default function NavLinks({ navLinks }: NavLinksProps) {
     return (
         <nav className="hidden sm:flex gap-4 justify-between">
@@ -20,12 +28,15 @@ export default function NavLinks({ navLinks }: NavLinksProps) {
                     whileHover="hover"
                     className="relative group"
                 >
-                    <Link
+                    {/* Link button */}
+                    <ButtonLink
                         href={href}
                         className="text-main-text group-hover:text-accent transition-colors"
                     >
                         {label}
-                    </Link>
+                    </ButtonLink>
+
+                    {/* Underline animation */}
                     <motion.span
                         className="absolute block left-0 -bottom-1 h-[2px] bg-accent"
                         variants={{
