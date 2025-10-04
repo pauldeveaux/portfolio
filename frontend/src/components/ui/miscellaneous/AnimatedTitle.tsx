@@ -15,7 +15,6 @@ export default function AnimatedTitle({ title }: AnimatedTitleProps) {
             {title.split("").map((char, i) => (
                 <motion.span
                     key={i}
-                    whileHover={{ scale: 1.2 }}
                     className="inline-block cursor-pointer"
                 >
                     {char === " " ? "\u00A0" : char}
