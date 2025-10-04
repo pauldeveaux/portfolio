@@ -1,10 +1,8 @@
 "use client";
-import React, {useRef, useEffect, useState, JSX} from "react";
+import React, { useRef, useEffect, useState } from "react";
 import CarouselCard, { CarouselCardProps } from "@/components/ui/carousel/CarouselCard";
 
-/**
- * Props for the Carousel component.
- */
+/** Props for the Carousel component */
 interface CarouselProps {
   /** List of card data to display inside the carousel */
   cards: Array<CarouselCardProps>;
@@ -13,115 +11,72 @@ interface CarouselProps {
 /**
  * Infinite, auto-scrolling horizontal carousel component with mouse and touch drag support.
  *
- * - Automatically scrolls horizontally with a configurable base speed.
+ * - Automatically scrolls horizontally with base speed.
  * - Supports manual dragging with momentum.
- * - Touch gestures detect vertical scrolling and disable horizontal movement accordingly.
+ * - Touch gestures detect vertical scrolling and disable horizontal movement.
  * - Seamlessly loops through the same set of cards for an infinite effect.
- *
- * @param {CarouselProps} props - List of cards to render.
- * @returns {JSX.Element} React component rendering the looping carousel.
  */
-export default function Carousel({ cards }: CarouselProps): JSX.Element {
-  /** Reference to the scrollable container element */
+export default function Carousel({ cards }: CarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  /** Reference to the first card (for width measurement) */
   const cardRef = useRef<HTMLDivElement>(null);
-  /** Stores the total scroll width of one full loop (all cards + gaps) */
   const scrollBreakpointRef = useRef(0);
-  /** Tracks whether the user is currently dragging */
   const [isDragging, setIsDragging] = useState(false);
-
-  /** Current horizontal velocity (px/ms), used for momentum scrolling */
-  const velocityRef = useRef(0);
-
-  /** requestAnimationFrame handle for continuous animation */
+  const velocityRef = useRef(0); // horizontal scroll speed for momentum
   const rafRef = useRef<number | null>(null);
-  /** Last animation frame timestamp for delta time calculation */
   const lastTsRef = useRef<number | null>(null);
 
-  /**
-   * Auto-scroll and momentum loop.
-   * Runs continuously using requestAnimationFrame and handles:
-   * - Continuous slow scroll when idle.
-   * - Momentum effect after dragging stops.
-   * - Infinite looping by resetting scroll position.
-   */
+  /** Main animation loop: auto-scroll and momentum scrolling */
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     const firstCard = cardRef.current;
     if (!scrollContainer || !firstCard) return;
 
     const AUTO_SPEED = 0.05; // px/ms (~50px/s)
-    const FRICTION = 0.005;  // exponential decay per ms for momentum
+    const FRICTION = 0.005;  // exponential decay for momentum
 
     const step = (ts: number) => {
       if (!scrollContainer || !firstCard) return;
-
-      // Calculate time since last frame
       if (lastTsRef.current === null) lastTsRef.current = ts;
       const dt = Math.max(0, ts - lastTsRef.current);
       lastTsRef.current = ts;
 
-      // Determine gap between cards from computed styles
+      // Compute total scroll width for one full loop
       const style = getComputedStyle(scrollContainer);
       const gap = parseFloat(style.columnGap || style.gap || "0");
-
-      // Width of one complete loop (all cards + gaps)
       scrollBreakpointRef.current = cards.length * (firstCard.offsetWidth + gap);
 
-      // Only apply auto/momentum scroll when not dragging
       if (!isDragging) {
         const autoDirection = velocityRef.current !== 0 ? Math.sign(velocityRef.current) : 1;
 
-        // If momentum is active
+        // Apply momentum if present
         if (Math.abs(velocityRef.current) > 0) {
-          // Apply exponential friction decay
           velocityRef.current *= Math.exp(-FRICTION * dt);
-
-          // Prevent velocity from dropping below base auto-speed
-          if (Math.abs(velocityRef.current) < AUTO_SPEED) {
-            velocityRef.current = AUTO_SPEED * autoDirection;
-          }
-
-          // Compute next scroll position
+          if (Math.abs(velocityRef.current) < AUTO_SPEED) velocityRef.current = AUTO_SPEED * autoDirection;
           let nextScroll = scrollContainer.scrollLeft - velocityRef.current * dt;
-
-          // Infinite loop logic
-          if (nextScroll < 0) {
-            nextScroll = scrollBreakpointRef.current + (nextScroll % scrollBreakpointRef.current);
-          } else if (nextScroll > scrollBreakpointRef.current) {
-            nextScroll = nextScroll % scrollBreakpointRef.current;
-          }
-
+          nextScroll = nextScroll < 0
+            ? scrollBreakpointRef.current + (nextScroll % scrollBreakpointRef.current)
+            : nextScroll % scrollBreakpointRef.current;
           scrollContainer.scrollLeft = nextScroll;
         } else {
-          // Default auto-scroll (no momentum)
+          // Default auto-scroll
           let nextScroll = scrollContainer.scrollLeft - AUTO_SPEED * dt;
-
-          // Infinite loop logic
-          if (nextScroll < 0) {
-            nextScroll = scrollBreakpointRef.current + (nextScroll % scrollBreakpointRef.current);
-          } else if (nextScroll > scrollBreakpointRef.current) {
-            nextScroll = nextScroll % scrollBreakpointRef.current;
-          }
-
+          nextScroll = nextScroll < 0
+            ? scrollBreakpointRef.current + (nextScroll % scrollBreakpointRef.current)
+            : nextScroll % scrollBreakpointRef.current;
           scrollContainer.scrollLeft = nextScroll;
         }
       }
 
-      // Maintain infinite loop visually
+      // Keep scroll position within loop range
       if (scrollBreakpointRef.current > 0) {
-        scrollContainer.scrollLeft =
-          scrollContainer.scrollLeft % scrollBreakpointRef.current;
+        scrollContainer.scrollLeft %= scrollBreakpointRef.current;
       }
 
       rafRef.current = requestAnimationFrame(step);
     };
 
-    // Start animation loop
     rafRef.current = requestAnimationFrame(step);
 
-    // Cleanup when component unmounts
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
@@ -129,10 +84,7 @@ export default function Carousel({ cards }: CarouselProps): JSX.Element {
     };
   }, [isDragging, cards.length]);
 
-  /**
-   * Handles mouse-based dragging.
-   * Updates scroll position manually and computes momentum velocity.
-   */
+  /** Mouse drag handler for horizontal scroll with momentum */
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
@@ -148,22 +100,16 @@ export default function Carousel({ cards }: CarouselProps): JSX.Element {
     const onMouseMove = (ev: MouseEvent) => {
       const curX = ev.pageX;
       const now = performance.now();
-
       const dx = curX - startX;
       const scrollPos = scrollLeftStart - dx;
 
-      // Infinite loop scroll behavior
-      if (scrollPos < 0) {
-        scrollContainer.scrollLeft =
-          scrollBreakpointRef.current + (scrollPos % scrollBreakpointRef.current);
-      } else {
-        scrollContainer.scrollLeft = scrollPos % scrollBreakpointRef.current;
-      }
+      scrollContainer.scrollLeft =
+        scrollPos < 0
+          ? scrollBreakpointRef.current + (scrollPos % scrollBreakpointRef.current)
+          : scrollPos % scrollBreakpointRef.current;
 
-      // Compute velocity for momentum
       const dt = Math.max(1, now - lastTime);
-      const delta = curX - lastX;
-      velocityRef.current = (delta / dt) * 0.2;
+      velocityRef.current = ((curX - lastX) / dt) * 0.2;
       lastX = curX;
       lastTime = now;
     };
@@ -178,11 +124,7 @@ export default function Carousel({ cards }: CarouselProps): JSX.Element {
     window.addEventListener("mouseup", onMouseUp);
   };
 
-  /**
-   * Handles touch dragging.
-   * Detects whether the gesture is vertical or horizontal, blocking horizontal movement
-   * when the user primarily scrolls vertically.
-   */
+  /** Touch drag handler with vertical scroll detection */
   const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
@@ -195,7 +137,7 @@ export default function Carousel({ cards }: CarouselProps): JSX.Element {
     const scrollLeftStart = scrollContainer.scrollLeft;
     let lastX = startX;
     let lastTime = performance.now();
-    let isVerticalScroll = false; // Detects vertical scrolling intent
+    let isVerticalScroll = false;
 
     const onTouchMove = (ev: TouchEvent) => {
       const curX = ev.touches[0]?.pageX ?? lastX;
@@ -203,33 +145,22 @@ export default function Carousel({ cards }: CarouselProps): JSX.Element {
       const dx = curX - startX;
       const dy = curY - startY;
 
-      // Detect vertical gesture if dy > dx significantly
-      if (!isVerticalScroll && Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 10) {
-        isVerticalScroll = true;
-      }
-
-      // If it's a vertical scroll, do not affect horizontal movement
+      if (!isVerticalScroll && Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 10) isVerticalScroll = true;
       if (isVerticalScroll) return;
 
       const now = performance.now();
       const scrollPos = scrollLeftStart - dx;
 
-      // Infinite loop horizontal scroll
-      if (scrollPos < 0) {
-        scrollContainer.scrollLeft =
-          scrollBreakpointRef.current + (scrollPos % scrollBreakpointRef.current);
-      } else {
-        scrollContainer.scrollLeft = scrollPos % scrollBreakpointRef.current;
-      }
+      scrollContainer.scrollLeft =
+        scrollPos < 0
+          ? scrollBreakpointRef.current + (scrollPos % scrollBreakpointRef.current)
+          : scrollPos % scrollBreakpointRef.current;
 
-      // Update velocity for momentum
       const dt = Math.max(1, now - lastTime);
-      const delta = curX - lastX;
-      velocityRef.current = (delta / dt) * 1.5;
+      velocityRef.current = ((curX - lastX) / dt) * 1.5;
       lastX = curX;
       lastTime = now;
 
-      // Prevent vertical page scroll only if allowed
       if (ev.cancelable) ev.preventDefault();
     };
 
@@ -239,15 +170,11 @@ export default function Carousel({ cards }: CarouselProps): JSX.Element {
       setIsDragging(false);
     };
 
-    // Use passive: false to allow preventDefault inside move handler
     window.addEventListener("touchmove", onTouchMove as EventListener, { passive: false });
     window.addEventListener("touchend", onTouchEnd as EventListener);
   };
 
-  /**
-   * Repeat the card array multiple times to create a seamless infinite loop.
-   * Repetition count scales with the number of unique cards.
-   */
+  /** Repeat cards to create seamless infinite loop */
   const repeatCount = cards.length === 1 ? 5 : cards.length <= 3 ? 3 : 2;
   const skillsArray = Array.from({ length: repeatCount }).flatMap(() => cards);
 

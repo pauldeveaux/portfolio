@@ -1,39 +1,53 @@
 "use client";
-import Section, {SectionProps} from "@/components/ui/miscellaneous/Section";
+import Section, { SectionProps } from "@/components/ui/miscellaneous/Section";
 import Carousel from "@/components/ui/carousel/Carousel";
-import {CarouselCardProps} from "@/components/ui/carousel/CarouselCard";
-import {useState} from "react";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { CarouselCardProps } from "@/components/ui/carousel/CarouselCard";
+import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-
+/**
+ * Props for the SkillsSection component.
+ */
 interface SkillSectionProps extends SectionProps {
+    /** Section title */
     title: string;
+
+    /** Array of skill categories */
     categories: Array<CategoryProps>;
 }
 
-
-interface CategoryProps{
+/** Defines a skill category with a title and associated skills */
+interface CategoryProps {
     title: string;
     skills: Array<CarouselCardProps>;
 }
 
-export default function SkillsSection({ title,  categories, ...sectionProps }: SkillSectionProps) {
+/**
+ * SkillsSection Component
+ *
+ * Displays multiple skill categories as a horizontal carousel.
+ * Users can navigate between categories using buttons or the category tabs.
+ */
+export default function SkillsSection({ title, categories, ...sectionProps }: SkillSectionProps) {
     const [activeIndex, setActiveIndex] = useState(0);
     const activeCategory = categories[activeIndex];
 
+    // Navigate to previous category (wrap around)
     const prevCategory = () => {
         setActiveIndex((prevIndex) => (prevIndex === 0 ? categories.length - 1 : prevIndex - 1));
-    }
+    };
+
+    // Navigate to next category (wrap around)
     const nextCategory = () => {
         setActiveIndex((prevIndex) => (prevIndex === categories.length - 1 ? 0 : prevIndex + 1));
-    }
+    };
 
     return (
         <Section {...sectionProps}>
             <div className="pt-16 overflow-hidden">
                 <h2 className="text-5xl font-bold mb-15 text-center justify-center">{title}</h2>
 
-                {/* Category Navigation */}
+                {/* Category navigation buttons */}
                 <div className="flex items-center justify-center">
                     <button
                         onClick={prevCategory}
@@ -42,6 +56,7 @@ export default function SkillsSection({ title,  categories, ...sectionProps }: S
                         <ChevronLeft size={24} />
                     </button>
 
+                    {/* Category tabs */}
                     <div className="flex space-x-4 mx-8">
                         {categories.map((category, index) => (
                             <button
@@ -66,12 +81,11 @@ export default function SkillsSection({ title,  categories, ...sectionProps }: S
                     </button>
                 </div>
 
-                {/* Carousel */}
-                <div  className="mb-12">
-                    < Carousel cards={activeCategory.skills} />
+                {/* Carousel displaying active category skills */}
+                <div className="mb-12">
+                    <Carousel cards={activeCategory.skills} />
                 </div>
             </div>
         </Section>
-
     );
 }

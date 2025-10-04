@@ -6,49 +6,57 @@ import AnimatedTitle from "@/components/ui/miscellaneous/AnimatedTitle";
 import { BurgerMenu } from "@/components/ui/buttons/BurgerMenu";
 import ButtonLink from "@/components/ui/buttons/ButtonLink";
 import { useState } from "react";
-import {useIsMobile} from "@/utils/useIsMobile";
+import { useIsMobile } from "@/utils/useIsMobile";
 
+/**
+ * A navigation link object.
+ */
 interface NavLink {
     label: string;
     href: string;
 }
 
+/**
+ * Props for the Header component.
+ *
+ * @property {string} title - The site title displayed in the header.
+ * @property {NavLink[]} [navLinks] - Optional list of navigation links.
+ */
 interface HeaderProps {
     title: string;
     navLinks?: NavLink[];
 }
 
+/**
+ * Header Component
+ *
+ * Sticky header with a title, responsive navigation, scroll hide/show behavior, and scroll progress bar.
+ */
 export default function Header({ title, navLinks }: HeaderProps) {
     const { scrollYProgress, scrollY } = useScroll();
     const [showHeader, setShowHeader] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
     const isMobile = useIsMobile(1024);
 
-
-    // Improved scroll handler with debouncing
+    // Handle scroll to show/hide header
     useMotionValueEvent(scrollY, "change", (latest) => {
         const difference = Math.abs(latest - lastScrollY);
         const scrollThreshold = 10;
         const hideThreshold = 150;
         const topZone = 80;
 
-        // Skip micro-scrolls
-        if (difference < scrollThreshold) return;
+        if (difference < scrollThreshold) return; // ignore micro-scrolls
 
-        // Always show header in top zone
         if (latest <= topZone) {
             if (!showHeader) setShowHeader(true);
             setLastScrollY(latest);
             return;
         }
 
-        // Hide on scroll down (past threshold)
         if (latest > lastScrollY && latest > hideThreshold) {
-            if (showHeader) setShowHeader(false);
-        }
-        // Show on scroll up
-        else if (latest < lastScrollY) {
-            if (!showHeader) setShowHeader(true);
+            if (showHeader) setShowHeader(false); // hide on scroll down
+        } else if (latest < lastScrollY) {
+            if (!showHeader) setShowHeader(true); // show on scroll up
         }
 
         setLastScrollY(latest);
@@ -62,7 +70,7 @@ export default function Header({ title, navLinks }: HeaderProps) {
             transition={{
                 type: "tween",
                 duration: 0.3,
-                ease: [0.4, 0, 0.2, 1], // Custom easing curve
+                ease: [0.4, 0, 0.2, 1],
             }}
             style={{
                 willChange: "transform",
@@ -70,6 +78,7 @@ export default function Header({ title, navLinks }: HeaderProps) {
             }}
         >
             <div className="container flex justify-between items-center px-4 md:px-6 lg:px-8 py-2 lg:py-3 lg:mx-auto">
+
                 {/* Burger menu for mobile */}
                 {navLinks && (
                     <div className="lg:hidden">
@@ -77,15 +86,15 @@ export default function Header({ title, navLinks }: HeaderProps) {
                     </div>
                 )}
 
-                {/* Centered title */}
+                {/* Centered site title */}
                 <Link
                     href="/"
-                    className="text-main-2 no-underline mx-4 flex-1 lg:flex-none text-center lg:text-left transition-colors "
+                    className="text-main-2 no-underline mx-4 flex-1 lg:flex-none text-center lg:text-left transition-colors"
                 >
                     <AnimatedTitle title={title} />
                 </Link>
 
-                {/* Desktop Navigation */}
+                {/* Desktop navigation */}
                 <nav className="hidden lg:flex items-center gap-8">
                     {navLinks?.map((link) => (
                         <ButtonLink
@@ -100,7 +109,7 @@ export default function Header({ title, navLinks }: HeaderProps) {
                 </nav>
             </div>
 
-            {/* Scroll Progress Bar */}
+            {/* Scroll progress bar */}
             <motion.div
                 style={{ scaleX: scrollYProgress }}
                 className="hidden md:block h-1 bg-gradient-to-r from-main-2 to-main-2/60 origin-left"

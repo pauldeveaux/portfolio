@@ -1,9 +1,8 @@
-import {motion} from "motion/react";
-import {useState} from "react";
+import { motion } from "motion/react";
+import { useState } from "react";
 import Image from "next/image";
 import PortfolioModal from "@/components/features/portfolio/PortfolioModal";
 import useMarkdownLoader from "@/utils/markdownLoader";
-
 
 /**
  * Props for the PortfolioCard component.
@@ -30,38 +29,30 @@ export interface PortfolioCardProps {
  *
  * Displays a card with project image, title, description, and tags.
  * When clicked, opens a modal with more details and lazy-loaded Markdown content.
- *
- * @param props - Props for the PortfolioCard component
- * @returns JSX.Element
  */
 export default function PortfolioCard({
-                                          title,
-                                          imageUrl,
-                                          description,
-                                          tags,
-                                          className,
-                                          markdownUrl
-                                      }: PortfolioCardProps) {
+    title,
+    imageUrl,
+    description,
+    tags,
+    className,
+    markdownUrl
+}: PortfolioCardProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const [imageError, setImageError] = useState(false);
 
-
-    // Custom hook to lazy-load Markdown content when modal is opened
+    // Lazy-load Markdown content when modal is opened
     const { content, loading, loadMarkdown } = useMarkdownLoader({});
 
-
-    const fallBackUrl="/images/fallback.png"
+    const fallBackUrl = "/images/fallback.png";
 
     /**
      * Opens the modal and loads Markdown content if not already loaded.
      */
     const openModal = async () => {
         setIsModalOpen(true);
-
-        if (!content)
-            await loadMarkdown(markdownUrl)
-    }
+        if (!content) await loadMarkdown(markdownUrl);
+    };
 
     return (
         <>
@@ -73,9 +64,9 @@ export default function PortfolioCard({
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
             >
-                {/* Image */}
+                {/* Project image with fallback */}
                 <Image
-                    src={imageError ? fallBackUrl : imageUrl }
+                    src={imageError ? fallBackUrl : imageUrl}
                     alt={title}
                     width={800}
                     height={400}
@@ -83,7 +74,7 @@ export default function PortfolioCard({
                     className="w-full h-56 object-cover"
                 />
 
-                {/* Title + description + tags */}
+                {/* Title, description, and tags */}
                 <div className="p-4 flex flex-col flex-grow">
                     <h3 className="text-lg font-semibold mb-2">{title}</h3>
                     <div className="flex items-center justify-between">
@@ -102,6 +93,7 @@ export default function PortfolioCard({
                 </div>
             </motion.div>
 
+            {/* Modal showing project details */}
             <PortfolioModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}

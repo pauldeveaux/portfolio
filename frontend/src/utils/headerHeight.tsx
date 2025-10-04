@@ -1,14 +1,25 @@
 import { useEffect, useState } from "react";
 
 /**
- * Custom hook to get the height of the header element dynamically.
- * @param selector - The CSS selector for the header element. Default is "header".
+ * Custom React hook to dynamically get the height of a header element.
+ *
+ * This is useful when you need to calculate offsets for scrolling,
+ * sticky positioning, or other layout-dependent behaviors.
+ *
+ * @param selector - CSS selector of the header element. Default is `"header"`.
  * @returns The height of the header element in pixels.
+ *
+ * @example
+ * ```ts
+ * const headerHeight = useHeaderHeight(); // default: selects <header>
+ * const headerHeight = useHeaderHeight("#main-header"); // custom selector
+ * ```
  */
 export function useHeaderHeight(selector = "header") {
   const [height, setHeight] = useState(0);
 
   useEffect(() => {
+    /** Recalculate header height */
     const updateHeight = () => {
       const header = document.querySelector<HTMLElement>(selector);
       if (header) {
@@ -16,13 +27,13 @@ export function useHeaderHeight(selector = "header") {
       }
     };
 
-    // Initial calculation
+    // Initial height calculation on mount
     updateHeight();
 
-    // Update on window resize
+    // Update height whenever the window resizes
     window.addEventListener("resize", updateHeight);
 
-    // Cleanup
+    // Cleanup the listener when component unmounts
     return () => window.removeEventListener("resize", updateHeight);
   }, [selector]);
 

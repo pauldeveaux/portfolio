@@ -24,34 +24,20 @@ export interface PortfolioSectionProps extends SectionProps {
  * The section initially shows a limited number of rows (`rowsToShow`). Clicking
  * the "Show More" button expands the grid to reveal all projects. Clicking
  * "Show Less" collapses the grid and scrolls the user back to the top of the section.
- *
- * @param title - The section title displayed at the top
- * @param projects - Array of project objects to render inside the grid
- * @param rowsToShow - Number of rows to show when the grid is collapsed (default 2)
- * @param sectionProps - Additional props passed to the wrapper `Section`
- *
- * @example
- * ```tsx
- * <PortfolioSection
- *   title="My Projects"
- *   projects={[{ title: "Project 1", size: "small", imageUrl: "/img1.png" }]}
- *   rowsToShow={2}
- * />
- * ```
  */
 export default function PortfolioSection({
-                                             title,
-                                             projects,
-                                             rowsToShow = 2,
-                                             ...sectionProps
-                                         }: PortfolioSectionProps) {
+    title,
+    projects,
+    rowsToShow = 2,
+    ...sectionProps
+}: PortfolioSectionProps) {
     const [expanded, setExpanded] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
 
-    const rowHeightPx = 320; // corresponds to auto-rows-[320px]
-    const gapPx = 24; // gap-6 => 24px
+    const rowHeightPx = 320; // height of a single row
+    const gapPx = 24; // gap between grid items
     const padding = 2;
-    const collapsedMaxHeight = rowsToShow * rowHeightPx + (rowsToShow - 1) * (gapPx + padding*8);
+    const collapsedMaxHeight = rowsToShow * rowHeightPx + (rowsToShow - 1) * (gapPx + padding * 8);
 
     return (
         <Section {...sectionProps}>
@@ -61,7 +47,7 @@ export default function PortfolioSection({
             >
                 <h2 className="text-5xl font-bold mb-20 text-center text-font-light-1">{title}</h2>
 
-                {/* Project grid */}
+                {/* Grid of portfolio projects */}
                 <div
                     className="grid grid-cols-1 grid-flow-dense sm:grid-cols-2 lg:grid-cols-3 auto-rows-[320px] gap-6
                     p-1 sm:p-2 w-full transition-[max-height] duration-300 ease-in-out"
@@ -71,6 +57,7 @@ export default function PortfolioSection({
                     }}
                 >
                     {projects.map((project, index) => {
+                        // Determine column span based on project size
                         let colSpanClass = "col-span-1";
                         if (project.size === "medium") colSpanClass = "sm:col-span-2 lg:col-span-2";
                         if (project.size === "large") colSpanClass = "sm:col-span-2 lg:col-span-3";
@@ -79,7 +66,7 @@ export default function PortfolioSection({
                     })}
                 </div>
 
-                {/* Show More / Show Less button */}
+                {/* Toggle button for expanding/collapsing grid */}
                 <div className="mt-8">
                     <motion.button
                         onClick={() => {
@@ -89,10 +76,10 @@ export default function PortfolioSection({
                             }
                             setExpanded(!expanded);
                         }}
-                        className="px-6 py-3 bg-button-light-1  border border-button-light-2 text-font-dark-1 font-bold rounded-lg shadow transition cursor-pointer"
+                        className="px-6 py-3 bg-button-light-1 border border-button-light-2 text-font-dark-1 font-bold rounded-lg shadow transition cursor-pointer"
                         whileHover={{
-                            scale: 1.05, // slightly grow
-                            boxShadow: "0px 10px 20px rgba(0,0,0,0.15)", // more pronounced shadow
+                            scale: 1.05,
+                            boxShadow: "0px 10px 20px rgba(0,0,0,0.15)",
                         }}
                         transition={{
                             scale: { duration: 0.05 },

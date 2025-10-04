@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
-import {useEffect, ReactNode, useState} from "react";
+import { useEffect, ReactNode, useState } from "react";
 import Image from "next/image";
-
 
 /**
  * Props for the PortfolioModal component.
@@ -19,79 +18,66 @@ interface PortfolioModalProps {
     markdownNode: ReactNode;
 }
 
-
 /**
  * PortfolioModal component.
  *
  * Displays a modal with a project title, image, and Markdown content.
- * The modal disables body scroll when open and supports fade/scale animations.
- *
- * @param props - Props for the modal
- * @returns JSX.Element
+ * Disables body scroll when open and supports fade/scale animations.
  */
 export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markdownNode }: PortfolioModalProps) {
     const [imageError, setImageError] = useState(false);
-
-    const fallBackUrl="/images/fallback.png"
-
+    const fallBackUrl = "/images/fallback.png";
 
     // Disable body scroll when modal is open
     useEffect(() => {
-        if (isOpen){
+        if (isOpen) {
             document.body.style.overflow = "hidden";
-        }
-        else {
+        } else {
             document.body.style.overflow = "";
         }
-
         return () => {
             document.body.style.overflow = "";
-        }
-    }, [isOpen])
+        };
+    }, [isOpen]);
 
     return (
         <AnimatePresence>
             {isOpen && (
-
                 <motion.div
                     className="fixed inset-0 flex justify-center items-center z-50"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    onClick={onClose} // clicking anywhere closes modal
+                    onClick={onClose} // Clicking outside closes modal
                 >
-                    {/* Backdrop with reduced opacity */}
+                    {/* Backdrop */}
                     <motion.div
                         className="absolute inset-0 bg-black hover:cursor-pointer"
-                        initial={{ opacity: 0 }} // initial state: invisible
-                        animate={{ opacity: 0.6  }} // animate to fully visible
-                        exit={{ opacity: 0 }} // fade out when removed
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 0.6 }}
+                        exit={{ opacity: 0 }}
                         transition={{ duration: 0.25 }}
-                        onClick={onClose} // click on backdrop closes the modal
+                        onClick={onClose}
                     />
 
                     {/* Modal container */}
                     <motion.div
                         className="relative bg-main-5 rounded-xl flex flex-col overflow-hidden
-                        mx-4  sm:mx-10 sm:my-0 max-w-4xl w-full z-5 max-h-[85vh] sm:max-h-[90vh]"
-                        onClick={(e) => {e.stopPropagation()}}
+                        mx-4 sm:mx-10 sm:my-0 max-w-4xl w-full z-5 max-h-[85vh] sm:max-h-[90vh]"
+                        onClick={(e) => e.stopPropagation()} // Prevent click propagation
                         initial={{ scale: 0.5 }}
                         animate={{ scale: 1 }}
                         exit={{ scale: 0.5 }}
                         transition={{ duration: 0.25 }}
                     >
-
-                        {/* Sticky Header */}
+                        {/* Header with title and close button */}
                         <div className="sticky top-0 bg-main-5 z-10 p-6 border-b border-separator-light rounded-t-xl">
-                            {/* Close button */}
                             <button
                                 className="absolute top-4 right-4 text-separator-light hover:text-separator-dark hover:cursor-pointer"
                                 onClick={onClose}
                             >
                                 ✕
                             </button>
-
-                            {/* Title */}
                             <h2 className="text-3xl font-bold">{title}</h2>
                         </div>
 
@@ -99,7 +85,7 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
                         <div className="flex-1 overflow-y-auto px-3 py-6 sm:px-6 scrollbar-thin">
                             {/* Main project image */}
                             <Image
-                                src={imageError ? fallBackUrl : imageUrl }
+                                src={imageError ? fallBackUrl : imageUrl}
                                 alt={title}
                                 width={800}
                                 height={400}
@@ -112,7 +98,6 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
                                 {markdownNode}
                             </div>
                         </div>
-
                     </motion.div>
                 </motion.div>
             )}
