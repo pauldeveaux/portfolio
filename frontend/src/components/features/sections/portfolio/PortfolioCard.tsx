@@ -1,8 +1,8 @@
 import { motion } from "motion/react";
 import { useState } from "react";
 import Image from "next/image";
-import PortfolioModal from "@/components/features/portfolio/PortfolioModal";
-import useMarkdownLoader from "@/utils/markdownLoader";
+import PortfolioModal from "@/components/features/sections/portfolio/PortfolioModal";
+import useMarkdownLoader from "@/components/features/markdown/markdownLoader";
 
 /**
  * Props for the PortfolioCard component.

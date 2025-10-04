@@ -1,5 +1,5 @@
 import { ArrowUp } from "lucide-react";
-import Section, { SectionProps } from "@/components/ui/miscellaneous/Section";
+import Section, { SectionProps } from "@/components/ui/layout/Section";
 import ButtonLink from "@/components/ui/buttons/ButtonLink";
 
 /**

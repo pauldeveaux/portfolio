@@ -1,5 +1,5 @@
 import ClientParticles from "@/components/ui/particles/ClientParticle";
-import { useIsMobile } from "@/utils/useIsMobile";
+import { useIsMobile } from "@/components/features/hooks/useIsMobile";
 
 /**
  * BlurryParticles component.

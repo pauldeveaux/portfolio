@@ -2,7 +2,7 @@ import Message, { ChatMessageProps, PENDING_MESSAGE } from "@/components/ui/chat
 import React, { useEffect, useRef, useState } from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 import { Send } from "lucide-react";
-import { useIsMobile } from "@/utils/useIsMobile";
+import { useIsMobile } from "@/components/features/hooks/useIsMobile";
 
 /**
  * Default AI greeting message.

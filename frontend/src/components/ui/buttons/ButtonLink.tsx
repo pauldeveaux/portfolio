@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import { useHeaderHeight } from "@/utils/headerHeight";
+import { useHeaderHeight } from "@/components/features/hooks/useHeaderHeight";
 
 /** Props for the ButtonLink component */
 interface ButtonLinkProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

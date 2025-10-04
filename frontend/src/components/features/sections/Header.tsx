@@ -6,7 +6,7 @@ import AnimatedTitle from "@/components/ui/miscellaneous/AnimatedTitle";
 import { BurgerMenu } from "@/components/ui/buttons/BurgerMenu";
 import ButtonLink from "@/components/ui/buttons/ButtonLink";
 import { useState } from "react";
-import { useIsMobile } from "@/utils/useIsMobile";
+import { useIsMobile } from "@/components/features/hooks/useIsMobile";
 
 /**
  * A navigation link object.

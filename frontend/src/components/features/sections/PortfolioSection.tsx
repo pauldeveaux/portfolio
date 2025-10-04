@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
-import Section, { SectionProps } from "@/components/ui/miscellaneous/Section";
-import PortfolioCard, { PortfolioCardProps } from "@/components/features/portfolio/PortfolioCard";
+import Section, { SectionProps } from "@/components/ui/layout/Section";
+import PortfolioCard, { PortfolioCardProps } from "@/components/features/sections/portfolio/PortfolioCard";
 import { motion } from "motion/react";
 
 /**

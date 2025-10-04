@@ -1,10 +1,10 @@
 "use client";
 
-import Section, { SectionProps } from "@/components/ui/miscellaneous/Section";
+import Section, { SectionProps } from "@/components/ui/layout/Section";
 import { ArrowDown, MessageCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { motion, animate } from "motion/react";
-import { useHeaderHeight } from "@/utils/headerHeight";
+import { useHeaderHeight } from "@/components/features/hooks/useHeaderHeight";
 import ButtonLink from "@/components/ui/buttons/ButtonLink";
 
 /**

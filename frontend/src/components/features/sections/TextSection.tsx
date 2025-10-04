@@ -1,4 +1,4 @@
-import Section, { SectionProps } from "@/components/ui/miscellaneous/Section";
+import Section, { SectionProps } from "@/components/ui/layout/Section";
 
 /**
  * Props for the TextSection component.

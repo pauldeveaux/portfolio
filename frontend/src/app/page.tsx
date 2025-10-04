@@ -1,14 +1,14 @@
 'use client';
 
-import Header from "@/components/features/home_page/Header";
-import HeroSection from "@/components/features/home_page/HeroSection";
-import ContactSection from "@/components/features/home_page/ContactSection";
-import FooterSection from "@/components/features/home_page/FooterSection";
-import SkillsSection from "@/components/features/home_page/SkillsSection";
-import TextSection from "@/components/features/home_page/TextSection";
-import TimelineSection from "@/components/features/home_page/TimelineSection";
-import ChatSection from "@/components/features/home_page/ChatSection";
-import PortfolioSection from "@/components/features/home_page/PortfolioSection";
+import Header from "@/components/features/sections/Header";
+import HeroSection from "@/components/features/sections/HeroSection";
+import ContactSection from "@/components/features/sections/ContactSection";
+import FooterSection from "@/components/features/sections/FooterSection";
+import SkillsSection from "@/components/features/sections/SkillsSection";
+import TextSection from "@/components/features/sections/TextSection";
+import TimelineSection from "@/components/features/sections/TimelineSection";
+import ChatSection from "@/components/features/sections/ChatSection";
+import PortfolioSection from "@/components/features/sections/PortfolioSection";
 import BlurryParticles from "@/components/ui/particles/BlurryParticles";
 import WaveStyleSeparator from "@/components/ui/SectionSeparator/WaveStyleSeparator";
 import GradientStyleSeparator from "@/components/ui/SectionSeparator/GradientStyleSeparator";

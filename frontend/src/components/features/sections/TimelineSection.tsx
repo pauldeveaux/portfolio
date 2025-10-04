@@ -1,4 +1,4 @@
-import Section, { SectionProps } from "@/components/ui/miscellaneous/Section";
+import Section, { SectionProps } from "@/components/ui/layout/Section";
 import {
     VerticalTimeline,
     VerticalTimelineElement
@@ -6,7 +6,7 @@ import {
 import "react-vertical-timeline-component/style.min.css";
 import { GraduationCap, Briefcase, Star, LucideIcon } from "lucide-react";
 import React from "react";
-import { useIsMobile } from "@/utils/useIsMobile";
+import { useIsMobile } from "@/components/features/hooks/useIsMobile";
 
 /** Timeline element types */
 export type TimelineElementType = "School" | "Graduate" | "Internship" | "Work" | "Final";
