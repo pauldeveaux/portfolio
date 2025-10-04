@@ -1,3 +1,4 @@
+'use client';
 import Message, { ChatMessageProps, PENDING_MESSAGE } from "@/components/ui/chat/Message";
 import React, { useEffect, useRef, useState } from "react";
 import TextareaAutosize from 'react-textarea-autosize';

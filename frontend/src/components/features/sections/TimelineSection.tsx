@@ -1,3 +1,4 @@
+'use client';
 import Section, { SectionProps } from "@/components/ui/layout/Section";
 import {
     VerticalTimeline,
