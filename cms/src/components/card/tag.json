@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_card_tags",
+  "info": {
+    "displayName": "Tag",
+    "icon": "hashtag"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}
