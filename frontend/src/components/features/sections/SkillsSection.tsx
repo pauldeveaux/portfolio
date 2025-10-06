@@ -1,9 +1,9 @@
 "use client";
 import Section, { SectionProps } from "@/components/ui/layout/Section";
 import Carousel from "@/components/ui/carousel/Carousel";
-import { CarouselCardProps } from "@/components/ui/carousel/CarouselCard";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import {SkillCategory} from "@/types/Skill";
 
 /**
  * Props for the SkillsSection component.
@@ -13,13 +13,7 @@ interface SkillSectionProps extends SectionProps {
     title: string;
 
     /** Array of skill categories */
-    categories: Array<CategoryProps>;
-}
-
-/** Defines a skill category with a title and associated skills */
-interface CategoryProps {
-    title: string;
-    skills: Array<CarouselCardProps>;
+    categories: Array<SkillCategory>;
 }
 
 /**

@@ -1,8 +1,9 @@
 "use client";
 import { useState, useRef } from "react";
 import Section, { SectionProps } from "@/components/ui/layout/Section";
-import PortfolioCard, { PortfolioCardProps } from "@/components/features/sections/portfolio/PortfolioCard";
+import PortfolioCard from "@/components/features/sections/portfolio/PortfolioCard";
 import { motion } from "motion/react";
+import {Project} from "@/types/Project";
 
 /**
  * Props for the `PortfolioSection` component.
@@ -12,7 +13,7 @@ export interface PortfolioSectionProps extends SectionProps {
     title: string;
 
     /** Array of projects to display as `PortfolioCard`s */
-    projects: PortfolioCardProps[];
+    projects: Project[];
 
     /** Number of rows to show when collapsed (default is 2) */
     rowsToShow?: number;

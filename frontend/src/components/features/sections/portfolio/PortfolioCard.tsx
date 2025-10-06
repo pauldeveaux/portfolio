@@ -3,26 +3,8 @@ import { useState } from "react";
 import Image from "next/image";
 import PortfolioModal from "@/components/features/sections/portfolio/PortfolioModal";
 import useMarkdownLoader from "@/components/features/markdown/markdownLoader";
+import {Project} from "@/types/Project";
 
-/**
- * Props for the PortfolioCard component.
- */
-export interface PortfolioCardProps {
-    /** Title of the project */
-    title: string;
-    /** URL of the project's main image */
-    imageUrl: string;
-    /** Short description of the project */
-    description: string;
-    /** Optional list of tags for the project */
-    tags?: string[];
-    /** Optional size specifier (currently unused) */
-    size?: "small" | "medium" | "large";
-    /** Optional additional CSS classes */
-    className?: string;
-    /** Optional URL to fetch Markdown content for the modal */
-    markdownUrl?: string;
-}
 
 /**
  * PortfolioCard component.
@@ -37,7 +19,7 @@ export default function PortfolioCard({
     tags,
     className,
     markdownUrl
-}: PortfolioCardProps) {
+}: Project) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [imageError, setImageError] = useState(false);
 
