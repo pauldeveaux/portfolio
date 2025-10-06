@@ -1,5 +1,3 @@
-'use client';
-
 import Header from "@/components/features/sections/Header";
 import HeroSection from "@/components/features/sections/HeroSection";
 import ContactSection from "@/components/features/sections/ContactSection";
@@ -12,9 +10,13 @@ import PortfolioSection from "@/components/features/sections/PortfolioSection";
 import BlurryParticles from "@/components/ui/particles/BlurryParticles";
 import WaveStyleSeparator from "@/components/ui/SectionSeparator/WaveStyleSeparator";
 import GradientStyleSeparator from "@/components/ui/SectionSeparator/GradientStyleSeparator";
+import getHomepageData from "@/lib/cms";
 
 
-export default function HomePage() {
+
+
+export default async function HomePage() {
+  const { hero, projects } = await getHomepageData();
 
     return (
         <div className="bg-background min-h-screen">
@@ -33,20 +35,20 @@ export default function HomePage() {
             <HeroSection
                 id={"hero"}
                 className={"text-font-light-1"}
-                title={"Paul Deveaux"}
-                description={"Développeur IA - Junior | Passionné par l'innovation technologique et la création de solutions intelligentes."}
+                title={hero.title}
+                description={hero.description}
             />
 
             < GradientStyleSeparator
-                bgClassName={"bg-gradient-to-b from-main-3/10 to-main-4" }
-           />
+                bgClassName={"bg-gradient-to-b from-main-3/10 to-main-4"}
+            />
 
 
             < TextSection
                 id="about"
                 className="bg-main-4 text-font-dark-1"
                 title={"Plus sur moi"}
-                text={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quam quam, varius eget magna sit amet, volutpat luctus arcu. Proin imperdiet vitae lectus et volutpat. Nulla at ante ex. Nam rhoncus sapien nec elementum viverra. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas bibendum dapibus euismod. Suspendisse maximus finibus risus. Quisque scelerisque non diam et iaculis. Duis eget accumsan tortor. Ut accumsan quam ex, rutrum porta augue suscipit vel. Curabitus"+
+                text={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quam quam, varius eget magna sit amet, volutpat luctus arcu. Proin imperdiet vitae lectus et volutpat. Nulla at ante ex. Nam rhoncus sapien nec elementum viverra. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas bibendum dapibus euismod. Suspendisse maximus finibus risus. Quisque scelerisque non diam et iaculis. Duis eget accumsan tortor. Ut accumsan quam ex, rutrum porta augue suscipit vel. Curabitus" +
                     "\n\n" +
                     "Vestibulum maximus ultricies justo nec pharetra. Vestibulum vulputate molestie leo id semper. Ut consequat maximus justo ut hendrerit. Phasellus suscipit ex eu massa ornare gravida. Nam nisl mi, convallis in justo in, sodales ullamcorper sapien. Mauris consectetur consectetur lorem in vestibulum. Sed auctor elementum commodo. Fusce luctus quam et eleifend vestibulum. Suspendisse egestas ante a massa mollis vulputate.\n" +
                     "\n" +
@@ -87,7 +89,10 @@ export default function HomePage() {
                                 name: "Python",
                                 description: "Python est un langage de programmation polyvalent et puissant, largement utilisé pour le développement web, l'analyse de données, l'intelligence artificielle, l'automatisation et bien plus encore."
                             },
-                            {name: "React", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitae convallis purus, at laoreet turpis. Fusce congue pretium lacus, cursus tempus velit fermentum eget. Nulla condimentum turpis eros, pellentesque vehicula tellus aliquet ut. Donec a justo nec ante facilisis feugiat. Ut volutpat blandit sodales. Donec ultricies rhoncus mollis. Vestibulum eget pulvinar mauris. Vivamus ultrices ac tellus ut eleifend. Etiam maximus orci non sodales porttitor. Maecenas id pharetra risus. Curabitur rutrum egestas dapibus. Nam a sagittis lectus. Vestibulum tincidunt mi sem, ac tristique justo euismod non. Etiam quis facilisis erat, et varius orci. Proin efficitur nulla elit, sed viverra elit gravida eget. Aliquam quis lectus non diam tincidunt vehicula quis vitae erat."},
+                            {
+                                name: "React",
+                                description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitae convallis purus, at laoreet turpis. Fusce congue pretium lacus, cursus tempus velit fermentum eget. Nulla condimentum turpis eros, pellentesque vehicula tellus aliquet ut. Donec a justo nec ante facilisis feugiat. Ut volutpat blandit sodales. Donec ultricies rhoncus mollis. Vestibulum eget pulvinar mauris. Vivamus ultrices ac tellus ut eleifend. Etiam maximus orci non sodales porttitor. Maecenas id pharetra risus. Curabitur rutrum egestas dapibus. Nam a sagittis lectus. Vestibulum tincidunt mi sem, ac tristique justo euismod non. Etiam quis facilisis erat, et varius orci. Proin efficitur nulla elit, sed viverra elit gravida eget. Aliquam quis lectus non diam tincidunt vehicula quis vitae erat."
+                            },
                             {name: "Next.JS", description: "desc"},
                         ]
                     },
@@ -173,17 +178,7 @@ export default function HomePage() {
                 id={"portfolio"}
                 title={"Mes projets"}
                 className={"bg-gradient-to-b from-main-1 via-main-2 to-main-3 text-font-dark-1"}
-                projects={[
-                    {title: "Mon projet !", description: "test description", imageUrl: "/nothing", tags: ["CSS", "React"], size:"medium", markdownUrl: "/test"},
-                    {title: "Test projet", description: "test description", imageUrl: "/nothing", size:"small"},
-                    {title: "Test projet", description: "test description", imageUrl: "/nothing", size: "small"},
-                    {title: "Test projet", description: "test description", imageUrl: "/nothing", size:"medium"},
-                    {title: "Test projet2", description: "test description", imageUrl: "/nothing"},
-                    {title: "Test projet", description: "test description", imageUrl: "/nothing"},
-                    {title: "Test projet", description: "test description", imageUrl: "/nothing"},
-                    {title: "Test projet", description: "test description", imageUrl: "/nothing"}
-
-                ]}
+                projects={projects ?? []}
             />
 
 
