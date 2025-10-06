@@ -1,5 +1,5 @@
 import { Project } from "@/types/cms/components";
-import {fetchCMS, getImgFullUrl} from "./fetchCMS";
+import {fetchCMS, getImgFullUrl} from "../fetchCMS";
 
 export async function getProjects(): Promise<Project[]> {
   const rawProjects = await fetchCMS<any>("/projects?populate=image", process.env.CMS_API_KEY);

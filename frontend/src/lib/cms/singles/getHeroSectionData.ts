@@ -1,5 +1,5 @@
 import { HeroSectionData } from "@/types/cms/singles";
-import { fetchCMS } from "./fetchCMS";
+import { fetchCMS } from "../fetchCMS";
 
 export async function getHeroSectionData(): Promise<HeroSectionData> {
   const heroSectionData = await fetchCMS<HeroSectionData>("/hero-section", process.env.CMS_API_KEY);

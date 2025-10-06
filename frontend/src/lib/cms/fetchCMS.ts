@@ -18,6 +18,7 @@ export async function fetchCMS<T>(endpoint: string, token?: string): Promise<T[]
 }
 
 
+
 export function getImgFullUrl(imgUrl: string) {
     return `${process.env.CMS_API_URL}${imgUrl}`
 }

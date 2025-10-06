@@ -10,7 +10,7 @@ import PortfolioSection from "@/components/features/sections/PortfolioSection";
 import BlurryParticles from "@/components/ui/particles/BlurryParticles";
 import WaveStyleSeparator from "@/components/ui/SectionSeparator/WaveStyleSeparator";
 import GradientStyleSeparator from "@/components/ui/SectionSeparator/GradientStyleSeparator";
-import getHomepageData from "@/lib/cms";
+import getHomepageData from "@/lib/cms/getHomepageData";
 
 
 
