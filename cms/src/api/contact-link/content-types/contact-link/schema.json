@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contact_links",
+  "info": {
+    "singularName": "contact-link",
+    "pluralName": "contact-links",
+    "displayName": "ContactLink"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "socialMedia": {
+      "type": "string"
+    },
+    "imageUrl": {
+      "type": "string"
+    },
+    "text": {
+      "type": "string"
+    },
+    "link": {
+      "type": "string"
+    }
+  }
+}

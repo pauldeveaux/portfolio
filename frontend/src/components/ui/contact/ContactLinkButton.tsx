@@ -1,19 +1,6 @@
 import ExternalLink from "@/components/ui/buttons/ExternalLink";
 import Image from "next/image";
-
-/**
- * Props for a ContactLink component.
- */
-export interface ContactLinkProps {
-    /** Name of the social media or contact platform */
-    social_media: string;
-    /** URL of the platform's icon/image */
-    image_url: string;
-    /** Display text for the link */
-    text: string;
-    /** URL to navigate to when clicked */
-    link: string;
-}
+import {ContactLink} from "@/types/ContactLink";
 
 /**
  * ContactLink component.
@@ -22,7 +9,7 @@ export interface ContactLinkProps {
  * Includes an image (logo) and a text label.
  * Uses ExternalLink for safe external navigation (target="_blank" + rel="noopener noreferrer").
  */
-export default function ContactLink({ social_media, image_url, text, link }: ContactLinkProps) {
+export default function ContactLinkButton({ socialMedia, imageUrl, text, link }: ContactLink) {
     return (
         <ExternalLink
             href={link}
@@ -38,8 +25,8 @@ export default function ContactLink({ social_media, image_url, text, link }: Con
         >
             {/* Logo image */}
             <Image
-                src={image_url}
-                alt={`${social_media} logo`} // important for accessibility
+                src={imageUrl}
+                alt={`${socialMedia} logo`} // important for accessibility
                 width={32}
                 height={32}
                 className="w-8 h-8"

@@ -19,6 +19,7 @@ export default async function HomePage() {
         skillCategories,
         projects,
         experiences,
+        contactLinks
     } = await getHomepageData();
 
     return (
@@ -83,14 +84,14 @@ export default async function HomePage() {
                 id="skills"
                 title={sections.skillsSectionTitle}
                 className="text-font-light-1 mb-5"
-                categories={skillCategories}
+                categories={skillCategories ?? []}
             />
 
             <TimelineSection
                 id="timeline"
                 title={sections.timelineSectionTitle}
                 className="bg-main-5"
-                elements={experiences}
+                elements={experiences ?? []}
             />
 
 
@@ -107,26 +108,7 @@ export default async function HomePage() {
                 title={sections.contactSectionTitle}
                 className={"bg-main-5"}
                 height={"65vh"}
-                contacts={[
-                    {
-                        social_media: "email",
-                        image_url: "/images/logos/mail-icon.svg",
-                        text: "paul.deveaux1@gmail.com",
-                        link: "mailto:paul.deveaux1@gmail.com"
-                    },
-                    {
-                        social_media: "linkedin",
-                        image_url: "/images/logos/linkedin-icon.svg",
-                        text: "linkedin.com/in/paul-deveaux",
-                        link: "https://www.linkedin.com/in/paul-deveaux-7a731a202/"
-                    },
-                    {
-                        social_media: "github",
-                        image_url: "/images/logos/github-icon.svg",
-                        text: "github.com/pauldeveaux",
-                        link: "https://github.com/pauldeveaux"
-                    }
-                ]}
+                contacts={contactLinks}
             />
 
 

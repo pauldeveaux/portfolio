@@ -1,20 +1,21 @@
 'use client';
 
 import Section, { SectionProps } from "@/components/ui/layout/Section";
-import ContactLink, { ContactLinkProps } from "@/components/ui/contact/ContactLink";
+import ContactLinkButton from "@/components/ui/contact/ContactLinkButton";
 import ContactForm from "@/components/ui/contact/ContactForm";
 import clsx from "clsx";
+import {ContactLink} from "@/types/ContactLink";
 
 /**
  * Props for the ContactSection component.
  *
  * @extends SectionProps - Inherits props from Section.
  * @property {string} title - Section title.
- * @property {Array<ContactLinkProps>} contacts - List of contact links to display.
+ * @property {Array<ContactLink>} contacts - List of contact links to display.
  */
 interface ContactSectionProps extends SectionProps {
     title: string;
-    contacts: Array<ContactLinkProps>;
+    contacts: Array<ContactLink>;
 }
 
 /**
@@ -33,7 +34,7 @@ export default function ContactSection({ title, contacts, ...sectionProps }: Con
                 {/* Contact links list */}
                 <div className="flex flex-wrap justify-center gap-6">
                     {contacts.map((contact) => (
-                        <ContactLink key={contact.social_media} {...contact} />
+                        <ContactLinkButton key={contact.socialMedia} {...contact} />
                     ))}
                 </div>
 

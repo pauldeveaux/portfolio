@@ -430,6 +430,37 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiContactLinkContactLink extends Struct.CollectionTypeSchema {
+  collectionName: 'contact_links';
+  info: {
+    displayName: 'ContactLink';
+    pluralName: 'contact-links';
+    singularName: 'contact-link';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    imageUrl: Schema.Attribute.String;
+    link: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::contact-link.contact-link'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    socialMedia: Schema.Attribute.String;
+    text: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiExperienceExperience extends Struct.CollectionTypeSchema {
   collectionName: 'experiences';
   info: {
@@ -1108,6 +1139,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::contact-link.contact-link': ApiContactLinkContactLink;
       'api::experience.experience': ApiExperienceExperience;
       'api::homepage.homepage': ApiHomepageHomepage;
       'api::project.project': ApiProjectProject;
