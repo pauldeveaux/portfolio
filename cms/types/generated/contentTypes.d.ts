@@ -559,6 +559,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     markdown: Schema.Attribute.Text;
+    markdownUrl: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     size: Schema.Attribute.Enumeration<['small', 'medium', 'large']>;
     tag: Schema.Attribute.Component<'card.tag', true>;

@@ -7,10 +7,10 @@ import rehypeRaw from "rehype-raw";
  * Converts a Markdown string into a React component using `ReactMarkdown`.
  *
  * Supports GitHub-flavored Markdown (tables, checklists, etc.) via `remarkGfm`
- * and allows inline HTML using `rehypeRaw`.
+ * and allows inline HTML rendering via `rehypeRaw`.
  *
  * @param markdownContent - The raw Markdown string to render.
- * @returns A `ReactNode` containing the rendered Markdown content.
+ * @returns A `ReactNode` containing the rendered Markdown.
  *
  * @example
  * ```tsx
@@ -20,7 +20,7 @@ import rehypeRaw from "rehype-raw";
 export function stringToReactMarkdown(markdownContent: string): ReactNode {
     return (
         <ReactMarkdown
-            remarkPlugins={[remarkGfm]} // support GFM features
+            remarkPlugins={[remarkGfm]} // enable GFM features
             rehypePlugins={[rehypeRaw]} // allow embedded HTML
         >
             {markdownContent}
@@ -34,22 +34,24 @@ export function stringToReactMarkdown(markdownContent: string): ReactNode {
 export interface MarkdownLoaderProps {
     /** Optional URL to fetch the main Markdown content */
     markdownUrl?: string;
-    /** Optional URL to fetch fallback Markdown if the main URL fails */
+    /** Optional raw Markdown text */
+    markdown?: string;
+    /** Optional URL to fetch fallback Markdown if fetching the main URL fails */
     fallbackUrl?: string;
 }
 
 /**
- * Custom React hook to lazily load Markdown content with optional fallback.
+ * React hook to lazily load Markdown content.
  *
- * Automatically converts the fetched Markdown string to a ReactNode using
- * `stringToReactMarkdown`.
+ * Supports providing raw Markdown directly or fetching it from a URL.
+ * If fetching fails, an optional fallback URL is used.
  *
- * @param fallbackUrl - Optional URL for a fallback Markdown file (default: "/markdown/fallback.md")
+ * @param fallbackUrl - URL to fallback Markdown if main content cannot be loaded.
  * @returns An object containing:
- * - `content`: ReactNode representing the rendered Markdown (null if not loaded yet)
- * - `loading`: boolean indicating if the fetch is in progress
- * - `error`: boolean indicating if an error occurred while fetching the main URL
- * - `loadMarkdown`: function to manually trigger Markdown loading
+ * - `content`: Rendered Markdown as `ReactNode` (null if not loaded yet)
+ * - `loading`: `boolean` indicating if the content is being fetched
+ * - `error`: `boolean` indicating if an error occurred during fetch
+ * - `loadMarkdown`: Function to manually trigger Markdown loading
  *
  * @example
  * ```tsx
@@ -58,25 +60,41 @@ export interface MarkdownLoaderProps {
  * });
  *
  * useEffect(() => {
- *   loadMarkdown("/markdown/main.md");
+ *   loadMarkdown({ markdownUrl: "/markdown/main.md" });
  * }, []);
  * ```
  */
-export default function useMarkdownLoader({ fallbackUrl = "/markdown/fallback.md" }: MarkdownLoaderProps) {
+export default function useMarkdownLoader({
+    fallbackUrl = "/markdown/fallback.md",
+}: MarkdownLoaderProps) {
     const [content, setContent] = useState<ReactNode | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
     /**
-     * Loads Markdown content from a given URL or fallback URL.
+     * Loads Markdown content either from a URL or directly from raw Markdown text.
      *
-     * Handles errors gracefully:
-     * - If the main URL fails, tries the fallback URL.
-     * - If fallback fails, displays a simple error message.
+     * - Uses `markdown` if provided, otherwise fetches from `markdownUrl`.
+     * - Falls back to `fallbackUrl` if the main fetch fails.
      *
-     * @param markdownUrl - Optional URL of the Markdown file to fetch.
+     * @param params - Object containing optional `markdownUrl` and/or `markdown`
      */
-    const loadMarkdown = async (markdownUrl?: string) => {
+    const loadMarkdown = async ({
+        markdownUrl,
+        markdown,
+    }: {
+        markdownUrl?: string;
+        markdown?: string;
+    }) => {
+        // Use raw Markdown if provided
+        if (markdown) {
+            setContent(stringToReactMarkdown(markdown));
+            setLoading(false);
+            setError(false);
+            return;
+        }
+
+        // Otherwise, fetch from URL
         const urlToFetch = markdownUrl || fallbackUrl;
         setLoading(true);
 
@@ -90,14 +108,19 @@ export default function useMarkdownLoader({ fallbackUrl = "/markdown/fallback.md
             console.error(err);
             setError(true);
 
-            // Try fallback if available
-            try {
-                const res = await fetch(fallbackUrl);
-                if (!res.ok) throw new Error(`Failed to fetch fallback: ${res.status}`);
-                const text = await res.text();
-                setContent(stringToReactMarkdown(text));
-            } catch (errFallback) {
-                console.error(errFallback);
+            // If this wasn't the fallback URL, attempt to fetch fallback
+            if (urlToFetch !== fallbackUrl) {
+                try {
+                    const resFallback = await fetch(fallbackUrl);
+                    if (!resFallback.ok)
+                        throw new Error(`Failed to fetch fallback: ${resFallback.status}`);
+                    const textFallback = await resFallback.text();
+                    setContent(stringToReactMarkdown(textFallback));
+                } catch (errFallback) {
+                    console.error(errFallback);
+                    setContent(<p>Error while loading …</p>);
+                }
+            } else {
                 setContent(<p>Error while loading …</p>);
             }
         } finally {

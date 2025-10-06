@@ -38,6 +38,9 @@
     "markdown": {
       "type": "text"
     },
+    "markdownUrl": {
+      "type": "string"
+    },
     "tag": {
       "type": "component",
       "component": "card.tag",

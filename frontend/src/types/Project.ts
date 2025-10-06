@@ -22,4 +22,6 @@ export type Project = {
 
   /** Optional URL to fetch Markdown content for a modal or detailed view */
   markdownUrl?: string;
+
+  markdown?: string;
 };

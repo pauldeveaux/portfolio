@@ -19,7 +19,8 @@ export default function PortfolioCard({
     tags,
     className,
     size="small",
-    markdownUrl
+    markdownUrl,
+    markdown
 }: Project) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [imageError, setImageError] = useState(false);
@@ -39,7 +40,9 @@ export default function PortfolioCard({
      */
     const openModal = async () => {
         setIsModalOpen(true);
-        if (!content) await loadMarkdown(markdownUrl);
+        if (!content) {
+            await loadMarkdown({markdownUrl: markdownUrl, markdown: markdown});
+        }
     };
 
     return (
