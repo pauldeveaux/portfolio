@@ -1,6 +1,7 @@
 import type { HomepageData } from "@/types/cms/cms";
 import { getProjects } from "@/lib/cms/components/getProjects";
 import {getHomepageSectionsData} from "@/lib/cms/singles/getHomepageSectionData";
+import {getSkills} from "@/lib/cms/components/getSkills";
 
 /**
  * Map of fetcher functions for each section of the homepage.
@@ -43,6 +44,7 @@ export default async function getHomepageData(): Promise<HomepageData> {
   const fetchers: FetcherMap = {
     sections: getHomepageSectionsData,
     projects: getProjects,
+    skillCategories: getSkills
   };
 
   return fetchAll(fetchers);

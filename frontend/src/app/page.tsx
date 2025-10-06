@@ -16,6 +16,7 @@ import getHomepageData from "@/lib/cms/getHomepageData";
 export default async function HomePage() {
     const {
         sections,
+        skillCategories,
         projects
     } = await getHomepageData();
 
@@ -81,30 +82,7 @@ export default async function HomePage() {
                 id="skills"
                 title={sections.skillsSectionTitle}
                 className="text-font-light-1 mb-5"
-                categories={[
-                    {
-                        title: "Développement",
-                        skills: [
-                            {
-                                name: "Python",
-                                description: "Python est un langage de programmation polyvalent et puissant, largement utilisé pour le développement web, l'analyse de données, l'intelligence artificielle, l'automatisation et bien plus encore."
-                            },
-                            {
-                                name: "React",
-                                description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitae convallis purus, at laoreet turpis. Fusce congue pretium lacus, cursus tempus velit fermentum eget. Nulla condimentum turpis eros, pellentesque vehicula tellus aliquet ut. Donec a justo nec ante facilisis feugiat. Ut volutpat blandit sodales. Donec ultricies rhoncus mollis. Vestibulum eget pulvinar mauris. Vivamus ultrices ac tellus ut eleifend. Etiam maximus orci non sodales porttitor. Maecenas id pharetra risus. Curabitur rutrum egestas dapibus. Nam a sagittis lectus. Vestibulum tincidunt mi sem, ac tristique justo euismod non. Etiam quis facilisis erat, et varius orci. Proin efficitur nulla elit, sed viverra elit gravida eget. Aliquam quis lectus non diam tincidunt vehicula quis vitae erat."
-                            },
-                            {name: "Next.JS", description: "desc"},
-                        ]
-                    },
-                    {
-                        title: "IA",
-                        skills: [
-                            {name: "IA", description: "Test test"},
-                            {name: "Langchain", description: "desc"},
-                            {name: "RAG", description: "desc"},
-                        ]
-                    },
-                ]}
+                categories={skillCategories}
             />
 
             <TimelineSection

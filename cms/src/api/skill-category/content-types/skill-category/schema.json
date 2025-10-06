@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "skill_categories",
+  "info": {
+    "singularName": "skill-category",
+    "pluralName": "skill-categories",
+    "displayName": "SkillCategory"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "skills": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::skill.skill",
+      "mappedBy": "category"
+    }
+  }
+}
