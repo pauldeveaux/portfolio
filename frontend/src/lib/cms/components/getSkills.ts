@@ -1,5 +1,5 @@
 import { fetchCMS } from "../fetchCMS";
-import {SkillCategory, Skill} from "@/types/cms/components/Skill";
+import {SkillCategory, Skill} from "@/types/Skill";
 
 
 

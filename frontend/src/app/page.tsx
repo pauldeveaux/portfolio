@@ -17,7 +17,8 @@ export default async function HomePage() {
     const {
         sections,
         skillCategories,
-        projects
+        projects,
+        experiences,
     } = await getHomepageData();
 
     return (
@@ -89,66 +90,7 @@ export default async function HomePage() {
                 id="timeline"
                 title={sections.timelineSectionTitle}
                 className="bg-main-5"
-                elements={[
-                    {
-                        title: "WORK",
-                        subtitle: "Telecom Nancy",
-                        text: "Obtention du diplôme d'ingénieur en Intelligence Artificielle & Masse de données." +
-                            " Prêt à relever de nouveaux défis professionnels !",
-                        date: "Septembre 2025",
-                        type: "Work",
-                    },
-                    {
-                        title: "Ingénieur diplômé 🎓",
-                        subtitle: "Telecom Nancy",
-                        text: "Obtention du diplôme d'ingénieur en Intelligence Artificielle & Masse de données." +
-                            " Prêt à relever de nouveaux défis professionnels !",
-                        date: "Septembre 2025",
-                        type: "Graduate",
-                        tag: "DIPLÔMÉ",
-                    },
-                    {
-                        title: "Stage de fin d'études",
-                        subtitle: "SFEIR Luxembourg",
-                        text: "blabla",
-                        date: "mars 2025 - août 2025",
-                        type: "Internship",
-                        tag: "STAGE",
-                        subtags: ["VLM", "API REST"]
-                    },
-                    {
-                        title: "Stage Laboratoire ERPI",
-                        subtitle: "SFEIR Luxembourg",
-                        text: "blabla",
-                        date: "mars 2025 - août 2025",
-                        type: "Internship",
-                        tag: "STAGE",
-                        subtags: ["VLM", "API REST"]
-                    },
-                    {
-                        title: "Ecole d'ingénieur",
-                        subtitle: "Telecom Nancy",
-                        text: "Blabla",
-                        date: "Septembre 2025",
-                        type: "School",
-                    },
-                    {
-                        title: "Stage IUT",
-                        subtitle: "SFEIR Luxembourg",
-                        text: "blabla",
-                        date: "mars 2025 - août 2025",
-                        type: "Internship",
-                        tag: "STAGE",
-                        subtags: ["VLM", "API REST"]
-                    },
-                    {
-                        title: "DUT Informatique",
-                        subtitle: "IUT Nancy Charlemagne",
-                        text: "Blabla",
-                        date: "Septembre 2025",
-                        type: "School",
-                    },
-                ]}
+                elements={experiences}
             />
 
 

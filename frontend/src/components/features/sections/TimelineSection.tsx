@@ -5,29 +5,17 @@ import {
     VerticalTimelineElement
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import { GraduationCap, Briefcase, Star, LucideIcon } from "lucide-react";
+import { GraduationCap, Briefcase, Star } from "lucide-react";
 import React from "react";
 import { useIsMobile } from "@/components/features/hooks/useIsMobile";
+import {Experience, ExperienceType} from "@/types/Experience";
 
-/** Timeline element types */
-export type TimelineElementType = "School" | "Graduate" | "Internship" | "Work" | "Final";
 
-/** Props for each timeline element */
-interface TimelineElementProps {
-    title: string;
-    subtitle: string;
-    text: string;
-    type: TimelineElementType;
-    date: string;
-    tag?: string;
-    tagIcon?: LucideIcon;
-    subtags?: Array<string>;
-}
 
 /** Props for the TimelineSection component */
 interface TimelineSectionProps extends SectionProps {
     title: string;
-    elements: Array<TimelineElementProps>;
+    elements: Array<Experience>;
 }
 
 /** Parameters associated with each timeline type */
@@ -41,8 +29,8 @@ interface TimelineTypeParameters {
  * Creates a `VerticalTimelineElement` for a given timeline item.
  * Handles styling, icons, tags, and subtags.
  */
-function createTimelineElement(props: TimelineElementProps, key: React.Key) {
-    const timelineTypeIcons: Record<TimelineElementType, TimelineTypeParameters> = {
+function createTimelineElement(props: Experience, key: React.Key) {
+    const timelineTypeIcons: Record< ExperienceType, TimelineTypeParameters> = {
         School: { icon: <GraduationCap />, position: "left" },
         Graduate: { icon: <GraduationCap />, position: "left", tagIcon: Star },
         Internship: { icon: <Briefcase />, position: "right" },
@@ -127,7 +115,7 @@ export default function TimelineSection({ title, elements, ...sectionProps }: Ti
     const isMobile = useIsMobile();
 
     // Add a final element to mark the end of the timeline
-    const finalElementProps = { type: "Final" as TimelineElementType, title: "", subtitle: "", text: "", date: "" };
+    const finalElementProps = { type: "Final" as ExperienceType, title: "", subtitle: "", text: "", date: "" };
 
     return (
         <Section {...sectionProps}>
