@@ -4,6 +4,7 @@ import Section, { SectionProps } from "@/components/ui/layout/Section";
 import PortfolioCard from "@/components/features/sections/portfolio/PortfolioCard";
 import { motion } from "motion/react";
 import {Project} from "@/types/Project";
+import {useIsMobile} from "@/components/features/hooks/useIsMobile";
 
 /**
  * Props for the `PortfolioSection` component.
@@ -18,6 +19,32 @@ export interface PortfolioSectionProps extends SectionProps {
     /** Number of rows to show when collapsed (default is 2) */
     rowsToShow?: number;
 }
+
+
+function calculateRows(projects: Project[], maxColumns: number) {
+    let rows: number[] = []; // chaque élément représente une ligne avec le nombre de colonnes occupées
+    let currentRow = 0;
+    let colCount = 0;
+
+    projects.forEach(project => {
+        let span = 1;
+        if (project.size === "medium") span = 2;
+        else if (project.size === "large") span = 3;
+
+        if (colCount + span > maxColumns) {
+            // passe à la ligne suivante
+            currentRow++;
+            colCount = 0;
+        }
+
+        colCount += span;
+        rows[currentRow] = colCount; // stocke le total occupé dans la ligne
+    });
+
+    return rows.length;
+}
+
+
 
 /**
  * A section displaying a grid of portfolio projects with a collapsible view.
@@ -34,6 +61,11 @@ export default function PortfolioSection({
 }: PortfolioSectionProps) {
     const [expanded, setExpanded] = useState(false);
     const sectionRef = useRef<HTMLDivElement>(null);
+    const isMobile = useIsMobile();
+
+    const maxColumns = isMobile ? 1 : 3;
+    const rowsNeeded = calculateRows(projects, maxColumns);
+
 
     const rowHeightPx = 320; // height of a single row
     const gapPx = 24; // gap between grid items
@@ -44,7 +76,7 @@ export default function PortfolioSection({
         <Section {...sectionProps}>
             <div
                 ref={sectionRef}
-                className="flex flex-col items-center py-20 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8"
+                className="flex flex-col items-center py-20 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 overflow-visible"
             >
                 <h2 className="text-5xl font-bold mb-20 text-center text-font-light-1">{title}</h2>
 
@@ -54,7 +86,7 @@ export default function PortfolioSection({
                     p-1 sm:p-2 w-full transition-[max-height] duration-300 ease-in-out"
                     style={{
                         maxHeight: expanded ? undefined : `${collapsedMaxHeight}px`,
-                        overflow: expanded ? "visible" : "hidden",
+                        overflow: expanded? "visible": "hidden",
                     }}
                 >
                     {projects.map((project, index) => {
@@ -68,27 +100,30 @@ export default function PortfolioSection({
                 </div>
 
                 {/* Toggle button for expanding/collapsing grid */}
-                <div className="mt-8">
-                    <motion.button
-                        onClick={() => {
-                            // Scroll to top of section when collapsing
-                            if (expanded && sectionRef.current) {
-                                sectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-                            }
-                            setExpanded(!expanded);
-                        }}
-                        className="px-6 py-3 bg-button-light-1 border border-button-light-2 text-font-dark-1 font-bold rounded-lg shadow transition cursor-pointer"
-                        whileHover={{
-                            scale: 1.05,
-                            boxShadow: "0px 10px 20px rgba(0,0,0,0.15)",
-                        }}
-                        transition={{
-                            scale: { duration: 0.05 },
-                        }}
-                    >
-                        {expanded ? "Afficher moins" : "Afficher plus"}
-                    </motion.button>
-                </div>
+                {rowsNeeded > rowsToShow && (
+
+                    <div className="mt-8">
+                        <motion.button
+                            onClick={() => {
+                                // Scroll to top of section when collapsing
+                                if (expanded && sectionRef.current) {
+                                    sectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+                                }
+                                setExpanded(!expanded);
+                            }}
+                            className="px-6 py-3 bg-button-light-1 border border-button-light-2 text-font-dark-1 font-bold rounded-lg shadow transition cursor-pointer"
+                            whileHover={{
+                                scale: 1.05,
+                                boxShadow: "0px 10px 20px rgba(0,0,0,0.15)",
+                            }}
+                            transition={{
+                                scale: { duration: 0.05 },
+                            }}
+                        >
+                            {expanded ? "Afficher moins" : "Afficher plus"}
+                        </motion.button>
+                    </div>
+                )}
             </div>
         </Section>
     );

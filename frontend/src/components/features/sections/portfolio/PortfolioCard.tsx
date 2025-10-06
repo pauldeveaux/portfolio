@@ -18,6 +18,7 @@ export default function PortfolioCard({
     description,
     tags,
     className,
+    size="small",
     markdownUrl
 }: Project) {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,6 +28,11 @@ export default function PortfolioCard({
     const { content, loading, loadMarkdown } = useMarkdownLoader({});
 
     const fallBackUrl = "/images/fallback.png";
+    const hoverScale = {
+        small : 1.02,
+        medium: 1.015,
+        large: 1.01
+    }
 
     /**
      * Opens the modal and loads Markdown content if not already loaded.
@@ -43,7 +49,7 @@ export default function PortfolioCard({
                 overflow-hidden shadow-xl bg-main-5 hover:shadow-lg p-1 hover:cursor-pointer
                 transition-shadow duration-300 w-full ${className}`}
                 onClick={openModal}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: hoverScale[size] }}
                 transition={{ duration: 0.3 }}
             >
                 {/* Project image with fallback */}
