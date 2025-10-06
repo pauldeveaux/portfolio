@@ -9,7 +9,7 @@
  * @returns Promise resolving to an array of T
  */
 export async function fetchCMS<T>(endpoint: string, token?: string): Promise<T[]> {
-    const res = await fetch(`${process.env.CMS_API_URL}${endpoint}`, {
+    const res = await fetch(`${process.env.CMS_API_URL}/api${endpoint}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         cache: "no-store", // always fetch fresh data
     });
@@ -29,11 +29,11 @@ export async function fetchCMS<T>(endpoint: string, token?: string): Promise<T[]
 }
 
 /**
- * Converts a relative CMS image URL into a full absolute URL.
+ * Converts a relative CMS file URL into a full absolute URL.
  *
- * @param imgUrl - Relative image path returned by the CMS (e.g., "/uploads/image.png")
+ * @param fileURL - Relative file path returned by the CMS (e.g., "/uploads/image.png")
  * @returns Full URL including CMS base URL
  */
-export function getImgFullUrl(imgUrl: string) {
-    return `${process.env.CMS_API_URL}${imgUrl}`;
+export function getFileFullUrl(fileURL: string) {
+    return `${process.env.CMS_API_URL}${fileURL}`;
 }

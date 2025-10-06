@@ -38,8 +38,15 @@
     "markdown": {
       "type": "text"
     },
-    "markdownUrl": {
-      "type": "string"
+    "markdownFile": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "videos",
+        "audios",
+        "files",
+        "images"
+      ]
     },
     "tag": {
       "type": "component",

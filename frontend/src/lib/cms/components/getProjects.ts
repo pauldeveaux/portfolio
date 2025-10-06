@@ -1,5 +1,6 @@
 import { Project } from "@/types/cms/components";
-import { fetchCMS, getImgFullUrl } from "../fetchCMS";
+import { fetchCMS, getFileFullUrl } from "../fetchCMS";
+import {none} from "@tsparticles/engine";
 
 /**
  * Fetches all projects from the CMS, including their main image.
@@ -10,21 +11,19 @@ import { fetchCMS, getImgFullUrl } from "../fetchCMS";
  */
 export async function getProjects(): Promise<Project[]> {
   // Fetch raw projects from the CMS, including populated image
-  const rawProjects = await fetchCMS<any>("/projects?populate=image", process.env.CMS_API_KEY);
+  const rawProjects = await fetchCMS<any>("/projects?populate=image&populate=markdownFile", process.env.CMS_API_KEY);
 
+  console.log(rawProjects)
   // Map CMS response to the Project type
   const projects: Project[] = rawProjects.map(item => ({
-    id: item.id,
     title: item.title,
     description: item.description,
     size: item.size as "small" | "medium" | "large",
-    createdAt: item.createdAt,
-    updatedAt: item.updatedAt,
-    publishedAt: item.publishedAt,
     markdown: item.markdown,
-    // Use helper to get full image URL
-    imageUrl: item.image?.url ? getImgFullUrl(item.image.url) : "/placeholder.png",
+    markdownUrl: item.markdownFile?.url ? getFileFullUrl(item.markdownFile.url):undefined,
+    imageUrl: item.image?.url ? getFileFullUrl(item.image.url) : "/placeholder.png",
   }));
 
+  console.log(projects)
   return projects;
 }

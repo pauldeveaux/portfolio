@@ -1,15 +1,17 @@
 import type {NextConfig} from "next";
 
-require('dotenv').config()
+
+const CMS_UPLOAD_URL = process.env.CMS_API_URL || "http://localhost:1337";
+
 
 const nextConfig: NextConfig = {
     images: {
         remotePatterns: [
             {
-                protocol: 'http',
-                hostname: 'localhost',
-                port: '1337',
-                pathname: '/api/uploads/**',
+                protocol: CMS_UPLOAD_URL.startsWith("https") ? "https" : "http",
+                hostname: new URL(CMS_UPLOAD_URL).hostname,
+                port: new URL(CMS_UPLOAD_URL).port,
+                pathname: '/uploads/**',
             },
             {
                 protocol: 'https',
