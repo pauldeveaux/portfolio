@@ -1,10 +1,10 @@
 {
   "kind": "singleType",
-  "collectionName": "heroes",
+  "collectionName": "text_sections",
   "info": {
-    "singularName": "hero",
-    "pluralName": "heroes",
-    "displayName": "Hero"
+    "singularName": "text-section",
+    "pluralName": "text-sections",
+    "displayName": "TextSection"
   },
   "options": {
     "draftAndPublish": true
@@ -14,7 +14,7 @@
     "title": {
       "type": "string"
     },
-    "description": {
+    "text": {
       "type": "text"
     }
   }
