@@ -1,4 +1,4 @@
-export type Hero = {
+export type HeroSectionData = {
   title: string;
   description: string;
 };

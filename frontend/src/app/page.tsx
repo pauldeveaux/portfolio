@@ -16,7 +16,10 @@ import getHomepageData from "@/lib/cms";
 
 
 export default async function HomePage() {
-  const { hero, projects } = await getHomepageData();
+  const {
+      heroSectionData, textSectionData,
+      projects
+  } = await getHomepageData();
 
     return (
         <div className="bg-background min-h-screen">
@@ -35,8 +38,8 @@ export default async function HomePage() {
             <HeroSection
                 id={"hero"}
                 className={"text-font-light-1"}
-                title={hero.title}
-                description={hero.description}
+                title={heroSectionData.title}
+                description={heroSectionData.description}
             />
 
             < GradientStyleSeparator
@@ -47,12 +50,8 @@ export default async function HomePage() {
             < TextSection
                 id="about"
                 className="bg-main-4 text-font-dark-1"
-                title={"Plus sur moi"}
-                text={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quam quam, varius eget magna sit amet, volutpat luctus arcu. Proin imperdiet vitae lectus et volutpat. Nulla at ante ex. Nam rhoncus sapien nec elementum viverra. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas bibendum dapibus euismod. Suspendisse maximus finibus risus. Quisque scelerisque non diam et iaculis. Duis eget accumsan tortor. Ut accumsan quam ex, rutrum porta augue suscipit vel. Curabitus" +
-                    "\n\n" +
-                    "Vestibulum maximus ultricies justo nec pharetra. Vestibulum vulputate molestie leo id semper. Ut consequat maximus justo ut hendrerit. Phasellus suscipit ex eu massa ornare gravida. Nam nisl mi, convallis in justo in, sodales ullamcorper sapien. Mauris consectetur consectetur lorem in vestibulum. Sed auctor elementum commodo. Fusce luctus quam et eleifend vestibulum. Suspendisse egestas ante a massa mollis vulputate.\n" +
-                    "\n" +
-                    "Nunc mollis at ipsum at consectetur. Donec sollicitudin lorem ut aliquet sollicitudin. Curabitur est risus, efficitur ut turpis facilisis, vulputate ullamcorper felis. Proin suscipit consequat augue a hendrerit. Nulla facilisi. Praesent euismod quam a ante ornare molestie. Sed bibendum enim at purus efficitur tempor. Aliquam id sem finibus lorem egestas rutrum a ornare sapien. Vestibulum faucibus turpis ac euismod tincidunt. Phasellus sit amet pretium urna."}
+                title={textSectionData.title}
+                text={textSectionData.text}
             />
 
             < GradientStyleSeparator

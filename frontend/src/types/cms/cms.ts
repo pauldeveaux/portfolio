@@ -1,8 +1,9 @@
-import {Hero} from "@/types/cms/singles/Hero";
-import {Project} from "@/types/cms/components/Project";
+import {HeroSectionData, TextSectionData} from "@/types/cms/singles";
+import {Project} from "@/types/cms/components";
 
 
 export type HomepageData = {
-  hero: Hero;
+  heroSectionData: HeroSectionData;
+  textSectionData: TextSectionData;
   projects?: Project[];
 };
