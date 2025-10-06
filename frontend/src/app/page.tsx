@@ -64,6 +64,7 @@ export default async function HomePage() {
                 id="chat"
                 className="bg-main-5"
                 title={sections.chatSectionTitle}
+                defaultAIMessage={sections.chatSectionDefaultAIMessage}
             />
 
 
@@ -212,6 +213,7 @@ export default async function HomePage() {
             <FooterSection
                 id="footer"
                 className={"bg-main-3"}
+                license={sections.footerLicense}
                 navLinks={[
                     {"label": "À propos", "href": "about"},
                     {"label": "Compétences", "href": "skills"},

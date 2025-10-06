@@ -5,13 +5,17 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { Send } from "lucide-react";
 import { useIsMobile } from "@/components/features/hooks/useIsMobile";
 
+
 /**
- * Default AI greeting message.
+ * Props for the Chat component.
+ *
+ * @property {string} defaultAIMessage - The default AI message
  */
-const AIMessage: ChatMessageProps = {
-    type: "ai",
-    text: "Bonjour ! Je suis l’assistant virtuel de mon portfolio. Posez-moi des questions sur mes projets, compétences ou expériences.",
-};
+export interface ChatProps {
+    defaultAIMessage: string;
+}
+
+
 
 /**
  * Chat component.
@@ -24,10 +28,18 @@ const AIMessage: ChatMessageProps = {
  * - Handles sending messages via Enter or button click.
  * - Responsive UI with textarea resizing.
  */
-export default function Chat(){
+export default function Chat( {defaultAIMessage}: ChatProps){
     const messagesEndRef = useRef<HTMLDivElement>(null); // Ref to scroll to bottom
     const textareaRef = useRef<HTMLTextAreaElement>(null); // Ref to read input value
     const chatContainerRef = useRef<HTMLDivElement>(null); // Ref to scrollable container
+
+
+    // Default ai greeting message
+    const AIMessage: ChatMessageProps = {
+        type: "ai",
+        text: defaultAIMessage
+    };
+
 
     const [messages, setMessages] = useState<ChatMessageProps[]>([AIMessage]); // Chat messages
     const [waiting, setWaiting] = useState(false); // Prevent multiple sends during pending state

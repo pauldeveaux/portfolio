@@ -6,9 +6,11 @@ import Chat from "@/components/ui/chat/Chat";
  *
  * @extends SectionProps - Inherits all props from the Section component.
  * @property {string} title - The title displayed at the top of the chat section.
+ * @property {string} defaultAIMessage - The default AI message
  */
 interface ChatSectionProps extends SectionProps {
     title: string;
+    defaultAIMessage: string;
 }
 
 /**
@@ -16,7 +18,7 @@ interface ChatSectionProps extends SectionProps {
  *
  * Renders a section with a title and a chat interface.
  */
-export default function ChatSection({ title, ...sectionProps }: ChatSectionProps) {
+export default function ChatSection({ title, defaultAIMessage, ...sectionProps }: ChatSectionProps) {
     return (
         <Section {...sectionProps}>
             {/* Main container with vertical layout and spacing */}
@@ -26,7 +28,7 @@ export default function ChatSection({ title, ...sectionProps }: ChatSectionProps
 
                 {/* Chat interface */}
                 <div className="text-base whitespace-pre-line">
-                    <Chat />
+                    <Chat defaultAIMessage={defaultAIMessage} />
                 </div>
             </div>
         </Section>

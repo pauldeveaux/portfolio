@@ -7,9 +7,11 @@ import ButtonLink from "@/components/ui/buttons/ButtonLink";
  * Props for the FooterSection component.
  *
  * @extends SectionProps - Inherits layout and styling props from Section.
+ * @property {string} license - License to display in the footer
  * @property {Array<{label: string; href: string}>} navLinks - List of navigation links to display in the footer.
  */
 interface FooterSectionProps extends SectionProps {
+    license: string;
     navLinks: { label: string; href: string }[];
 }
 
@@ -18,7 +20,7 @@ interface FooterSectionProps extends SectionProps {
  *
  * Renders a footer with navigation links, a "scroll to top" button, and copyright.
  */
-export default function FooterSection({ navLinks, ...sectionProps }: FooterSectionProps) {
+export default function FooterSection({ license, navLinks, ...sectionProps }: FooterSectionProps) {
 
     // Scroll smoothly to the top of the page
     const scrollToTop = () => {
@@ -60,7 +62,7 @@ export default function FooterSection({ navLinks, ...sectionProps }: FooterSecti
 
                         {/* Copyright */}
                         <div className="container mx-auto text-center">
-                            <p className="text-sm">&copy; Paul Deveaux | 2025</p>
+                            <p className="text-sm">{license}</p>
                         </div>
                     </div>
                 </div>
