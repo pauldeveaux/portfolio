@@ -1,4 +1,4 @@
-import { Project } from "@/types/cms";
+import { Project } from "@/types/cms/components/Project";
 import {fetchCMS, getImgFullUrl} from "./fetchCMS";
 
 export async function getProjects(): Promise<Project[]> {
