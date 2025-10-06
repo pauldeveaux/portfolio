@@ -13,24 +13,24 @@ import GradientStyleSeparator from "@/components/ui/SectionSeparator/GradientSty
 import getHomepageData from "@/lib/cms/getHomepageData";
 
 
-
-
 export default async function HomePage() {
-  const {
-      heroSectionData, textSectionData,
-      projects
-  } = await getHomepageData();
+    const {
+        sections,
+        projects
+    } = await getHomepageData();
 
     return (
         <div className="bg-background min-h-screen">
-            <Header title={"Paul Deveaux"} navLinks={[
-                {"label": "À propos", "href": "about"},
-                {"label": "Compétences", "href": "skills"},
-                {"label": "Chat IA", "href": "chat"},
-                {"label": "Parcours", "href": "timeline"},
-                {"label": "Portfolio", "href": "portfolio"},
-                {"label": "Contact", "href": "contact"},
-            ]}
+            <Header
+                title={sections.headerTitle}
+                navLinks={[
+                    {"label": "À propos", "href": "about"},
+                    {"label": "Compétences", "href": "skills"},
+                    {"label": "Chat IA", "href": "chat"},
+                    {"label": "Parcours", "href": "timeline"},
+                    {"label": "Portfolio", "href": "portfolio"},
+                    {"label": "Contact", "href": "contact"},
+                ]}
             />
 
             <BlurryParticles/>
@@ -38,8 +38,8 @@ export default async function HomePage() {
             <HeroSection
                 id={"hero"}
                 className={"text-font-light-1"}
-                title={heroSectionData.title}
-                description={heroSectionData.description}
+                title={sections.heroSectionTitle}
+                description={sections.heroSectionDescription}
             />
 
             < GradientStyleSeparator
@@ -50,8 +50,8 @@ export default async function HomePage() {
             < TextSection
                 id="about"
                 className="bg-main-4 text-font-dark-1"
-                title={textSectionData.title}
-                text={textSectionData.text}
+                title={sections.textSectionTitle}
+                text={sections.textSectionTitle}
             />
 
             < GradientStyleSeparator
@@ -63,7 +63,7 @@ export default async function HomePage() {
             < ChatSection
                 id="chat"
                 className="bg-main-5"
-                title={"Pose moi des questions"}
+                title={sections.chatSectionTitle}
             />
 
 
@@ -78,7 +78,7 @@ export default async function HomePage() {
 
             <SkillsSection
                 id="skills"
-                title={"Compétences"}
+                title={sections.skillsSectionTitle}
                 className="text-font-light-1 mb-5"
                 categories={[
                     {
@@ -108,7 +108,7 @@ export default async function HomePage() {
 
             <TimelineSection
                 id="timeline"
-                title="Mon Parcours"
+                title={sections.timelineSectionTitle}
                 className="bg-main-5"
                 elements={[
                     {
@@ -175,7 +175,7 @@ export default async function HomePage() {
 
             <PortfolioSection
                 id={"portfolio"}
-                title={"Mes projets"}
+                title={sections.portfolioSectionTitle}
                 className={"bg-gradient-to-b from-main-1 via-main-2 to-main-3 text-font-dark-1"}
                 projects={projects ?? []}
             />
@@ -183,7 +183,7 @@ export default async function HomePage() {
 
             <ContactSection
                 id="contact"
-                title={"Contactez-moi"}
+                title={sections.contactSectionTitle}
                 className={"bg-main-5"}
                 height={"65vh"}
                 contacts={[
