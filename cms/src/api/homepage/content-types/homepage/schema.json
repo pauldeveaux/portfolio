@@ -1,0 +1,51 @@
+{
+  "kind": "singleType",
+  "collectionName": "homepages",
+  "info": {
+    "singularName": "homepage",
+    "pluralName": "homepages",
+    "displayName": "Homepage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "headerTitle": {
+      "type": "string"
+    },
+    "heroSectionTitle": {
+      "type": "string"
+    },
+    "heroSectionDescription": {
+      "type": "text"
+    },
+    "textSectionTitle": {
+      "type": "string"
+    },
+    "textSectionText": {
+      "type": "text"
+    },
+    "chatSectionTitle": {
+      "type": "string"
+    },
+    "chatSectionDefaultAIMessage": {
+      "type": "text"
+    },
+    "skillsSectionTitle": {
+      "type": "string"
+    },
+    "timelineSectionTitle": {
+      "type": "string"
+    },
+    "portfolioSectionTitle": {
+      "type": "string"
+    },
+    "contactSectionTitle": {
+      "type": "string"
+    },
+    "footerLicense": {
+      "type": "string"
+    }
+  }
+}
