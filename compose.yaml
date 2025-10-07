@@ -1,5 +1,8 @@
 version: '3.9'
 
+volumes:
+  strapi-db-data: {}
+
 services:
   frontend:
     build:
@@ -22,9 +25,6 @@ services:
     restart: unless-stopped
     env_file: .env-compose
     volumes:
-      - ./config:/opt/app/config
-      - ./src:/opt/app/src
-      - ./.env:/app/.env:ro
       - ./public/uploads:/opt/app/public/uploads
     ports:
       - "1337:1337"
@@ -39,7 +39,7 @@ services:
     restart: unless-stopped
     env_file: .env-compose
     volumes:
-      - ./db-data:/var/lib/postgresql/data
+      - strapi-db-data:/var/lib/postgresql/data
     networks:
       - strapi
 
