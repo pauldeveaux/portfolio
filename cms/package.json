@@ -7,7 +7,7 @@
     "build": "strapi build",
     "console": "strapi console",
     "deploy": "strapi deploy",
-    "dev": "strapi develop",
+    "dev": "cross-env NODE_ENV=development dotenv -e .env.dev strapi develop",
     "develop": "strapi develop",
     "start": "strapi start",
     "strapi": "strapi",
@@ -19,6 +19,7 @@
     "@strapi/plugin-users-permissions": "5.25.0",
     "@strapi/strapi": "5.25.0",
     "better-sqlite3": "11.3.0",
+    "dotenv-cli": "^10.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
@@ -28,6 +29,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "cross-env": "^10.1.0",
     "typescript": "^5"
   },
   "engines": {
