@@ -1,5 +1,5 @@
-import type { HomepageData } from "@/types/cms/cms";
-import { getProjects } from "@/lib/cms/components/getProjects";
+import type {HomepageData} from "@/types/cms/cms";
+import {getProjects} from "@/lib/cms/components/getProjects";
 import {getHomepageSectionsData} from "@/lib/cms/singles/getHomepageSectionData";
 import {getSkills} from "@/lib/cms/components/getSkills";
 import {getExperiences} from "@/lib/cms/components/getExperiences";
@@ -11,7 +11,7 @@ import {getContactLink} from "@/lib/cms/components/getContactLink";
  * and the value is an async function returning that data.
  */
 type FetcherMap = {
-  [K in keyof HomepageData]: () => Promise<HomepageData[K]>;
+    [K in keyof HomepageData]: () => Promise<HomepageData[K]>;
 };
 
 /**
@@ -22,18 +22,19 @@ type FetcherMap = {
  * @param fetchers - Object with async fetcher functions
  * @returns Object with resolved results matching the fetchers' keys
  */
-export async function fetchAll<T extends Record<string, () => any>>(
-  fetchers: T
+export async function fetchAll<T extends Record<string, () => Promise<unknown>>>(
+    fetchers: T
 ): Promise<{ [K in keyof T]: Awaited<ReturnType<T[K]>> }> {
-  const keys = Object.keys(fetchers) as (keyof T)[];
-  const results = await Promise.all(
-    keys.map(k => (fetchers[k] as () => Promise<any>)())
-  );
+    const keys = Object.keys(fetchers) as (keyof T)[];
+    const promises = keys.map(k => fetchers[k]());
 
-  return keys.reduce((acc, key, i) => {
-    acc[key] = results[i];
-    return acc;
-  }, {} as { [K in keyof T]: Awaited<ReturnType<T[K]>> });
+    const results = await Promise.all(promises);
+
+
+    return keys.reduce((acc, key, i) => {
+        acc[key] = results[i] as Awaited<ReturnType<T[typeof key]>>;
+        return acc;
+    }, {} as { [K in keyof T]: Awaited<ReturnType<T[K]>> });
 }
 
 /**
@@ -43,13 +44,13 @@ export async function fetchAll<T extends Record<string, () => any>>(
  * @returns Complete HomepageData object
  */
 export default async function getHomepageData(): Promise<HomepageData> {
-  const fetchers: FetcherMap = {
-    sections: getHomepageSectionsData,
-    projects: getProjects,
-    skillCategories: getSkills,
-    experiences: getExperiences,
-    contactLinks: getContactLink,
-  };
+    const fetchers: FetcherMap = {
+        sections: getHomepageSectionsData,
+        projects: getProjects,
+        skillCategories: getSkills,
+        experiences: getExperiences,
+        contactLinks: getContactLink,
+    };
 
-  return fetchAll(fetchers);
+    return fetchAll(fetchers);
 }

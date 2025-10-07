@@ -1,6 +1,12 @@
 import { Project } from "@/types/cms/components";
 import { fetchCMS, getFileFullUrl } from "../fetchCMS";
 
+
+type CMSProject = Omit<Project, "markdownUrl" | "imageUrl"> & {
+  markdownFile: { url: string};
+  image: { url: string };
+}
+
 /**
  * Fetches all projects from the CMS, including their main image and optional markdown file.
  * Uses `populate=image` and `populate=markdownFile` to retrieve the related data.
@@ -9,7 +15,7 @@ import { fetchCMS, getFileFullUrl } from "../fetchCMS";
  * @returns Promise resolving to an array of `Project`.
  */
 export async function getProjects(): Promise<Project[]> {
-  const rawProjects = await fetchCMS<any>(
+  const rawProjects = await fetchCMS<CMSProject>(
     "/projects?populate=image&populate=markdownFile",
     process.env.CMS_API_KEY
   );

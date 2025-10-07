@@ -21,24 +21,34 @@ export interface PortfolioSectionProps extends SectionProps {
 }
 
 
-function calculateRows(projects: Project[], maxColumns: number) {
-    let rows: number[] = []; // chaque élément représente une ligne avec le nombre de colonnes occupées
+/**
+ * Calculates the number of rows needed to display a list of projects
+ * in a grid layout, based on each project's size and the maximum number of columns.
+ *
+ * @param projects - An array of projects to display.
+ * Each project should have a `size` property: "small", "medium", or "large".
+ * @param maxColumns - The maximum number of columns in a single row.
+ * @returns The total number of rows required to fit all projects.
+ */
+function calculateRows(projects: Project[], maxColumns: number): number {
+    const rows: number[] = [];
     let currentRow = 0;
     let colCount = 0;
 
     projects.forEach(project => {
         let span = 1;
+
+        // Determine how many columns the project card occupies
         if (project.size === "medium") span = 2;
         else if (project.size === "large") span = 3;
 
         if (colCount + span > maxColumns) {
-            // passe à la ligne suivante
             currentRow++;
             colCount = 0;
         }
 
         colCount += span;
-        rows[currentRow] = colCount; // stocke le total occupé dans la ligne
+        rows[currentRow] = colCount;
     });
 
     return rows.length;

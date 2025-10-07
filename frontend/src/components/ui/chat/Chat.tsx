@@ -45,8 +45,6 @@ export default function Chat( {defaultAIMessage}: ChatProps){
     const [waiting, setWaiting] = useState(false); // Prevent multiple sends during pending state
     const isMobile = useIsMobile(); // Custom hook to detect mobile screen
 
-    const timeoutsRef = useRef<number[]>([]); // Track pending timeouts for cleanup if needed
-
     /**
      * Scrolls chat container to the bottom.
      */
@@ -60,17 +58,6 @@ export default function Chat( {defaultAIMessage}: ChatProps){
         scrollToBottom();
     }, [messages]);
 
-    /**
-     * Adds a pending message after a short delay to simulate typing.
-     */
-    const waitingResponse = () => {
-        const typingDelayBeforeShowing = 500; // Delay in ms before showing the "typing" placeholder
-        const timeoutId = window.setTimeout(() => {
-            setMessages((prev) => [...prev, PENDING_MESSAGE]);
-        }, typingDelayBeforeShowing);
-
-        timeoutsRef.current.push(timeoutId);
-    };
 
     /**
      * Simulates an AI response by replacing the last pending message.
