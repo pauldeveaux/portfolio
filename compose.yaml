@@ -1,14 +1,17 @@
-version: '2'
+version: '3.9'
 
 services:
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    env_file:
+      - ./frontend/.env
     ports:
       - "3000:3000"
     environment:
       NODE_ENV: production
+    restart: unless-stopped
 
   strapi:
     container_name: strapi
@@ -18,23 +21,10 @@ services:
     image: strapi:latest
     restart: unless-stopped
     env_file: .env-compose
-    environment:
-      DATABASE_CLIENT: ${DATABASE_CLIENT}
-      DATABASE_HOST: strapiDB
-      DATABASE_PORT: ${DATABASE_PORT}
-      DATABASE_NAME: ${DATABASE_NAME}
-      DATABASE_USERNAME: ${DATABASE_USERNAME}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
-      APP_KEYS: ${APP_KEYS}
-      NODE_ENV: ${NODE_ENV}
     volumes:
       - ./config:/opt/app/config
       - ./src:/opt/app/src
-      - ./package.json:/opt/package.json
-      - ./yarn.lock:/opt/yarn.lock
-      - ./.env:/opt/app/.env
+      - ./.env:/app/.env:ro
       - ./public/uploads:/opt/app/public/uploads
     ports:
       - "1337:1337"
@@ -47,10 +37,7 @@ services:
     image: postgres:15
     container_name: strapiDB
     restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${DATABASE_USERNAME}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
+    env_file: .env-compose
     volumes:
       - ./db-data:/var/lib/postgresql/data
     networks:
@@ -59,3 +46,4 @@ services:
 
 networks:
   strapi:
+    driver: bridge
