@@ -28,8 +28,8 @@ export default async function HomePage() {
                 title={sections.headerTitle}
                 navLinks={[
                     {"label": "À propos", "href": "about"},
-                    {"label": "Compétences", "href": "skills"},
                     {"label": "Chat IA", "href": "chat"},
+                    {"label": "Compétences", "href": "skills"},
                     {"label": "Parcours", "href": "timeline"},
                     {"label": "Portfolio", "href": "portfolio"},
                     {"label": "Contact", "href": "contact"},
@@ -118,8 +118,8 @@ export default async function HomePage() {
                 license={sections.footerLicense}
                 navLinks={[
                     {"label": "À propos", "href": "about"},
-                    {"label": "Compétences", "href": "skills"},
                     {"label": "Chat IA", "href": "chat"},
+                    {"label": "Compétences", "href": "skills"},
                     {"label": "Parcours", "href": "timeline"},
                     {"label": "Portfolio", "href": "portfolio"},
                     {"label": "Contact", "href": "contact"},
