@@ -111,7 +111,6 @@ export default async function HomePage() {
                 contacts={contactLinks}
             />
 
-
             <FooterSection
                 id="footer"
                 className={"bg-main-3"}

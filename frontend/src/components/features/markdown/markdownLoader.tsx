@@ -13,8 +13,6 @@ import rehypeRaw from "rehype-raw";
  * @returns A `ReactNode` containing the rendered Markdown.
  */
 export function stringToReactMarkdown(markdownContent: string): ReactNode {
-    console.log(JSON.stringify(markdownContent));
-
     return (
         <div className="prose prose-inherit !max-w-full text-current markdown-content">
             <ReactMarkdown

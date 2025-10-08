@@ -29,7 +29,7 @@ export default function TextSection({ title, text, ...sectionProps }: TextSectio
             await loadMarkdown({markdown: text});
         }
         fetchMarkdown();
-    }, [text]);
+    }, [text, loadMarkdown]);
 
 
     return (

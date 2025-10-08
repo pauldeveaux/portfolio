@@ -12,6 +12,16 @@ import {Experience, ExperienceType} from "@/types/Experience";
 import useMarkdownLoader from "@/components/features/markdown/markdownLoader";
 
 
+/**
+ * Props for the `TimelineElement` component.
+ *
+ * @interface TimelineElementProps
+ * @property {Experience} experience - The timeline event data containing title, subtitle, text, date, type, and optional tags.
+ */
+interface TimelineElementProps {
+    experience: Experience;
+}
+
 /** Props for the TimelineSection component */
 interface TimelineSectionProps extends SectionProps {
     title: string;
@@ -26,11 +36,24 @@ interface TimelineTypeParameters {
 }
 
 /**
- * Creates a `VerticalTimelineElement` for a given timeline item.
- * Handles styling, icons, tags, and subtags.
+ * TimelineElement Component
+ *
+ * Renders a single event in a vertical timeline using `VerticalTimelineElement`.
+ * Handles icons, positioning, tags, subtags, and markdown content for the event.
+ *
+ * @param {TimelineElementProps} props - The component props.
+ * @param {Experience} props.experience - The data for this timeline event.
+ * @returns {JSX.Element} A vertical timeline element representing a single experience.
  */
-function createTimelineElement(props: Experience, key: React.Key) {
+function TimelineElement({ experience }: TimelineElementProps) {
     const { content, loading, loadMarkdown } = useMarkdownLoader({});
+
+        useEffect(() => {
+        async function fetchMarkdown() {
+            await loadMarkdown({markdown: experience.text});
+        }
+        fetchMarkdown();
+    }, [experience.text, loadMarkdown]);
 
     const timelineTypeIcons: Record<ExperienceType, TimelineTypeParameters> = {
         School: {icon: <GraduationCap/>, position: "left"},
@@ -40,7 +63,7 @@ function createTimelineElement(props: Experience, key: React.Key) {
         Final: {icon: <Star/>},
     };
 
-    const {icon, position, tagIcon} = timelineTypeIcons[props.type];
+    const {icon, position, tagIcon} = timelineTypeIcons[experience.type];
 
     const hoverClasses = "transition-transform duration-300 hover:scale-110 hover:shadow-xl rounded-lg";
 
@@ -52,10 +75,10 @@ function createTimelineElement(props: Experience, key: React.Key) {
     };
 
     // Special case for the final element (just the icon)
-    if (props.type === "Final") {
+    if (experience.type === "Final") {
         return (
             <VerticalTimelineElement
-                key={key}
+                key={experience.title}
                 iconClassName={hoverClasses}
                 textClassName={hoverClasses}
                 iconStyle={{
@@ -67,16 +90,9 @@ function createTimelineElement(props: Experience, key: React.Key) {
         );
     }
 
-    useEffect(() => {
-        async function fetchMarkdown() {
-            await loadMarkdown({markdown: props.text});
-        }
-        fetchMarkdown();
-    }, [props.text]);
-
     return (
         <VerticalTimelineElement
-            key={key}
+            key={experience.title}
             dateClassName="text-font-dark-2 font-medium"
             iconClassName={hoverClasses}
             contentStyle={contentStyle}
@@ -86,7 +102,7 @@ function createTimelineElement(props: Experience, key: React.Key) {
                 rootMargin: '0px 0px -40px 0px',
                 triggerOnce: false,
             }}
-            date={props.date}
+            date={experience.date}
             iconStyle={{background: "#14C5C3", color: "#fff", boxShadow: "0 0 0 6px rgba(20, 195, 193, 0.3)"}}
             icon={icon}
         >
@@ -94,19 +110,19 @@ function createTimelineElement(props: Experience, key: React.Key) {
                 {/* Tag and icon */}
                 <div className="flex items-center gap-2 mb-2">
                     {tagIcon && React.createElement(tagIcon, {size: 20})}
-                    {props.tag &&
-                        <span className="px-3 py-1 bg-white/30 rounded-full text-xs font-bold">{props.tag}</span>}
+                    {experience.tag &&
+                        <span className="px-3 py-1 bg-white/30 rounded-full text-xs font-bold">{experience.tag}</span>}
                 </div>
 
                 {/* Title, subtitle, and text */}
-                <h3 className="text-2xl font-extrabold">{props.title}</h3>
-                <h4 className="text-lg opacity-90 mt-1">{props.subtitle}</h4>
+                <h3 className="text-2xl font-extrabold">{experience.title}</h3>
+                <h4 className="text-lg opacity-90 mt-1">{experience.subtitle}</h4>
                 {loading ? <p>props.text</p> : content}
 
                 {/* Optional subtags */}
-                {props.subtags && props.subtags.length > 0 && (
+                {experience.subtags && experience.subtags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-3">
-                        {props.subtags.map((subtag, idx) => (
+                        {experience.subtags.map((subtag, idx) => (
                             <span key={idx} className="px-3 py-1 bg-white/20 rounded-full text-sm">
                                 {subtag}
                             </span>
@@ -135,7 +151,9 @@ export default function TimelineSection({title, elements, ...sectionProps}: Time
             <h2 className="text-5xl font-bold mb-20 text-center pt-16">{title}</h2>
 
             <VerticalTimeline lineColor="#107E7D" animate={!isMobile}>
-                {[...elements, finalElementProps].map((el, i) => createTimelineElement(el, i))}
+                {[...elements, finalElementProps].map((el, i) =>
+                    <TimelineElement key={i} experience={el} />
+                )}
             </VerticalTimeline>
         </Section>
     );
