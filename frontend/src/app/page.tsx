@@ -54,7 +54,7 @@ export default async function HomePage() {
                 id="about"
                 className="bg-main-4 text-font-dark-1"
                 title={sections.textSectionTitle}
-                text={sections.textSectionTitle}
+                text={sections.textSectionText}
             />
 
             < GradientStyleSeparator
