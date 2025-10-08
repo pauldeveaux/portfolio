@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
             {
                 protocol: CMS_UPLOAD_URL.startsWith("https") ? "https" : "http",
                 hostname: new URL(CMS_UPLOAD_URL).hostname,
-                port: new URL(CMS_UPLOAD_URL).port,
+                port: new URL(CMS_UPLOAD_URL).port || undefined,
                 pathname: '/uploads/**',
             },
             {

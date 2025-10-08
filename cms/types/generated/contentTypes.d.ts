@@ -454,7 +454,6 @@ export interface ApiContactLinkContactLink extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     socialMedia: Schema.Attribute.String;
-    sortOrder: Schema.Attribute.Integer;
     text: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -484,7 +483,6 @@ export interface ApiExperienceExperience extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    sortOrder: Schema.Attribute.Integer;
     subtags: Schema.Attribute.Component<'card.tag', true>;
     subtitle: Schema.Attribute.String;
     tag: Schema.Attribute.String;
@@ -566,7 +564,6 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     >;
     publishedAt: Schema.Attribute.DateTime;
     size: Schema.Attribute.Enumeration<['small', 'medium', 'large']>;
-    sortOrder: Schema.Attribute.Integer;
     tag: Schema.Attribute.Component<'card.tag', true>;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
@@ -598,7 +595,6 @@ export interface ApiSkillCategorySkillCategory
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     skills: Schema.Attribute.Relation<'oneToMany', 'api::skill.skill'>;
-    sortOrder: Schema.Attribute.Integer;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
