@@ -16,7 +16,7 @@ type CMSProject = Omit<Project, "markdownUrl" | "imageUrl"> & {
  */
 export async function getProjects(): Promise<Project[]> {
   const rawProjects = await fetchCMS<CMSProject>(
-    "/projects?populate=image&populate=markdownFile",
+    "/projects?populate=image&populate=markdownFile&sort=sortOrder",
     process.env.CMS_API_KEY
   );
 

@@ -40,6 +40,9 @@
       "type": "component",
       "component": "card.tag",
       "repeatable": true
+    },
+    "sortOrder": {
+      "type": "integer"
     }
   }
 }

@@ -9,7 +9,7 @@ type CMSContactLink = ContactLink
  * @returns A promise that resolves to an array of `ContactLink` objects.
  */
 export async function getContactLink(): Promise<ContactLink[]> {
-    const rawExperience = await fetchCMS<CMSContactLink>("/contact-links", process.env.CMS_API_KEY);
+    const rawExperience = await fetchCMS<CMSContactLink>("/contact-links?sort=sortOrder", process.env.CMS_API_KEY);
 
     const contactLinks: ContactLink[] = rawExperience.map(item => ({
         socialMedia: item.socialMedia,

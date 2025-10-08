@@ -13,7 +13,7 @@ type CMSSkill = SkillCategory
  */
 export async function getSkills(): Promise<SkillCategory[]> {
   const rawSkills = await fetchCMS<CMSSkill>(
-    "/skill-categories?populate=skills",
+    "/skill-categories?populate=skills&sort=sortOrder",
     process.env.CMS_API_KEY
   );
 

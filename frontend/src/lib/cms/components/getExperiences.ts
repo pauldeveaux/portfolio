@@ -12,7 +12,7 @@ type CMSExperience = Omit<Experience, "subtags"> & {
  * @returns A promise that resolves to an array of `Experience` objects.
  */
 export async function getExperiences(): Promise<Experience[]> {
-    const rawExperience = await fetchCMS<CMSExperience>("/experiences?populate=subtags", process.env.CMS_API_KEY);
+    const rawExperience = await fetchCMS<CMSExperience>("/experiences?populate=subtags&sort=sortOrder", process.env.CMS_API_KEY);
 
     console.log(rawExperience)
 
