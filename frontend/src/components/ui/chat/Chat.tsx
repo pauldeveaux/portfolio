@@ -73,7 +73,7 @@ export default function Chat( {defaultAIMessage}: ChatProps){
                 if (newMessages[pendingIndex]?.type === "pending") {
                     newMessages[pendingIndex] = {
                         type: "ai",
-                        text: "Réponse automatique de l'IA",
+                        text: "🚧 Je ne suis pas encore disponible pour le moment 🚧",
                     };
                 }
 
