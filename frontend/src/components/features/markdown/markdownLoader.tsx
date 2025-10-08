@@ -1,4 +1,4 @@
-import {ReactNode, useState} from "react";
+import {ReactNode, useCallback, useState} from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -81,51 +81,54 @@ export default function useMarkdownLoader({
      *
      * @param params - Object containing optional `markdownUrl` and/or `markdown`.
      */
-    const loadMarkdown = async ({
-                                    markdownUrl,
-                                    markdown,
-                                }: {
-        markdownUrl?: string;
-        markdown?: string;
-    }) => {
-        if (markdown) {
-            setContent(stringToReactMarkdown(markdown));
-            setLoading(false);
-            setError(false);
-            return;
-        }
+    const loadMarkdown = useCallback(
+        async ({
+                   markdownUrl,
+                   markdown,
+               }: {
+            markdownUrl?: string;
+            markdown?: string;
+        }) => {
+            if (markdown) {
+                setContent(stringToReactMarkdown(markdown));
+                setLoading(false);
+                setError(false);
+                return;
+            }
 
-        const urlToFetch = markdownUrl || fallbackUrl;
-        setLoading(true);
+            const urlToFetch = markdownUrl || fallbackUrl;
+            setLoading(true);
 
-        try {
-            const res = await fetch(urlToFetch);
-            if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-            const text = await res.text();
-            setContent(stringToReactMarkdown(text));
-            setError(false);
-        } catch (err) {
-            console.error(err);
-            setError(true);
+            try {
+                const res = await fetch(urlToFetch);
+                if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
+                const text = await res.text();
+                setContent(stringToReactMarkdown(text));
+                setError(false);
+            } catch (err) {
+                console.error(err);
+                setError(true);
 
-            if (urlToFetch !== fallbackUrl) {
-                try {
-                    const resFallback = await fetch(fallbackUrl);
-                    if (!resFallback.ok)
-                        throw new Error(`Failed to fetch fallback: ${resFallback.status}`);
-                    const textFallback = await resFallback.text();
-                    setContent(stringToReactMarkdown(textFallback));
-                } catch (errFallback) {
-                    console.error(errFallback);
+                if (urlToFetch !== fallbackUrl) {
+                    try {
+                        const resFallback = await fetch(fallbackUrl);
+                        if (!resFallback.ok)
+                            throw new Error(`Failed to fetch fallback: ${resFallback.status}`);
+                        const textFallback = await resFallback.text();
+                        setContent(stringToReactMarkdown(textFallback));
+                    } catch (errFallback) {
+                        console.error(errFallback);
+                        setContent(<p>Error while loading …</p>);
+                    }
+                } else {
                     setContent(<p>Error while loading …</p>);
                 }
-            } else {
-                setContent(<p>Error while loading …</p>);
+            } finally {
+                setLoading(false);
             }
-        } finally {
-            setLoading(false);
-        }
-    };
+        },
+        [fallbackUrl]
+    );
 
     return {content, loading, error, loadMarkdown};
 }

@@ -14,8 +14,6 @@ type CMSExperience = Omit<Experience, "subtags"> & {
 export async function getExperiences(): Promise<Experience[]> {
     const rawExperience = await fetchCMS<CMSExperience>("/experiences?populate=subtags&sort=sortOrder", process.env.CMS_API_KEY);
 
-    console.log(rawExperience)
-
     const experiences: Experience[] = rawExperience.map(item => ({
         title: item.title,
         subtitle: item.subtitle,
