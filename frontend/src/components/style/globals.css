@@ -7,6 +7,19 @@
   --foreground: #171717;
 }*/
 
+.markdown-content {
+  font-size: inherit; /* hérite de la taille du parent */
+    line-height: 1.5;
+
+}
+
+.markdown-content p,
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content li {
+  margin: 0.5em 0;
+}
 
 @theme {
     --color-main-1: #14A3A2;

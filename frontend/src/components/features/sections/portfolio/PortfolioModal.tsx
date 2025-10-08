@@ -94,7 +94,7 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
                             />
 
                             {/* Markdown content */}
-                            <div className="prose !max-w-none mb-4">
+                            <div className="!max-w-none mb-4">
                                 {markdownNode}
                             </div>
                         </div>

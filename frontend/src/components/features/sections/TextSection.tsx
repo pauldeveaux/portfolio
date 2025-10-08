@@ -42,7 +42,7 @@ export default function TextSection({ title, text, ...sectionProps }: TextSectio
 
                 {/* Text content */}
                 <div className="text-lg whitespace-pre-line sm:max-w-7xl">
-                    {loading ? text : content}
+                    {loading ? <p>text</p> : content}
                 </div>
             </div>
         </Section>
