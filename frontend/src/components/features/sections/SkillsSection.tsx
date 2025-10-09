@@ -75,7 +75,7 @@ export default function SkillsSection({title, categories, ...sectionProps}: Skil
 
                     {/* Category tabs */}
                     <div
-                        className="flex space-x-4 mx-1 px-2 sm:mx-6 overflow-auto scrollbar-hide"
+                        className="flex space-x-4 mx-1 px-2 sm:mx-6 overflow-x-auto overflow-y-hidden scrollbar-hide"
                         ref={scrollContainerRef}
                     >
                         {categories.map((category, index) => (
