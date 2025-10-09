@@ -89,6 +89,7 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
                                 alt={title}
                                 width={800}
                                 height={400}
+                                unoptimized={true}
                                 onError={() => setImageError(true)}
                                 className="w-full max-h-[50vh] object-contain mb-4 rounded-lg border border-button-light-2 shadow-md"
                             />

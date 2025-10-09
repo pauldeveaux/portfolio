@@ -61,6 +61,7 @@ export default function PortfolioCard({
                     alt={title}
                     width={800}
                     height={400}
+                    unoptimized={true}
                     onError={() => setImageError(true)}
                     className="w-full h-56 object-cover"
                 />
