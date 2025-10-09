@@ -21,8 +21,6 @@ export async function getProjects(): Promise<Project[]> {
     process.env.CMS_API_KEY
   );
 
-  console.log(rawProjects)
-
   const projects: Project[] = rawProjects.map(item => ({
     title: item.title,
     description: item.description,

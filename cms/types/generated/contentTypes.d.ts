@@ -444,6 +444,8 @@ export interface ApiContactLinkContactLink extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    download: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    file: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     imageUrl: Schema.Attribute.String;
     link: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;

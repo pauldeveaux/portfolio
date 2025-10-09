@@ -9,10 +9,11 @@ import {ContactLink} from "@/types/ContactLink";
  * Includes an image (logo) and a text label.
  * Uses ExternalLink for safe external navigation (target="_blank" + rel="noopener noreferrer").
  */
-export default function ContactLinkButton({ socialMedia, imageUrl, text, link }: ContactLink) {
+export default function ContactLinkButton({ socialMedia, imageUrl, text, link, download }: ContactLink) {
     return (
         <ExternalLink
             href={link}
+            download={download}
             className="
                 flex items-center gap-3
                 w-full sm:w-auto

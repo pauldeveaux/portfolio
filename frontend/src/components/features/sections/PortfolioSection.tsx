@@ -36,7 +36,6 @@ function calculateRows(projects: Project[], maxColumns: number): number {
     let colCount = 0;
 
     projects.forEach(project => {
-        console.log(project.tags)
         let span = 1;
 
         // Determine how many columns the project card occupies

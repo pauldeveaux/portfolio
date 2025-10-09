@@ -22,6 +22,7 @@ interface ContactSectionProps extends SectionProps {
  * Renders a section with a title, a list of contact links, and a contact form.
  */
 export default function ContactSection({ title, contacts, ...sectionProps }: ContactSectionProps) {
+
     return (
         <Section
             {...sectionProps}

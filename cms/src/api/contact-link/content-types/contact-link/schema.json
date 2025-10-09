@@ -20,11 +20,45 @@
     "text": {
       "type": "string"
     },
-    "link": {
-      "type": "string"
+    "download": {
+      "type": "boolean",
+      "default": false
     },
     "sortOrder": {
       "type": "integer"
+    },
+    "link": {
+      "type": "string",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "download"
+            },
+            false
+          ]
+        }
+      }
+    },
+    "file": {
+      "type": "media",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "download"
+            },
+            true
+          ]
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }
