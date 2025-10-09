@@ -14,7 +14,8 @@ FROM node:22.19.0-alpine AS final
 WORKDIR /usr/src/app
 ENV NODE_ENV=production
 
-RUN mkdir -p /usr/src/app && chown -R node:node /usr/src/app
+RUN mkdir -p /usr/src/app/.next/cache/images \
+    && chown -R node:node /usr/src/app
 USER node
 
 COPY --from=base /usr/src/app/package*.json ./

@@ -3,7 +3,6 @@ import type {NextConfig} from "next";
 
 const CMS_UPLOAD_URL = process.env.CMS_API_URL || "http://localhost:1337";
 
-
 const nextConfig: NextConfig = {
     images: {
         remotePatterns: [
