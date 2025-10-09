@@ -28,9 +28,9 @@ WORKDIR /app
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app ./
 
-# Réparer les permissions
-RUN chown -R node:node /app
-USER node
+RUN mkdir -p /app/public/uploads
+
+USER root
 
 EXPOSE 1337
 CMD ["yarn", "start"]

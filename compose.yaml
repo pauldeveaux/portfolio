@@ -25,7 +25,7 @@ services:
     restart: unless-stopped
     env_file: .env-compose
     volumes:
-      - ./public/uploads:/opt/app/public/uploads
+      - ./public/uploads:/app/public/uploads
     ports:
       - "1337:1337"
     networks:
