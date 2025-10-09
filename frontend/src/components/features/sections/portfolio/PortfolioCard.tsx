@@ -69,9 +69,9 @@ export default function PortfolioCard({
                 {/* Title, description, and tags */}
                 <div className="p-4 flex flex-col flex-grow">
                     <h3 className="text-lg font-semibold mb-2">{title}</h3>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-5">
                         <p className="text-font-dark-2 italic">{description}</p>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                             {tags && tags.map((tag, idx) => (
                                 <span
                                     key={idx}
