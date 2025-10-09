@@ -75,18 +75,20 @@ export default function SkillsSection({title, categories, ...sectionProps}: Skil
 
                     {/* Category tabs */}
                     <div
-                        className="flex space-x-4 mx-3 sm:mx-6 overflow-auto scrollbar-hide"
+                        className="flex space-x-4 mx-1 px-2 sm:mx-6 overflow-auto scrollbar-hide"
                         ref={scrollContainerRef}
                     >
                         {categories.map((category, index) => (
                             <button
                                 key={category.title}
-                                ref={(el) => {categoryButtonRefs.current[index] = el;}}
+                                ref={(el) => {
+                                    categoryButtonRefs.current[index] = el;
+                                }}
                                 onClick={() => setActiveIndex(index)}
-                                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 hover:cursor-pointer ${
+                                className={`px-6 py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 hover:cursor-pointer whitespace-nowrap ${
                                     index === activeIndex
-                                        ? 'bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-font-light-1 shadow-lg'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        ? "bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-white shadow-md scale-105"
+                                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                 }`}
                             >
                                 {category.title}
