@@ -33,13 +33,13 @@ export default function CarouselCard({name, description}: CarouselCardProps) {
 
     return (
         <motion.div
-            className="bg-white h-full flex flex-col flex-shrink-0 items-center text-center w-64 rounded-xl shadow-lg text-xl font-semibold"
+            className="bg-white h-full flex flex-col flex-shrink-0 items-center text-center w-64 rounded-xl shadow-lg text-xl"
             whileHover={{scale: 1.1}}
             transition={{type: "spring", stiffness: 300}}
         >
             <h3 className="font-semibold text-xl m-4 text-black">{name}</h3>
             {description && (
-                <div className="text-sm text-gray-500 mx-5 my-3 overflow-auto">
+                <div className="text-sm text-gray-500 mx-5 mb-3 overflow-auto">
                     {loading ? <p>text</p> : content}
                 </div>
             )}
