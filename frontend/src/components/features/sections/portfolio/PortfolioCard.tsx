@@ -1,5 +1,5 @@
-import { motion } from "motion/react";
-import { useState } from "react";
+import {motion} from "motion/react";
+import {useState} from "react";
 import Image from "next/image";
 import PortfolioModal from "@/components/features/sections/portfolio/PortfolioModal";
 import useMarkdownLoader from "@/components/features/markdown/markdownLoader";
@@ -13,24 +13,24 @@ import {Project} from "@/types/Project";
  * When clicked, opens a modal with more details and lazy-loaded Markdown content.
  */
 export default function PortfolioCard({
-    title,
-    imageUrl,
-    description,
-    tags,
-    className,
-    size="small",
-    markdownUrl,
-    markdown
-}: Project) {
+                                          title,
+                                          imageUrl,
+                                          description,
+                                          tags,
+                                          className,
+                                          size = "small",
+                                          markdownUrl,
+                                          markdown
+                                      }: Project) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [imageError, setImageError] = useState(false);
 
     // Lazy-load Markdown content when modal is opened
-    const { content, loading, loadMarkdown } = useMarkdownLoader({});
+    const {content, loading, loadMarkdown} = useMarkdownLoader({});
 
     const fallBackUrl = "/images/fallback.png";
     const hoverScale = {
-        small : 1.02,
+        small: 1.02,
         medium: 1.015,
         large: 1.01
     }
@@ -52,8 +52,8 @@ export default function PortfolioCard({
                 overflow-hidden shadow-xl bg-main-5 hover:shadow-lg p-1 hover:cursor-pointer
                 transition-shadow duration-300 w-full ${className}`}
                 onClick={openModal}
-                whileHover={{ scale: hoverScale[size] }}
-                transition={{ duration: 0.3 }}
+                whileHover={{scale: hoverScale[size]}}
+                transition={{duration: 0.3}}
             >
                 {/* Project image with fallback */}
                 <Image
@@ -75,7 +75,7 @@ export default function PortfolioCard({
                             {tags && tags.map((tag, idx) => (
                                 <span
                                     key={idx}
-                                    className="text-sm px-2 py-1 rounded-full bg-main-5 text-font-dark-2 shadow-xl"
+                                    className="text-sm px-3 py-1 rounded-full bg-button-light-accent/80 text-font-light-1 shadow-xl"
                                 >
                                     {tag}
                                 </span>

@@ -2,9 +2,10 @@ import { Project } from "@/types/cms/components";
 import { fetchCMS, getFileFullUrl } from "../fetchCMS";
 
 
-type CMSProject = Omit<Project, "markdownUrl" | "imageUrl"> & {
+type CMSProject = Omit<Project, "markdownUrl" | "imageUrl" | "tags"> & {
   markdownFile: { url: string};
   image: { url: string };
+  tags?: {name: string }[];
 }
 
 /**
@@ -16,9 +17,11 @@ type CMSProject = Omit<Project, "markdownUrl" | "imageUrl"> & {
  */
 export async function getProjects(): Promise<Project[]> {
   const rawProjects = await fetchCMS<CMSProject>(
-    "/projects?populate=image&populate=markdownFile&sort=sortOrder",
+    "/projects?populate=image&populate=markdownFile&sort=sortOrder&populate=tags",
     process.env.CMS_API_KEY
   );
+
+  console.log(rawProjects)
 
   const projects: Project[] = rawProjects.map(item => ({
     title: item.title,
@@ -27,6 +30,7 @@ export async function getProjects(): Promise<Project[]> {
     markdown: item.markdown,
     markdownUrl: item.markdownFile?.url ? getFileFullUrl(item.markdownFile.url) : undefined,
     imageUrl: item.image?.url ? getFileFullUrl(item.image.url) : "/placeholder.png",
+    tags: item.tags?.map(tag => tag.name)
   }));
 
   return projects;

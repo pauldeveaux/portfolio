@@ -567,7 +567,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     size: Schema.Attribute.Enumeration<['small', 'medium', 'large']>;
     sortOrder: Schema.Attribute.Integer;
-    tag: Schema.Attribute.Component<'card.tag', true>;
+    tags: Schema.Attribute.Component<'card.tag', true>;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
