@@ -1,8 +1,8 @@
 "use client";
-import Section, { SectionProps } from "@/components/ui/layout/Section";
+import Section, {SectionProps} from "@/components/ui/layout/Section";
 import Carousel from "@/components/ui/carousel/Carousel";
-import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {useRef, useState} from "react";
+import {ChevronLeft, ChevronRight} from "lucide-react";
 import {SkillCategory} from "@/types/Skill";
 
 /**
@@ -22,18 +22,41 @@ interface SkillSectionProps extends SectionProps {
  * Displays multiple skill categories as a horizontal carousel.
  * Users can navigate between categories using buttons or the category tabs.
  */
-export default function SkillsSection({ title, categories, ...sectionProps }: SkillSectionProps) {
+export default function SkillsSection({title, categories, ...sectionProps}: SkillSectionProps) {
     const [activeIndex, setActiveIndex] = useState(0);
     const activeCategory = categories[activeIndex];
 
+    const scrollContainerRef = useRef<HTMLDivElement | null>(null)
+    const categoryButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+    const scrollToActiveCategory = (index: number) => {
+        const button = categoryButtonRefs.current[index];
+        const container = scrollContainerRef.current;
+        if (button && container) {
+            button.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "center",
+            });
+        }
+    };
+
     // Navigate to previous category (wrap around)
     const prevCategory = () => {
-        setActiveIndex((prevIndex) => (prevIndex === 0 ? categories.length - 1 : prevIndex - 1));
+        setActiveIndex((prevIndex) => {
+            const newIndex = prevIndex === 0 ? categories.length - 1 : prevIndex - 1;
+            scrollToActiveCategory(newIndex);
+            return newIndex;
+        });
     };
 
     // Navigate to next category (wrap around)
     const nextCategory = () => {
-        setActiveIndex((prevIndex) => (prevIndex === categories.length - 1 ? 0 : prevIndex + 1));
+        setActiveIndex((prevIndex) => {
+            const newIndex = prevIndex === categories.length - 1 ? 0 : prevIndex + 1;
+            scrollToActiveCategory(newIndex);
+            return newIndex;
+        });
     };
 
     return (
@@ -47,14 +70,18 @@ export default function SkillsSection({ title, categories, ...sectionProps }: Sk
                         onClick={prevCategory}
                         className="p-2 text-button-light-1 hover:text-button-light-accent transition-colors duration-200 hover:cursor-pointer"
                     >
-                        <ChevronLeft size={24} />
+                        <ChevronLeft size={24}/>
                     </button>
 
                     {/* Category tabs */}
-                    <div className="flex space-x-4 mx-8">
+                    <div
+                        className="flex space-x-4 mx-3 sm:mx-6 overflow-auto scrollbar-hide"
+                        ref={scrollContainerRef}
+                    >
                         {categories.map((category, index) => (
                             <button
                                 key={category.title}
+                                ref={(el) => {categoryButtonRefs.current[index] = el;}}
                                 onClick={() => setActiveIndex(index)}
                                 className={`px-6 py-3 rounded-full font-medium transition-all duration-300 hover:cursor-pointer ${
                                     index === activeIndex
@@ -71,13 +98,13 @@ export default function SkillsSection({ title, categories, ...sectionProps }: Sk
                         onClick={nextCategory}
                         className="p-2 text-button-light-1 hover:text-button-light-accent transition-colors duration-200 hover:cursor-pointer"
                     >
-                        <ChevronRight size={24} />
+                        <ChevronRight size={24}/>
                     </button>
                 </div>
 
                 {/* Carousel displaying active category skills */}
                 <div className="mb-12">
-                    <Carousel cards={activeCategory.skills} />
+                    <Carousel cards={activeCategory.skills}/>
                 </div>
             </div>
         </Section>
