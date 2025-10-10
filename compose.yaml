@@ -2,6 +2,7 @@ version: '3.9'
 
 volumes:
   strapi-db-data: {}
+  strapi-upload-data: {}
 
 services:
   frontend:
@@ -25,7 +26,7 @@ services:
     restart: unless-stopped
     env_file: .env-compose
     volumes:
-      - ./public/uploads:/app/public/uploads
+      - strapi-upload-data:/app/public/uploads
     ports:
       - "1337:1337"
     networks:
