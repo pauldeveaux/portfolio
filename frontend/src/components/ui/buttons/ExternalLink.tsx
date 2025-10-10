@@ -6,8 +6,6 @@ interface ExternalLinkProps {
     children: React.ReactNode;
     /** Optional additional CSS classes */
     className?: string;
-    /** Force download instead of opening in a new tab */
-    download?: boolean;
 }
 
 /**
@@ -16,14 +14,13 @@ interface ExternalLinkProps {
  * Renders an anchor tag that opens in a new tab safely using
  * `rel="noopener noreferrer"` to prevent security risks.
  */
-export default function ExternalLink({ href, children, className, download }: ExternalLinkProps) {
+export default function ExternalLink({ href, children, className }: ExternalLinkProps) {
 
     return (
         <a
             href={href}
-            target={download ? "_self" : "_blank"}
-            rel={download ? undefined : "noopener noreferrer"}
-            download={download}
+            target={"_blank"}
+            rel={"noopener noreferrer"}
             className={className}
         >
             {children}

@@ -9,6 +9,4 @@ export interface ContactLink {
     text: string;
     /** URL to navigate to when clicked */
     link: string;
-    /** If the link must be downloaded */
-    download: boolean;
 }

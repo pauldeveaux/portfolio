@@ -17,10 +17,7 @@ export async function getContactLink(): Promise<ContactLink[]> {
         socialMedia: item.socialMedia,
         imageUrl: item.imageUrl,
         text: item.text,
-        link: item.download
-        ? getFileFullUrl(item.file.url)
-        : item.link,
-        download: item.download,
+        link: item.file ? getFileFullUrl(item.file.url) : item.link,
     }));
 
     return contactLinks;
