@@ -49,10 +49,12 @@ export default function ContactForm() {
 
         try {
             const res = await sendEmail(formData);
-            setSuccessMessage(res.message)
+            console.log(res.message)
+            setSuccessMessage("Votre email a bien été envoyé !")
             setFormData({firstName: "", lastName: "", email: "", message: ""});
         } catch (err: any) {
-            setErrorMessage(err.message || "Something went wrong");
+            console.error(err.message)
+            setErrorMessage("Erreur lors de l'envoi de l'email");
         } finally {
             setLoading(false);
         }
@@ -109,15 +111,49 @@ export default function ContactForm() {
 
             <motion.button
                 type="submit"
-                whileHover={{scale: 1.05}} // subtle grow on hover
-                whileTap={{scale: 0.95}}   // shrink slightly on click
-                className="bg-main-3 text-font-light-1 w-full py-2 px-4 rounded-md transition-colors hover:cursor-pointer"
+                disabled={loading}
+                whileHover={{scale: loading ? 1 : 1.05}}
+                whileTap={{scale: loading ? 1 : 0.95}}
+                className={`bg-main-3 text-font-light-1 w-full py-2 px-4 rounded-md transition-colors 
+                ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:cursor-pointer'}`}
             >
-                Envoyer
+                {loading ? (
+                    <div className="flex items-center justify-center gap-2">
+                        <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor"
+                                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                        </svg>
+                        Sending...
+                    </div>
+                ) : (
+                    "Envoyer"
+                )}
             </motion.button>
 
-            {successMessage && <p className="text-green-500 mt-2">{successMessage}</p>}
-            {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
+            {successMessage && (
+                <motion.div
+                    initial={{opacity: 0, y: -10}}
+                    animate={{opacity: 1, y: 0}}
+                    exit={{opacity: 0, y: -10}}
+                    className="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-md mt-4"
+                >
+                    {successMessage}
+                </motion.div>
+            )}
+
+            {errorMessage && (
+                <motion.div
+                    initial={{opacity: 0, y: -10}}
+                    animate={{opacity: 1, y: 0}}
+                    exit={{opacity: 0, y: -10}}
+                    className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-md mt-4"
+                >
+                    {errorMessage}
+                </motion.div>
+            )}
         </motion.form>
     );
 }
