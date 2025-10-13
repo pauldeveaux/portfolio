@@ -1,6 +1,8 @@
-def main():
-    print("Hello from backend!")
+from fastapi import FastAPI
+from api import main_router
 
 
-if __name__ == "__main__":
-    main()
+
+
+app = FastAPI(title="Portfolio API")
+app.include_router(main_router, prefix="/api")
