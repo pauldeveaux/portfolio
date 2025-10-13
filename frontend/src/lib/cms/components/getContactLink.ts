@@ -1,7 +1,7 @@
 import {fetchCMS, getFileFullUrl} from "../fetchCMS";
-import { ContactLink } from "@/types/ContactLink";
+import { Contact } from "@/types/Contact";
 
-type CMSContactLink = ContactLink & {
+type CMSContactLink = Contact & {
     file: { url: string };
 }
 
@@ -10,10 +10,10 @@ type CMSContactLink = ContactLink & {
  *
  * @returns A promise that resolves to an array of `ContactLink` objects.
  */
-export async function getContactLink(): Promise<ContactLink[]> {
+export async function getContactLink(): Promise<Contact[]> {
     const rawContactLink = await fetchCMS<CMSContactLink>("/contact-links?sort=sortOrder&populate=file", process.env.CMS_API_KEY);
 
-    const contactLinks: ContactLink[] = rawContactLink.map(item => ({
+    const contactLinks: Contact[] = rawContactLink.map(item => ({
         socialMedia: item.socialMedia,
         imageUrl: item.imageUrl,
         text: item.text,

@@ -4,18 +4,18 @@ import Section, { SectionProps } from "@/components/ui/layout/Section";
 import ContactLinkButton from "@/components/ui/contact/ContactLinkButton";
 import ContactForm from "@/components/ui/contact/ContactForm";
 import clsx from "clsx";
-import {ContactLink} from "@/types/ContactLink";
+import {Contact} from "@/types/Contact";
 
 /**
  * Props for the ContactSection component.
  *
  * @extends SectionProps - Inherits props from Section.
  * @property {string} title - Section title.
- * @property {Array<ContactLink>} contacts - List of contact links to display.
+ * @property {Array<Contact>} contacts - List of contact links to display.
  */
 interface ContactSectionProps extends SectionProps {
     title: string;
-    contacts: Array<ContactLink>;
+    contacts: Array<Contact>;
 }
 
 /**
