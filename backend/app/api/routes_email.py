@@ -1,6 +1,6 @@
 from smtplib import SMTPException
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from app.services.email_service import send_email
 
 router = APIRouter(prefix="/email", tags=["Email"])
@@ -16,8 +16,8 @@ class ContactForm(BaseModel):
         email (EmailStr): Sender's email address.
         message (str): Message content.
     """
-    first_name: str
-    last_name: str
+    first_name: str = Field(..., alias="firstName")
+    last_name: str = Field(..., alias="lastName")
     email: EmailStr
     message: str
 
@@ -56,7 +56,7 @@ def contact(form: ContactForm):
         dict: Success message if the email is sent.
     """
     try:
-        subject = f"Message from '{form.first_name} {form.last_name}'"
+        subject = f"Portfolio - Message from '{form.first_name} {form.last_name}'"
         body = f"From : {form.first_name} {form.last_name} <{form.email}>\n\n{form.message}"
         send_email(subject, form.email, body)
         return {"message": "Email sent successfully!"}

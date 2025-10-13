@@ -4,7 +4,7 @@ from email.message import EmailMessage
 from app.core.config import settings
 
 
-def send_email(subject: str, sender:str, body:str, recipient: str = None):
+def send_email(subject: str, sender: str, body: str, recipient: str = None):
     """
     Send an email via SMTP.
 

@@ -5,6 +5,8 @@ class Settings(BaseSettings):
     """
     Application configuration loaded from environment variables.
     """
+    FRONTEND_ORIGIN: str = "http://localhost:3000"
+
     EMAIL_HOST: str
     EMAIL_PORT: int
     EMAIL_USER: str
