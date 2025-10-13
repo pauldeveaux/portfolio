@@ -52,9 +52,14 @@ export default function ContactForm() {
             console.log(res.message)
             setSuccessMessage("Votre email a bien été envoyé !")
             setFormData({firstName: "", lastName: "", email: "", message: ""});
-        } catch (err: any) {
-            console.error(err.message)
-            setErrorMessage("Erreur lors de l'envoi de l'email");
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                console.error(err.message);
+                setErrorMessage("Erreur lors de l'envoi de l'email");
+            } else {
+                console.error(err);
+                setErrorMessage("Erreur inconnue lors de l'envoi de l'email");
+            }
         } finally {
             setLoading(false);
         }

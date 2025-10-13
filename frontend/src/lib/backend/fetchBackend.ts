@@ -1,7 +1,7 @@
 
 export interface FetchBackendOptions {
     method?: 'GET' | 'POST';
-    body?: any;
+    body?: unknown;
     headers?: Record<string, string>
 }
 
@@ -11,7 +11,6 @@ export async function fetchBackend<T>(
 ): Promise<T> {
     const backend_url = process.env.NEXT_PUBLIC_BACKEND_API_URL;
     const { method = 'GET', body, headers = {}} = options;
-
 
     const res = await fetch(`${backend_url}${endpoint}`,
         {

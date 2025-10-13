@@ -6,7 +6,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from api import main_router
+from app.api import main_router
 from app.core.config import settings
 
 app = FastAPI(title="Portfolio API")

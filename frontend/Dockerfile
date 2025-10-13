@@ -7,6 +7,7 @@ RUN npm ci
 
 # Copy app and build
 COPY . .
+
 RUN npm run build
 
 # Production image
