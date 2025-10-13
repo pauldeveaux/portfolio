@@ -52,7 +52,10 @@ export function BurgerMenu({ navLinks }: BurgerMenuProps) {
         <div className="relative">
             {/* Burger button */}
             <button
-                onClick={() => setOpen(!open)}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setOpen(!open)
+                }}
                 className="p-2 rounded-md focus:outline-none z-50 relative hover:cursor-pointer"
             >
                 {open ? <X size={24} /> : <Menu size={24} />}
