@@ -1,6 +1,6 @@
 import ExternalLink from "@/components/ui/buttons/ExternalLink";
 import Image from "next/image";
-import {ContactLink} from "@/types/ContactLink";
+import {Contact} from "@/types/Contact";
 
 /**
  * ContactLink component.
@@ -9,7 +9,7 @@ import {ContactLink} from "@/types/ContactLink";
  * Includes an image (logo) and a text label.
  * Uses ExternalLink for safe external navigation (target="_blank" + rel="noopener noreferrer").
  */
-export default function ContactLinkButton({ socialMedia, imageUrl, text, link }: ContactLink) {
+export default function ContactLinkButton({ socialMedia, imageUrl, text, link }: Contact) {
     return (
         <ExternalLink
             href={link}

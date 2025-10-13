@@ -1,17 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
-import React, { useState } from "react";
+import {motion} from "framer-motion";
+import React, {useState} from "react";
+import {sendEmail} from "@/lib/backend/email";
+import {ContactFormData} from "@/types/Contact";
 
-/**
- * Represents the data structure of the contact form.
- */
-interface ContactFormData {
-    firstName: string;
-    lastName: string;
-    email: string;
-    message: string;
-}
 
 /**
  * ContactForm component.
@@ -29,13 +22,18 @@ export default function ContactForm() {
         message: "",
     });
 
+    const [loading, setLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+
     /**
      * Updates the corresponding field in the form state when input changes.
      * @param e - Change event from an input or textarea
      */
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const {name, value} = e.target;
+        setFormData({...formData, [name]: value});
     };
 
     /**
@@ -43,18 +41,29 @@ export default function ContactForm() {
      * Currently logs form data to the console.
      * @param e - Form submit event
      */
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Form submitted:", formData);
-        // TODO: Integrate with backend or email service
+        setLoading(true);
+        setSuccessMessage(null);
+        setErrorMessage(null);
+
+        try {
+            const res = await sendEmail(formData);
+            setSuccessMessage(res.message)
+            setFormData({firstName: "", lastName: "", email: "", message: ""});
+        } catch (err: any) {
+            setErrorMessage(err.message || "Something went wrong");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <motion.form
             onSubmit={handleSubmit}
-            initial={{ opacity: 0, y: 20 }} // slide up + fade in animation
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{opacity: 0, y: 20}} // slide up + fade in animation
+            animate={{opacity: 1, y: 0}}
+            transition={{duration: 0.5}}
             className="px-7 w-full max-w-3xl mx-auto mt-12 space-y-4 sm:px-4"
         >
             <div className="flex flex-col sm:flex-row gap-4">
@@ -100,12 +109,15 @@ export default function ContactForm() {
 
             <motion.button
                 type="submit"
-                whileHover={{ scale: 1.05 }} // subtle grow on hover
-                whileTap={{ scale: 0.95 }}   // shrink slightly on click
+                whileHover={{scale: 1.05}} // subtle grow on hover
+                whileTap={{scale: 0.95}}   // shrink slightly on click
                 className="bg-main-3 text-font-light-1 w-full py-2 px-4 rounded-md transition-colors hover:cursor-pointer"
             >
                 Envoyer
             </motion.button>
+
+            {successMessage && <p className="text-green-500 mt-2">{successMessage}</p>}
+            {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
         </motion.form>
     );
 }
