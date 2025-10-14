@@ -59,6 +59,12 @@ export default function Chat({defaultAIMessage}: ChatProps) {
     }, [messages]);
 
 
+    /**
+     * Replace pending message by an AI answer
+     *
+     * @param answerMessage - The message that will replace the pending message
+     * @param pendingIndex - The index of the pending message to replace
+     */
     const replacePendingMessageByAnswer = (answerMessage: string, pendingIndex: number) => {
         setMessages((prev) => {
                 const newMessages = [...prev];
@@ -92,6 +98,12 @@ export default function Chat({defaultAIMessage}: ChatProps) {
     };
 
 
+    /**
+     * Send a message to the backend to get an answer
+     *
+     * @param message - Message to send to the backend
+     * @param pendingIndex - Index of the pending message to replace
+     */
     const sendMessage = async (message: string, pendingIndex: number) => {
         setWaiting(true);
 
