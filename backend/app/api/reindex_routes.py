@@ -1,22 +1,38 @@
 import logging
 import traceback
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 from app.core.config import settings
 from app.services.rag.cms_service import CMSService
+from app.services.rag.embedding_service import EmbeddingDBService
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/rag", tags=["rag"])
 cms = CMSService(cms_api_url=settings.CMS_API_URL, api_key=settings.CMS_API_KEY)
+embedding_db = EmbeddingDBService()
 
+# TODO CHANGE GET TO POST
+# TODO DOC
 @router.get("/reindex")
 async def reindex():
     try:
-        docs = cms.fetch_all()
-        doc = cms.fetch_document("experiences", "bl4l109kmttkyebed5hzmr9w", title_key="title", content_key="text")
-        print("doc", doc)
+        documents = cms.fetch_all()
+        nb_chunks = embedding_db.add_documents(documents)
+
+        return {"status": "success", "indexed_documents": nb_chunks}
     except Exception as e:
-        logger.error("Erreur lors de la réindexation : %s", traceback.format_exc())
+        logger.error("Error while indexing : %s", traceback.format_exc())
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/search")
+async def search_document_by_similarity(query: str = Query(..., description="Texte à rechercher"),):
+    try:
+        results = embedding_db.similarity_search(query=query, k=10)
+        # On peut renvoyer seulement le texte + métadatas
+        response = [{"text": r.page_content, "metadata": r.metadata} for r in results]
+        return {"results": response}
+    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

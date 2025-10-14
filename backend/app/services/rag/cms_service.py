@@ -1,17 +1,8 @@
 from datetime import datetime
-from typing import List, Dict, Union, Optional
+from typing import List, Union, Optional
 import requests
-from pydantic import BaseModel
 
-from app.utils.text_cleaner import clean_text
-
-
-class DocumentModel(BaseModel):
-    """Represents a single document fetched and cleaned from the CMS."""
-
-    id: str
-    text: str
-    updated_at: Optional[datetime]
+from app.models.document_model import DocumentModel
 
 
 class CMSService:
@@ -95,9 +86,8 @@ class CMSService:
             content = str(cms_document.get(content_key, "")).strip()
 
         text = f"{title}\n\n{content}"
-        text = clean_text(text)
 
-        return DocumentModel(id=doc_id, text=text, updated_at=updated_at)
+        return DocumentModel(id=doc_id, title=title, text=text, updated_at=updated_at)
 
     def _fetch_table(
         self,
