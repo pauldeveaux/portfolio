@@ -7,6 +7,9 @@ class Settings(BaseSettings):
     """
     FRONTEND_ORIGIN: str = "http://localhost:3000"
 
+    CMS_API_URL: str
+    CMS_API_KEY: str
+
     EMAIL_HOST: str
     EMAIL_PORT: int
     EMAIL_USER: str
