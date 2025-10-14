@@ -1,9 +1,10 @@
 'use client';
-import Message, { ChatMessageProps, PENDING_MESSAGE } from "@/components/ui/chat/Message";
-import React, { useEffect, useRef, useState } from "react";
+import Message, {ChatMessageProps, PENDING_MESSAGE} from "@/components/ui/chat/Message";
+import React, {useEffect, useRef, useState} from "react";
 import TextareaAutosize from 'react-textarea-autosize';
-import { Send } from "lucide-react";
-import { useIsMobile } from "@/components/features/hooks/useIsMobile";
+import {Send} from "lucide-react";
+import {useIsMobile} from "@/components/features/hooks/useIsMobile";
+import {sendChatbotMessage} from "@/lib/backend/chatbot";
 
 
 /**
@@ -14,7 +15,6 @@ import { useIsMobile } from "@/components/features/hooks/useIsMobile";
 export interface ChatProps {
     defaultAIMessage: string;
 }
-
 
 
 /**
@@ -28,7 +28,7 @@ export interface ChatProps {
  * - Handles sending messages via Enter or button click.
  * - Responsive UI with textarea resizing.
  */
-export default function Chat( {defaultAIMessage}: ChatProps){
+export default function Chat({defaultAIMessage}: ChatProps) {
     const messagesEndRef = useRef<HTMLDivElement>(null); // Ref to scroll to bottom
     const textareaRef = useRef<HTMLTextAreaElement>(null); // Ref to read input value
     const chatContainerRef = useRef<HTMLDivElement>(null); // Ref to scrollable container
@@ -50,7 +50,7 @@ export default function Chat( {defaultAIMessage}: ChatProps){
      */
     const scrollToBottom = () => {
         if (!chatContainerRef.current) return;
-        chatContainerRef.current.scrollTo({ top: chatContainerRef.current.scrollHeight, behavior: "smooth" });
+        chatContainerRef.current.scrollTo({top: chatContainerRef.current.scrollHeight, behavior: "smooth"});
     };
 
     // Auto-scroll whenever messages change
@@ -59,30 +59,50 @@ export default function Chat( {defaultAIMessage}: ChatProps){
     }, [messages]);
 
 
-    /**
-     * Simulates an AI response by replacing the last pending message.
-     *
-     * @param pendingIndex - Index of the pending message to replace
-     */
-    const simulateResponse = (pendingIndex: number) => {
-        setTimeout(() => {
-            setMessages((prev) => {
+    const replacePendingMessageByAnswer = (answerMessage: string, pendingIndex: number) => {
+        setMessages((prev) => {
                 const newMessages = [...prev];
 
                 // Only replace if the last message is still pending
                 if (newMessages[pendingIndex]?.type === "pending") {
                     newMessages[pendingIndex] = {
                         type: "ai",
-                        text: "🚧 Je ne suis pas encore disponible pour le moment 🚧",
+                        text: answerMessage
                     };
                 }
 
                 return newMessages;
             });
+    }
+
+
+    /**
+     * Simulates an AI response by replacing the last pending message.
+     *
+     * @param pendingIndex - Index of the pending message to replace
+     */
+    const simulateResponse = (pendingIndex: number) => {
+        setWaiting(true);
+
+        setTimeout(() => {
+            replacePendingMessageByAnswer("🚧 Je ne suis pas encore disponible pour le moment 🚧", pendingIndex)
 
             setWaiting(false); // Allow new messages to be sent
         }, 2000); // Simulated response delay
     };
+
+
+    const sendMessage = async (message: string, pendingIndex: number) => {
+        setWaiting(true);
+
+        try {
+            const response = await sendChatbotMessage({message: message});
+            replacePendingMessageByAnswer(response.answer, pendingIndex)
+        }
+        finally {
+            setWaiting(false)
+        }
+    }
 
     /**
      * Handles sending a message.
@@ -95,17 +115,15 @@ export default function Chat( {defaultAIMessage}: ChatProps){
         const text = textareaRef.current.value.trim();
         if (!text) return;
 
-        const userMessage: ChatMessageProps = { type: "user", text };
+        const userMessage: ChatMessageProps = {type: "user", text};
         textareaRef.current.value = ""; // Clear input
 
         setMessages((prev) => {
             const next = [...prev, userMessage, PENDING_MESSAGE];
             const pendingIndex = next.length - 1;
 
-            setWaiting(true);
-
             // Simulate AI response
-            simulateResponse(pendingIndex);
+            sendMessage(text, pendingIndex);
 
             return next;
         });
@@ -136,9 +154,9 @@ export default function Chat( {defaultAIMessage}: ChatProps){
                 className="flex-1 overflow-y-auto mb-4 flex flex-col gap-2"
             >
                 {messages.map((msg, idx) => (
-                    <Message key={idx} text={msg.text} type={msg.type} />
+                    <Message key={idx} text={msg.text} type={msg.type}/>
                 ))}
-                <div ref={messagesEndRef} />
+                <div ref={messagesEndRef}/>
             </div>
 
             <div className="flex flex-row sm:flex-row gap-2 mt-2 items-end">
@@ -153,13 +171,13 @@ export default function Chat( {defaultAIMessage}: ChatProps){
                 <button
                     className={`flex-shrink-0 px-5 py-3 rounded-2xl font-semibold transition-colors
                         ${waiting
-                            ? "bg-gray-400 text-gray-200 cursor-not-allowed"
-                            : "bg-[#107E7D] text-white hover:bg-[#0E6B6B] cursor-pointer"
-                        }`}
+                        ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                        : "bg-[#107E7D] text-white hover:bg-[#0E6B6B] cursor-pointer"
+                    }`}
                     onClick={handleSend}
                     disabled={waiting}
                 >
-                    {isMobile ? <Send /> : <>Envoyer</>}
+                    {isMobile ? <Send/> : <>Envoyer</>}
                 </button>
             </div>
         </div>

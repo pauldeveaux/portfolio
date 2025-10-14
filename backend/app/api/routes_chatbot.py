@@ -1,8 +1,10 @@
+import asyncio
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 
-router = APIRouter(prefix="chatbot", tags=["chat"])
+router = APIRouter(prefix="/chatbot", tags=["chat"])
 
 
 class MessageModel(BaseModel):
@@ -29,12 +31,14 @@ def get_chatbot_status():
 
 
 @router.post(
-    "/ask",
+    "/send-message",
     summary="Ask a question to the chatbot",
     response_description="The answer"
 )
 async def ask_question(payload: MessageModel):
     try:
+        await asyncio.sleep(1)
+
         return {
             "message": payload.message,
             "answer": "🚧 Je ne suis pas encore disponible pour le moment 🚧"
