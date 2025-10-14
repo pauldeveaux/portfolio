@@ -3,6 +3,8 @@ from typing import List, Dict, Union, Optional
 import requests
 from pydantic import BaseModel
 
+from app.utils.text_cleaner import clean_text
+
 
 class DocumentModel(BaseModel):
     """Represents a single document fetched and cleaned from the CMS."""
@@ -91,8 +93,9 @@ class CMSService:
             content = "\n\n".join(contents).strip()
         else:
             content = str(cms_document.get(content_key, "")).strip()
-        # TODO: clean text more deeply if needed (remove markdown, HTML, etc.)
+
         text = f"{title}\n\n{content}"
+        text = clean_text(text)
 
         return DocumentModel(id=doc_id, text=text, updated_at=updated_at)
 
