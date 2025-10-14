@@ -64,7 +64,7 @@ class CMSService:
             return None
         return datetime.fromisoformat(date_str.replace("Z", "+00:00"))
 
-    def _clean_document(self, cms_document: dict, title_key: Union[str, List[str]], content_key: str) -> DocumentModel:
+    def _clean_document(self, cms_document: dict, title_key: Union[str, List[str]], content_key: Union[str | List[str]]) -> DocumentModel:
         """
         Clean and normalize a raw CMS document into a standard DocumentModel.
 
@@ -86,8 +86,12 @@ class CMSService:
         else:
             title = str(cms_document.get(title_key, "")).strip()
 
+        if isinstance(content_key, list):
+            contents = [str(cms_document.get(k, "")).strip() for k in content_key if cms_document.get(k)]
+            content = "\n\n".join(contents).strip()
+        else:
+            content = str(cms_document.get(content_key, "")).strip()
         # TODO: clean text more deeply if needed (remove markdown, HTML, etc.)
-        content = cms_document.get(content_key, "")
         text = f"{title}\n\n{content}"
 
         return DocumentModel(id=doc_id, text=text, updated_at=updated_at)
