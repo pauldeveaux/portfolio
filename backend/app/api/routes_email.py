@@ -6,7 +6,7 @@ from app.services.email_service import send_email
 router = APIRouter(prefix="/email", tags=["Email"])
 
 
-class ContactForm(BaseModel):
+class ContactFormModel(BaseModel):
     """
     Contact form schema.
 
@@ -41,12 +41,12 @@ def get_email_status():
     summary="Send a contact form message",
     response_description="Email sent successfully"
 )
-def contact(form: ContactForm):
+def contact(form: ContactFormModel):
     """
     Send a message from the contact form via email.
 
     Args:
-        form (ContactForm): Validated contact form data.
+        form (ContactFormModel): Validated contact form data.
 
     Raises:
         HTTPException 502: If SMTP server fails.
