@@ -7,5 +7,6 @@ class DocumentModel(BaseModel):
     """Represents a single document fetched and cleaned from the CMS."""
     id: str
     title: str
+    category: str
     text: str
     updated_at: Optional[datetime]

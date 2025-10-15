@@ -5,13 +5,13 @@ from fastapi import APIRouter, HTTPException, Query
 
 from app.core.config import settings
 from app.services.rag.cms_service import CMSService
-from app.services.rag.embedding_service import EmbeddingDBService
+from app.services.rag.embedding_service import EmbeddingService
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/rag", tags=["rag"])
 cms = CMSService(cms_api_url=settings.CMS_API_URL, api_key=settings.CMS_API_KEY)
-embedding_db = EmbeddingDBService()
+embedding_db = EmbeddingService()
 
 # TODO CHANGE GET TO POST
 # TODO DOC

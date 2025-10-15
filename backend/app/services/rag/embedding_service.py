@@ -16,7 +16,7 @@ class EmbeddingDBParams(BaseModel):
     chunk_size: int = 500
     chunk_overlap: int = 50
 
-class EmbeddingDBService:
+class EmbeddingService:
     def __init__(self, params: Optional[EmbeddingDBParams] = None):
         if params is None:
             params = EmbeddingDBParams()
@@ -46,7 +46,7 @@ class EmbeddingDBService:
             text = clean_text(doc.text)
             chunks = self.text_splitter.split_text(text)
             texts.extend(chunks)
-            metadatas.extend([{"id": doc.id, "title": doc.title, "chunk_nb": i} for i, _ in enumerate(chunks)])
+            metadatas.extend([{"id": doc.id, "title": doc.title, "chunk_nb": i, "category": doc.category} for i, _ in enumerate(chunks)])
 
         self.collection.add_texts(texts=texts, metadatas=metadatas)
 

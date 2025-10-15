@@ -57,7 +57,7 @@ class CMSService:
             return None
         return datetime.fromisoformat(date_str.replace("Z", "+00:00"))
 
-    def _clean_document(self, cms_document: dict, title_key: Union[str, List[str]], content_key: Union[str | List[str]]) -> DocumentModel:
+    def _clean_document(self, cms_document: dict, title_key: Union[str, List[str]], content_key: Union[str | List[str]], category: str = None) -> DocumentModel:
         """
         Clean and normalize a raw CMS document into a standard DocumentModel.
 
@@ -85,15 +85,15 @@ class CMSService:
         else:
             content = str(cms_document.get(content_key, "")).strip()
 
-        text = f"{title}\n\n{content}"
+        text = f"Titre : {title}.\nCatégorie : {category}.\n{content}"
 
-        return DocumentModel(id=doc_id, title=title, text=text, updated_at=updated_at)
+        return DocumentModel(id=doc_id, title=title, text=text, updated_at=updated_at, category=category)
 
     def _fetch_table(
         self,
         route: str,
         title_key: Union[str, List[str]],
-        content_key: str,
+        content_key: Union[str, List[str]],
         params: dict = None,
     ) -> List[DocumentModel]:
         """
@@ -113,7 +113,7 @@ class CMSService:
 
         documents = []
         for item in data:
-            document = self._clean_document(item, title_key, content_key)
+            document = self._clean_document(item, title_key, content_key, route)
             documents.append(document)
 
         return documents
@@ -146,7 +146,7 @@ class CMSService:
         if not item:
             return None
 
-        return self._clean_document(item, title_key, content_key)
+        return self._clean_document(item, title_key, content_key, table)
 
     def fetch_all(self) -> List[DocumentModel]:
         """
@@ -156,12 +156,9 @@ class CMSService:
             list[DocumentModel]: All cleaned documents across tables.
         """
         all_docs = []
-        all_docs += self._fetch_table(
-            "experiences",
-            title_key=["title", "subtitle"],
-            content_key="text",
-        )
-        # Add other CMS tables here as needed, e.g.:
-        # all_docs += self._fetch_table("projects", title_key="title", content_key="description")
+        all_docs += self._fetch_table("experiences", title_key=["title", "subtitle"], content_key="text")
+        all_docs += self._fetch_table("projects", title_key="title", content_key=["description", "markdown"])
+        all_docs += self._fetch_table("skills", title_key="name", content_key="description")
+        all_docs += self._fetch_table("contact-links", title_key="social-media", content_key=["text", "link"])
 
         return all_docs

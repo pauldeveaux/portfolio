@@ -1,10 +1,17 @@
 import asyncio
+import logging
+import traceback
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
+from app.services.rag.embedding_service import EmbeddingService
 
 router = APIRouter(prefix="/chatbot", tags=["chat"])
+
+logger = logging.getLogger(__name__)
+
+embedding_db = EmbeddingService()
 
 
 class MessageModel(BaseModel):
@@ -48,3 +55,24 @@ async def ask_question(payload: MessageModel):
             status_code=400,
             detail=str(e)
         )
+
+
+
+@router.post(
+    "/send-message",
+    summary="Ask a question to the chatbot",
+    response_description="The answer"
+)
+async def ask_question(payload: MessageModel):
+    try:
+        query = payload.message
+
+        response = qa_chain.run(query)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=str(e)
+        )
+    except Exception as e:
+        logger.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=str(e))
