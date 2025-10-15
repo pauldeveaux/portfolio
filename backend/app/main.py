@@ -1,8 +1,10 @@
 import time
+import traceback
+
 import uvicorn
 import logging
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -18,6 +20,8 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
 )
 
+logger = logging.getLogger(__name__)
+
 
 # ------------------- Middlewares -------------------
 # CORS Middleware
@@ -28,6 +32,30 @@ app.add_middleware(
     allow_headers=["*"],                      # allow custom headers like Content-Type
     allow_credentials=True,                   # allow cookies / auth
 )
+
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    """
+    Handle all uncaught exceptions.
+    """
+    # Log full traceback for debugging
+    logger.error("Unhandled exception: %s", traceback.format_exc())
+
+    # Customize response based on exception type
+    if isinstance(exc, HTTPException):
+        # Already has a status code
+        return JSONResponse(
+            status_code=exc.status_code,
+            content={"detail": exc.detail}
+        )
+    else:
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal server error"}
+        )
+
 
 # HTTP Logging middleware
 @app.middleware("http")

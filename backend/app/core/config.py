@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     """
     FRONTEND_ORIGIN: str = "http://localhost:3000"
 
+    MISTRAL_API_KEY: str
+
     CMS_API_URL: str
     CMS_API_KEY: str
 

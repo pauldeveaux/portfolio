@@ -5,13 +5,15 @@ import traceback
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-from app.services.rag.embedding_service import EmbeddingService
+from app.services.rag.embedding_document_store import EmbeddingDocumentStore
+from app.services.rag.rag_pipeline import RAGPipeline
 
 router = APIRouter(prefix="/chatbot", tags=["chat"])
 
 logger = logging.getLogger(__name__)
 
-embedding_db = EmbeddingService()
+embedding_db = EmbeddingDocumentStore()
+rag = RAGPipeline()
 
 
 class MessageModel(BaseModel):
@@ -22,6 +24,7 @@ class MessageModel(BaseModel):
         message (str): message to send to the chatbot
     """
     message: str
+
 
 @router.get(
     "/",
@@ -40,39 +43,24 @@ def get_chatbot_status():
 @router.post(
     "/send-message",
     summary="Ask a question to the chatbot",
-    response_description="The answer"
+    response_description="The generated answer from the chatbot"
 )
 async def ask_question(payload: MessageModel):
-    try:
-        await asyncio.sleep(1)
+    """
+    Send a message to the RAG chatbot and return the answer.
 
-        return {
-            "message": payload.message,
-            "answer": "🚧 Je ne suis pas encore disponible pour le moment 🚧"
-        }
-    except ValueError as e:
-        raise HTTPException(
-            status_code=400,
-            detail=str(e)
-        )
+    Args:
+        payload (MessageModel): The user's message.
 
+    Returns:
+        dict: Original message and generated answer.
+    """
+    query = payload.message
 
+    response = await rag.execute(question=query)
 
-@router.post(
-    "/send-message",
-    summary="Ask a question to the chatbot",
-    response_description="The answer"
-)
-async def ask_question(payload: MessageModel):
-    try:
-        query = payload.message
-
-        response = qa_chain.run(query)
-    except ValueError as e:
-        raise HTTPException(
-            status_code=400,
-            detail=str(e)
-        )
-    except Exception as e:
-        logger.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail=str(e))
+    ret = {
+        "message": payload.message,
+        "answer": response.get("answer")
+    }
+    return ret
