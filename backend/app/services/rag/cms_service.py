@@ -6,7 +6,10 @@ from app.models.document_model import DocumentModel
 
 
 class CMSService:
-    """Handles communication with the CMS and transforms data into RAG-ready documents."""
+    """
+    Handles communication with a CMS and transforms raw CMS data
+    into cleaned, RAG-ready DocumentModel objects.
+    """
 
     def __init__(self, cms_api_url: str, api_key: Optional[str] = None):
         """
@@ -57,14 +60,21 @@ class CMSService:
             return None
         return datetime.fromisoformat(date_str.replace("Z", "+00:00"))
 
-    def _clean_document(self, cms_document: dict, title_key: Union[str, List[str]], content_key: Union[str | List[str]], category: str = None) -> DocumentModel:
+    def _clean_document(
+        self,
+        cms_document: dict,
+        title_key: Union[str, List[str]],
+        content_key: Union[str, List[str]],
+        category: Optional[str] = None
+    ) -> DocumentModel:
         """
         Clean and normalize a raw CMS document into a standard DocumentModel.
 
         Args:
             cms_document (dict): Raw CMS document data.
             title_key (str | list[str]): Key(s) used to extract the title.
-            content_key (str): Key used to extract the content.
+            content_key (str | list[str]): Key(s) used to extract the content.
+            category (str, optional): Category or table name for the document.
 
         Returns:
             DocumentModel: Normalized and cleaned document.
@@ -79,13 +89,14 @@ class CMSService:
         else:
             title = str(cms_document.get(title_key, "")).strip()
 
+        # Concatenate multiple content parts if provided
         if isinstance(content_key, list):
             contents = [str(cms_document.get(k, "")).strip() for k in content_key if cms_document.get(k)]
             content = "\n\n".join(contents).strip()
         else:
             content = str(cms_document.get(content_key, "")).strip()
 
-        text = f"Titre : {title}.\nCatégorie : {category}.\n{content}"
+        text = f"Titre: {title}.\nCatégorie: {category}.\n{content}"
 
         return DocumentModel(id=doc_id, title=title, text=text, updated_at=updated_at, category=category)
 
@@ -102,7 +113,7 @@ class CMSService:
         Args:
             route (str): API route to fetch data from.
             title_key (str | list[str]): Field(s) to use for the title.
-            content_key (str): Field to use for the main content.
+            content_key (str | list[str]): Field(s) to use for the main content.
             params (dict, optional): Query parameters.
 
         Returns:
@@ -111,11 +122,10 @@ class CMSService:
         response = self._fetch_cms(route, params=params)
         data = response.get("data", [])
 
-        documents = []
-        for item in data:
-            document = self._clean_document(item, title_key, content_key, route)
-            documents.append(document)
-
+        documents = [
+            self._clean_document(item, title_key, content_key, route)
+            for item in data
+        ]
         return documents
 
     def fetch_document(
@@ -123,7 +133,7 @@ class CMSService:
         table: str,
         document_id: str,
         title_key: Union[str, List[str]],
-        content_key: str,
+        content_key: Union[str, List[str]],
         params: dict = None,
     ) -> Optional[DocumentModel]:
         """
@@ -133,7 +143,7 @@ class CMSService:
             table (str): CMS table/collection name.
             document_id (str): ID of the document to retrieve.
             title_key (str | list[str]): Field(s) to use for the title.
-            content_key (str): Field to use for the main content.
+            content_key (str | list[str]): Field(s) to use for the main content.
             params (dict, optional): Query parameters.
 
         Returns:

@@ -65,8 +65,3 @@ def contact(form: ContactFormModel):
             status_code=502,
             detail="Mail server error. Please try again later."
         )
-    except ValueError as e:
-        raise HTTPException(
-            status_code=400,
-            detail=str(e)
-        )
