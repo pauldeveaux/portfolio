@@ -64,15 +64,20 @@ export default function Chat({defaultAIMessage}: ChatProps) {
      *
      * @param answerMessage - The message that will replace the pending message
      * @param pendingIndex - The index of the pending message to replace
+     * @param type -
      */
-    const replacePendingMessageByAnswer = (answerMessage: string, pendingIndex: number) => {
+    const replacePendingMessageByAnswer = (
+        answerMessage: string,
+        pendingIndex: number,
+        type?: ChatMessageProps['type']
+    ) => {
         setMessages((prev) => {
                 const newMessages = [...prev];
 
                 // Only replace if the last message is still pending
                 if (newMessages[pendingIndex]?.type === "pending") {
                     newMessages[pendingIndex] = {
-                        type: "ai",
+                        type: type ? type : "ai",
                         text: answerMessage
                     };
                 }
@@ -110,6 +115,9 @@ export default function Chat({defaultAIMessage}: ChatProps) {
         try {
             const response = await sendChatbotMessage({message: message});
             replacePendingMessageByAnswer(response.answer, pendingIndex)
+        }
+        catch(err) {
+            replacePendingMessageByAnswer("Désolé, je ne peux pas répondre pour le moment.", pendingIndex, "error")
         }
         finally {
             setWaiting(false)
