@@ -40,10 +40,8 @@ services:
     restart: unless-stopped
     ports:
       - 8001:8000
-    environment:
-      - ALLOW_RESET=true
     volumes :
-      - chroma-db-data:/chroma/.chroma
+      - chroma-db-data:/data
 
   strapi:
     container_name: strapi
