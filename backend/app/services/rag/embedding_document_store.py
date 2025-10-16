@@ -1,15 +1,16 @@
+import logging
 from typing import List, Optional
 
 from pydantic import BaseModel
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_core.documents import Document
-from langchain_core.runnables import chain
 
 from app.core.config import settings
 from app.models.document_model import DocumentModel
 from app.utils.text_cleaner import clean_text
+
+logger = logging.getLogger(__name__)
 
 
 class EmbeddingDocumentStoreParams(BaseModel):
@@ -53,12 +54,14 @@ class EmbeddingDocumentStore:
         )
 
         try:
+            logger.info("Trying to connect to chromaDB via : ", settings.CHROMA_API_URL)
             self.vector_store = Chroma(
                 collection_name=self.params.collection_name,
                 embedding_function=self.embeddings,
                 host=settings.CHROMA_API_URL
             )
         except ValueError:
+            logger.warning("Could not connect to chromaDB. Fallback on memory storage")
             self.vector_store = Chroma(
                 collection_name=self.params.collection_name,
                 embedding_function=self.embeddings,
