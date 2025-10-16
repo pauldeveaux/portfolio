@@ -52,16 +52,16 @@ class EmbeddingDocumentStore:
             add_start_index=True
         )
 
-        if settings.CHROMA_API_URL == "none":
+        try:
             self.vector_store = Chroma(
-                collection_name="cms_collection",
-                embedding_function=self.embeddings,
-            )
-        else:
-            self.vector_store = Chroma(
-                collection_name="cms_collection",
+                collection_name=self.params.collection_name,
                 embedding_function=self.embeddings,
                 host=settings.CHROMA_API_URL
+            )
+        except ValueError:
+            self.vector_store = Chroma(
+                collection_name=self.params.collection_name,
+                embedding_function=self.embeddings,
             )
 
     def split_text(self, text):
