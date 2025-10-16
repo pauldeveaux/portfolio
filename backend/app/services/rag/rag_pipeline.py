@@ -1,3 +1,4 @@
+import logging
 from typing import List
 from pydantic import BaseModel
 from langchain_core.documents import Document
@@ -5,6 +6,8 @@ from langgraph.graph import START, StateGraph
 
 from app.services.rag.embedding_document_store import EmbeddingDocumentStore
 from app.services.rag.llm_processor import LLMProcessor
+
+logger = logging.getLogger(__name__)
 
 
 class State(BaseModel):
@@ -56,7 +59,13 @@ class RAGPipeline:
             dict: A dictionary containing the retrieved documents under 'context'.
         """
         retrieved_docs, scores = await self.vector_store.similarity_search(state.question)
-        print(retrieved_docs, scores)
+
+        logger.info(f"Retrieved {len(retrieved_docs)} documents for question: {state.question}")
+        for i, (doc, score) in enumerate(zip(retrieved_docs, scores), 1):
+            # Show a short preview of the document content for readability
+            preview = str(doc)[:100].replace("\n", " ")  # truncate and remove newlines
+            logger.info(f"{i}. Score: {score:.4f}, Preview: {preview}...")
+
         return {"context": retrieved_docs}
 
     async def generate(self, state: State):
