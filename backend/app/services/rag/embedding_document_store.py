@@ -7,6 +7,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.documents import Document
 from langchain_core.runnables import chain
 
+from app.core.config import settings
 from app.models.document_model import DocumentModel
 from app.utils.text_cleaner import clean_text
 
@@ -51,13 +52,17 @@ class EmbeddingDocumentStore:
             add_start_index=True
         )
 
-        # TODO use chroma server
-        self.vector_store = Chroma(
-            collection_name="cms_collection",
-            embedding_function=self.embeddings,
-            #persist_directory="./chroma_langchain_db", # TODO delete
-            # TODO host="..."
-        )
+        if settings.CHROMA_API_URL == "none":
+            self.vector_store = Chroma(
+                collection_name="cms_collection",
+                embedding_function=self.embeddings,
+            )
+        else:
+            self.vector_store = Chroma(
+                collection_name="cms_collection",
+                embedding_function=self.embeddings,
+                host=settings.CHROMA_API_URL
+            )
 
     def split_text(self, text):
         """

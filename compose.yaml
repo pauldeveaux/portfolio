@@ -3,6 +3,7 @@ version: '3.9'
 volumes:
   strapi-db-data: {}
   strapi-upload-data: {}
+  chroma-db-data: {}
 
 services:
   frontend:
@@ -29,6 +30,20 @@ services:
     ports:
       - "8000:8000"
     restart: unless-stopped
+    depends_on:
+      - chroma
+
+
+  chroma:
+    image: ghcr.io/chroma-core/chroma:latest
+    container_name: chroma_db
+    restart: unless-stopped
+    ports:
+      - 8001:8000
+    environment:
+      - ALLOW_RESET=true
+    volumes :
+      - chroma-db-data:/chroma/.chroma
 
   strapi:
     container_name: strapi

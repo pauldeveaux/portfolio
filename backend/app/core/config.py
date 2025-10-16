@@ -9,6 +9,8 @@ class Settings(BaseSettings):
 
     MISTRAL_API_KEY: str
 
+    CHROMA_API_URL: str
+
     CMS_API_URL: str
     CMS_API_KEY: str
 
