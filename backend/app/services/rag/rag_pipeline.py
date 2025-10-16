@@ -1,11 +1,12 @@
 import logging
-from typing import List
+from typing import List, Dict
 from pydantic import BaseModel
 from langchain_core.documents import Document
 from langgraph.graph import START, StateGraph
 
 from app.services.rag.embedding_document_store import EmbeddingDocumentStore
 from app.services.rag.llm_processor import LLMProcessor
+from app.services.rag.cms_service import cms
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +30,7 @@ class RAGPipeline:
 
     def __init__(self):
         """Initializes the pipeline components and builds the execution graph."""
+        self.ai_information = cms.fetch_ai_information()
         self.vector_store = EmbeddingDocumentStore()
         self.llm_processor = LLMProcessor()
 
@@ -79,5 +81,5 @@ class RAGPipeline:
             str: The generated answer.
         """
         docs_content = "\n\n".join(doc.page_content for doc in state.context)
-        response = self.llm_processor.execute(state.question, docs_content)
+        response = self.llm_processor.execute(self.ai_information, state.question, docs_content)
         return response

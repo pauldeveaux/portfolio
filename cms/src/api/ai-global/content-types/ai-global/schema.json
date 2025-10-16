@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "ai_globals",
+  "info": {
+    "singularName": "ai-global",
+    "pluralName": "ai-globals",
+    "displayName": "AI_Global"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  }
+}

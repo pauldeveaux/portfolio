@@ -1,3 +1,5 @@
+from typing import Dict
+
 from langchain.chat_models import init_chat_model
 from langchain_core.prompts import ChatPromptTemplate
 
@@ -32,7 +34,7 @@ class LLMProcessor:
         prompt_template = ChatPromptTemplate.from_messages([
             (
                 "system",
-                "Tu es X, et tu réponds comme si tu étais toi-même dans une conversation. "
+                "Tu es {name}, et tu réponds comme si tu étais toi-même dans une conversation. "
                 "Tes réponses doivent être naturelles, simples et à la première personne. "
                 "Appuie-toi uniquement sur les infos du contexte extrait de ton portfolio. "
                 "Si tu ne sais pas, dis-le simplement. "
@@ -48,17 +50,18 @@ class LLMProcessor:
         ])
         return prompt_template
 
-    def execute(self, question, docs_content):
+    def execute(self, ai_information: Dict, question, docs_content):
         """
         Generates an answer to a question based on the provided document context.
 
         Args:
+            ai_information (Dict): The user's name
             question (str): The user's question.
             docs_content (str): Concatenated content of retrieved documents.
 
         Returns:
             dict: The LLM-generated answer under the 'answer' key.
         """
-        messages = self.prompt_template.invoke({"question": question, "context": docs_content})
+        messages = self.prompt_template.invoke({"name": ai_information.get("name","une IA"), "question": question, "context": docs_content})
         response = self.llm.invoke(messages)
         return {"answer": response.content}

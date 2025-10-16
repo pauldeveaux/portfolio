@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import List, Union, Optional
 import requests
 
+from app.core.config import settings
 from app.models.document_model import DocumentModel
 
 
@@ -177,3 +178,10 @@ class CMSService:
         all_docs += self._fetch_table("contact-links", title_key="social-media", content_key=["text", "link"])
 
         return all_docs
+
+    def fetch_ai_information(self):
+        ai_info = self._fetch_cms("ai-global")
+        return ai_info.get("data")
+
+
+cms = CMSService(cms_api_url=settings.CMS_API_URL, api_key=settings.CMS_API_KEY)

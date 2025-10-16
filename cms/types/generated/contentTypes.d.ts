@@ -430,6 +430,34 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAiGlobalAiGlobal extends Struct.SingleTypeSchema {
+  collectionName: 'ai_globals';
+  info: {
+    displayName: 'AI_Global';
+    pluralName: 'ai-globals';
+    singularName: 'ai-global';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::ai-global.ai-global'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiContactLinkContactLink extends Struct.CollectionTypeSchema {
   collectionName: 'contact_links';
   info: {
@@ -1148,6 +1176,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::ai-global.ai-global': ApiAiGlobalAiGlobal;
       'api::contact-link.contact-link': ApiContactLinkContactLink;
       'api::experience.experience': ApiExperienceExperience;
       'api::homepage.homepage': ApiHomepageHomepage;

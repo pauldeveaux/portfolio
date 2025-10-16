@@ -4,13 +4,12 @@ from fastapi import APIRouter, Form, HTTPException
 from fastapi.responses import HTMLResponse
 
 from app.core.config import settings
-from app.services.rag.cms_service import CMSService
+from app.services.rag.cms_service import cms
 from app.services.rag.embedding_document_store import EmbeddingDocumentStore
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/rag", tags=["rag"])
-cms = CMSService(cms_api_url=settings.CMS_API_URL, api_key=settings.CMS_API_KEY)
 embedding_db = EmbeddingDocumentStore()
 
 # Admin password (store in environment variable for security)
