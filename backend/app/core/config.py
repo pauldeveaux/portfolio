@@ -5,11 +5,14 @@ class Settings(BaseSettings):
     """
     Application configuration loaded from environment variables.
     """
+    ADMIN_PASSWORD: str
+
     FRONTEND_ORIGIN: str = "http://localhost:3000"
 
     MISTRAL_API_KEY: str
 
     CHROMA_API_URL: str
+
 
     CMS_API_URL: str
     CMS_API_KEY: str
