@@ -128,6 +128,7 @@ class RAGPipeline:
             # 2️⃣ Construire le prompt complet avec messages utilisateur
             prompt = [system_message] + state["messages"]
 
+            logger.debug("Launch LLM call")
             llm_with_tools = self.llm_processor.llm.bind_tools([retrieve])
             response = llm_with_tools.invoke(prompt)
 
