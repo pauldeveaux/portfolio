@@ -140,7 +140,7 @@ class EmbeddingDocumentStore:
         _ = self.vector_store.add_texts(texts=all_splits, metadatas=metadatas)
         return len(all_splits)
 
-    async def similarity_search(self, query: str, k: int = 5):
+    def similarity_search(self, query: str, k: int = 10):
         """
         Performs a similarity search for a query in the vector store.
 
@@ -151,7 +151,7 @@ class EmbeddingDocumentStore:
         Returns:
             Tuple[List[Document], List[float]]: Retrieved documents and their similarity scores.
         """
-        results_with_scores = await self.vector_store.asimilarity_search_with_score(query=query, k=k)
+        results_with_scores = self.vector_store.similarity_search_with_score(query=query, k=k)
         results = [doc for doc, _ in results_with_scores]
         scores = [score for _, score in results_with_scores]
         return results, scores

@@ -57,10 +57,10 @@ async def ask_question(payload: MessageModel):
     """
     query = payload.message
 
-    response = await rag.execute(question=query)
+    response = rag.execute(question=query)
 
     ret = {
         "message": payload.message,
-        "answer": response.get("answer")
+        "answer": response
     }
     return ret

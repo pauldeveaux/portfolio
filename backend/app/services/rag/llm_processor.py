@@ -1,7 +1,9 @@
 from typing import Dict
 
 from langchain.chat_models import init_chat_model
+from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
+
 
 from app.core.config import settings
 
@@ -50,18 +52,43 @@ class LLMProcessor:
         ])
         return prompt_template
 
-    def execute(self, ai_information: Dict, question, docs_content):
-        """
-        Generates an answer to a question based on the provided document context.
 
-        Args:
-            ai_information (Dict): The user's name
-            question (str): The user's question.
-            docs_content (str): Concatenated content of retrieved documents.
 
-        Returns:
-            dict: The LLM-generated answer under the 'answer' key.
-        """
-        messages = self.prompt_template.invoke({"name": ai_information.get("name","une IA"), "question": question, "context": docs_content})
-        response = self.llm.invoke(messages)
+
+
+
+
+
+
+    def execute(self, state, ai_information: Dict, docs_content):
+        question = getattr(state, "question", None)
+
+        if not question and isinstance(state, dict) and "messages" in state:
+            human_messages = [m for m in state["messages"] if isinstance(m, HumanMessage)]
+            if human_messages:
+                question = human_messages[-1].content
+
+
+        question = question or "Je n’ai pas trouvé la question."
+
+
+        system_message_content = self.prompt_template.invoke(
+            {
+                "name": ai_information.get("name","une IA"),
+                "question": question,
+                "context": docs_content}
+        ).to_string()
+
+        conversation_messages = [
+            message
+            for message in state["messages"]
+            if message.type in ("human", "system")
+               or (message.type == "ai" and not message.tool_calls)
+        ]
+
+        prompt = [SystemMessage(system_message_content)] + conversation_messages
+
+        print(prompt)
+
+        response = self.llm.invoke(prompt)
         return {"answer": response.content}

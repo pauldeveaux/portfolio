@@ -118,7 +118,6 @@ class CMSService:
     ) -> DocumentModel:
         if not cms_documents:
             raise ValueError("cms_documents cannot be empty")
-        print(cms_documents)
 
         # Aggregate ID
         doc_ids = [str(doc.get("documentId", "")) for doc in cms_documents if doc.get("documentId")]
