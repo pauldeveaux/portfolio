@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_rag_fetches",
+  "info": {
+    "displayName": "fetch"
+  },
+  "options": {},
+  "attributes": {
+    "route": {
+      "type": "string"
+    },
+    "title_key": {
+      "type": "component",
+      "component": "rag.text",
+      "repeatable": true
+    },
+    "content_key": {
+      "type": "component",
+      "component": "rag.text",
+      "repeatable": true
+    },
+    "links": {
+      "type": "component",
+      "component": "rag.text",
+      "repeatable": true
+    },
+    "category_name": {
+      "type": "string"
+    },
+    "aggregate": {
+      "type": "boolean"
+    }
+  },
+  "config": {}
+}

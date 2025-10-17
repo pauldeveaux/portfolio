@@ -4,6 +4,7 @@ import requests
 
 from app.core.config import settings
 from app.models.document_model import DocumentModel
+from app.services.rag.prepare_text import prepare_text, concatenate_texts
 
 
 class CMSService:
@@ -69,8 +70,9 @@ class CMSService:
     def _clean_document(
         self,
         cms_document: dict,
-        title_key: Union[str, List[str]],
-        content_key: Union[str, List[str]],
+        title_keys: List[str],
+        content_keys: List[str],
+        link_keys: Optional[List[str]],
         category: Optional[str] = None
     ) -> DocumentModel:
         """
@@ -88,73 +90,106 @@ class CMSService:
         doc_id = cms_document.get("documentId")
         updated_at = self._parse_date(cms_document.get("updatedAt"))
 
-        # Concatenate multiple title parts if provided
-        if isinstance(title_key, list):
-            titles = [str(cms_document.get(k, "")).strip() for k in title_key if cms_document.get(k)]
-            title = " — ".join(titles)
-        else:
-            title = str(cms_document.get(title_key, "")).strip()
+        if not link_keys:
+            link_keys = []
 
-        # Concatenate multiple content parts if provided
-        if isinstance(content_key, list):
-            contents = [str(cms_document.get(k, "")).strip() for k in content_key if cms_document.get(k)]
-            content = "\n\n".join(contents).strip()
-        else:
-            content = str(cms_document.get(content_key, "")).strip()
+        titles = [cms_document.get(k) for k in title_keys if cms_document.get(k)]
+        contents = [cms_document.get(k) for k in content_keys if cms_document.get(k)]
+        links = [cms_document.get(k) for k in link_keys if cms_document.get(k)]
 
-        text = f"Titre: {title}.\nCatégorie: {category}.\n{content}"
+        title, text = prepare_text(titles, contents, links)
 
-        return DocumentModel(id=doc_id, title=title, text=text, updated_at=updated_at, category=category)
+        return DocumentModel(
+            id=doc_id,
+            title=title,
+            text=text,
+            updated_at=updated_at,
+            category=category
+        )
+
+
+    def _clean_aggregated_documents(
+            self,
+            cms_documents: List[dict],
+            title_keys: List[str],
+            content_keys: List[str],
+            link_keys: Optional[List[str]],
+            category: Optional[str] = None
+    ) -> DocumentModel:
+        if not cms_documents:
+            raise ValueError("cms_documents cannot be empty")
+        print(cms_documents)
+
+        # Aggregate ID
+        doc_ids = [str(doc.get("documentId", "")) for doc in cms_documents if doc.get("documentId")]
+        aggr_id = f"agg_{'_'.join(sorted(doc_ids))}" if doc_ids else f"agg_{hash(str(cms_documents))}"
+
+        # Last UpdatedAt (detect change on every document)
+        updated_dates = [self._parse_date(doc.get("updatedAt")) for doc in cms_documents if doc.get("updatedAt")]
+        aggr_updated_at = max(updated_dates) if updated_dates else None
+
+        if not link_keys:
+            link_keys = []
+        texts = []
+        for cms_document in cms_documents:
+            titles = [cms_document.get(k) for k in title_keys if cms_document.get(k)]
+            contents = [cms_document.get(k) for k in content_keys if cms_document.get(k)]
+            links = [cms_document.get(k) for k in link_keys if cms_document.get(k)]
+
+            _, text = prepare_text(titles, contents, links)
+            texts.append(text)
+
+        full_text = concatenate_texts(texts)
+
+        return DocumentModel(
+            id=aggr_id,
+            title=category,
+            text=full_text,
+            updated_at=aggr_updated_at,
+            category=category
+        )
+
+
 
     def _fetch_table(
         self,
         route: str,
-        title_key: Union[str, List[str]],
-        content_key: Union[str, List[str]],
+        title_keys: List[str],
+        content_keys: List[str],
+        link_keys: Optional[List[str]] = None,
+        category_name: str = None,
+        aggregate_documents: bool = False,
         params: dict = None,
     ) -> List[DocumentModel]:
-        """
-        Fetch and clean all documents from a given CMS route.
+        if not link_keys:
+            link_keys = []
 
-        Args:
-            route (str): API route to fetch data from.
-            title_key (str | list[str]): Field(s) to use for the title.
-            content_key (str | list[str]): Field(s) to use for the main content.
-            params (dict, optional): Query parameters.
-
-        Returns:
-            list[DocumentModel]: List of cleaned document objects.
-        """
         response = self._fetch_cms(route, params=params)
         data = response.get("data", [])
+        if not isinstance(data, list):
+            data = [data]
 
-        documents = [
-            self._clean_document(item, title_key, content_key, route)
-            for item in data
-        ]
+        documents = []
+        if aggregate_documents:
+            aggregated_doc = self._clean_aggregated_documents(data, title_keys, content_keys, link_keys, category_name)
+            documents.append(aggregated_doc)
+        else:
+            for item in data:
+                cleaned_doc = self._clean_document(item, title_keys, content_keys, link_keys, category_name)
+                documents.append(cleaned_doc)
+
         return documents
 
     def fetch_document(
         self,
         table: str,
         document_id: str,
-        title_key: Union[str, List[str]],
-        content_key: Union[str, List[str]],
+        title_keys: List[str],
+        content_keys: List[str],
+        link_keys: List[str],
         params: dict = None,
     ) -> Optional[DocumentModel]:
-        """
-        Fetch and clean a single document by its ID.
 
-        Args:
-            table (str): CMS table/collection name.
-            document_id (str): ID of the document to retrieve.
-            title_key (str | list[str]): Field(s) to use for the title.
-            content_key (str | list[str]): Field(s) to use for the main content.
-            params (dict, optional): Query parameters.
-
-        Returns:
-            DocumentModel | None: Cleaned document or None if not found.
-        """
         route = f"{table}/{document_id}"
         response = self._fetch_cms(route, params=params)
         item = response.get("data")
@@ -162,7 +197,7 @@ class CMSService:
         if not item:
             return None
 
-        return self._clean_document(item, title_key, content_key, table)
+        return self._clean_document(item, title_keys, content_keys, link_keys)
 
     def fetch_all(self) -> List[DocumentModel]:
         """
@@ -172,10 +207,26 @@ class CMSService:
             list[DocumentModel]: All cleaned documents across tables.
         """
         all_docs = []
-        all_docs += self._fetch_table("experiences", title_key=["title", "subtitle"], content_key="text")
-        all_docs += self._fetch_table("projects", title_key="title", content_key=["description", "markdown"])
-        all_docs += self._fetch_table("skills", title_key="name", content_key="description")
-        all_docs += self._fetch_table("contact-links", title_key="social-media", content_key=["text", "link"])
+        all_docs += self._fetch_table(
+            "experiences",
+            title_keys=["title", "subtitle"],
+            content_keys=["text"],
+            link_keys=[],
+            category_name="Expériences"
+        )
+        all_docs += self._fetch_table(
+            "projects", title_keys=["title"], content_keys=["description", "markdown"], category_name="Projets"
+        )
+        all_docs += self._fetch_table(
+            "skills", title_keys=["name"], content_keys=["description"], category_name="Compétences"
+        )
+        all_docs += self._fetch_table(
+            "contact-links", title_keys=["socialMedia"], content_keys=["text"], link_keys=["link"], category_name="Contacts", aggregate_documents=True
+        )
+
+        all_docs += self._fetch_table(
+            "homepage", title_keys=["textSectionTitle"], content_keys=["textSectionText"], link_keys=[], category_name="Plus sur toi"
+        )
 
         return all_docs
 

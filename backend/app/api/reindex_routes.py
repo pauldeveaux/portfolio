@@ -60,6 +60,8 @@ async def reindex_post(password: str = Form(...)):
     if password != ADMIN_PASSWORD:
         raise HTTPException(status_code=401, detail="Unauthorized")
 
+    embedding_db.clear_collection()
+
     # Fetch all documents from CMS and index them in the vector store
     documents = cms.fetch_all()
     nb_chunks = embedding_db.add_documents(documents)

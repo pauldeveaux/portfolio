@@ -28,11 +28,18 @@ class EmbeddingDocumentStoreParams(BaseModel):
     chunk_size: int = 500
     chunk_overlap: int = 50
 
+
 class EmbeddingDocumentStore:
     """
     Handles storage, splitting, embedding, and retrieval of documents
     using a vector store.
     """
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
 
     def __init__(self, params: Optional[EmbeddingDocumentStoreParams] = None):
         """
@@ -53,19 +60,43 @@ class EmbeddingDocumentStore:
             add_start_index=True
         )
 
+        self.vector_store = None
+        self._connect_to_chroma()
+
+    def _connect_to_chroma(self):
+        """
+        Try to connect to ChromaDB using remote host,
+        fallback to local in-memory instance if it fails.
+        """
         try:
-            logger.info("Trying to connect to chromaDB via : ", settings.CHROMA_API_URL)
+            logger.info(f"Trying to connect to chromaDB via: {settings.CHROMA_API_URL}")
             self.vector_store = Chroma(
                 collection_name=self.params.collection_name,
                 embedding_function=self.embeddings,
                 host=settings.CHROMA_API_URL
             )
+            logger.info("✅ Connected to remote ChromaDB.")
         except ValueError:
-            logger.warning("Could not connect to chromaDB. Fallback on memory storage")
+            logger.warning("⚠️ Could not connect to ChromaDB. Fallback on memory storage.")
             self.vector_store = Chroma(
                 collection_name=self.params.collection_name,
                 embedding_function=self.embeddings,
             )
+
+    def clear_collection(self):
+        """
+        Delete all existing vectors from the Chroma collection and recreate it.
+        Keeps the same connection logic (remote with fallback).
+        """
+        try:
+            logger.info(f"🧹 Clearing collection '{self.params.collection_name}'...")
+            self.vector_store.delete_collection()
+        except Exception as e:
+            logger.warning(f"⚠️ Could not delete collection directly: {e}")
+
+        self._connect_to_chroma()
+        logger.info(f"✅ Collection '{self.params.collection_name}' cleared and reinitialized.")
+
 
     def split_text(self, text):
         """
@@ -79,7 +110,6 @@ class EmbeddingDocumentStore:
         """
         chunks = self.text_splitter.split_text(text)
         return chunks
-
 
     def add_documents(self, documents: List[DocumentModel]):
         """
@@ -103,12 +133,12 @@ class EmbeddingDocumentStore:
             all_splits.extend(splits)
 
             # Add metadata for each chunk
-            metadatas.extend([{"id": doc.id, "title": doc.title, "chunk_nb": i, "category": doc.category} for i, _ in enumerate(splits)])
+            metadatas.extend([{"id": doc.id, "title": doc.title, "chunk_nb": i, "category": doc.category} for i, _ in
+                              enumerate(splits)])
 
         # Store and index chunks
         _ = self.vector_store.add_texts(texts=all_splits, metadatas=metadatas)
         return len(all_splits)
-
 
     async def similarity_search(self, query: str, k: int = 5):
         """
@@ -121,7 +151,7 @@ class EmbeddingDocumentStore:
         Returns:
             Tuple[List[Document], List[float]]: Retrieved documents and their similarity scores.
         """
-        results_with_scores  = await self.vector_store.asimilarity_search_with_score(query=query, k=k)
+        results_with_scores = await self.vector_store.asimilarity_search_with_score(query=query, k=k)
         results = [doc for doc, _ in results_with_scores]
         scores = [score for _, score in results_with_scores]
         return results, scores

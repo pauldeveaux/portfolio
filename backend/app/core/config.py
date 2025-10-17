@@ -9,6 +9,7 @@ class Settings(BaseSettings):
 
     FRONTEND_ORIGIN: str = "http://localhost:3000"
 
+    MISTRAL_MODEL_NAME: str
     MISTRAL_API_KEY: str
 
     CHROMA_API_URL: str

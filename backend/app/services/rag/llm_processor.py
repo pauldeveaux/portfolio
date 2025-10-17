@@ -15,7 +15,7 @@ class LLMProcessor:
         """
         Initializes the chat model and prepares the chat prompt template.
         """
-        self.model = "mistral-large-latest"
+        self.model = settings.MISTRAL_MODEL_NAME
         self.llm = init_chat_model(
             "mistral-large-latest",
             model_provider="mistralai",
