@@ -6,11 +6,13 @@ from langchain_core.tools import tool
 from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_core.documents import Document
 from langgraph.graph import StateGraph, MessagesState, END
-from langchain_core.messages import HumanMessage, BaseMessage, SystemMessage, AIMessage
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages import HumanMessage
+from langchain.chat_models import init_chat_model
 
+
+from app.core.config import settings
 from app.services.rag.embedding_document_store import EmbeddingDocumentStore
-from app.services.rag.llm_processor import LLMProcessor
+from app.services.rag.rag_prompts import build_prompt_without_context, build_prompt_with_context
 from app.services.rag.cms_service import cms
 
 logger = logging.getLogger(__name__)
@@ -26,7 +28,7 @@ class State(BaseModel):
 vector_store = EmbeddingDocumentStore()
 
 
-@tool(response_format="content_and_artifact", description="Récupère les documents liés au portfolio")
+@tool(response_format="content_and_artifact", description="Retrieves documents related to the portfolio or its owner")
 def retrieve(state: State):
     logger.debug(f"🔹 Entering retrieve() for question: {state.question!r}")
 
@@ -50,14 +52,18 @@ class RAGPipeline:
     def __init__(self):
         self.ai_information = cms.fetch_ai_information()
         self.vector_store = vector_store
-        self.llm_processor = LLMProcessor()
+
+        self.model = settings.MISTRAL_MODEL_NAME
+        self.llm = init_chat_model(
+            self.model,
+            model_provider="mistralai",
+            api_key=settings.MISTRAL_API_KEY
+        )
 
         self.tools = ToolNode([retrieve])
         self._build_graph()
 
-    # ---------------------------------------------------------
-    # 🔹 Build LangGraph
-    # ---------------------------------------------------------
+
     def _build_graph(self):
         graph_builder = StateGraph(MessagesState)
 
@@ -76,9 +82,7 @@ class RAGPipeline:
 
         self.graph = graph_builder.compile()
 
-    # ---------------------------------------------------------
-    # 🔹 Run pipeline
-    # ---------------------------------------------------------
+
     def execute(self, question: str):
         logger.info(f"🟢 Starting RAG pipeline for question: {question!r}")
         initial_state = {"messages": [HumanMessage(content=question)]}
@@ -98,54 +102,30 @@ class RAGPipeline:
             logger.exception(f"❌ Error while executing RAG pipeline: {e}")
             raise
 
-        # ---------------------------------------------------------
-        # 🔹 Step 1 — Ask LLM whether to call a tool or respond
-        # ---------------------------------------------------------
 
     def query_or_respond(self, state: MessagesState):
         logger.debug("🔹 Entering query_or_respond()")
         logger.debug(f"Current messages: {[m.content for m in state['messages']]}")
 
         try:
-
-            prompt_template = ChatPromptTemplate.from_messages([
-                (
-                    "system",
-                    "Tu es {name}, et tu réponds comme si tu étais toi-même dans une conversation. "
-                    "Tes réponses doivent être naturelles, simples et à la première personne. "
-                    "Les questions porteront probablement sur un portfolio. "
-                    "Si tu ne sais pas répondre à une question, utilise le tool 'retrieve' pour récupérer des informations supplémentaires. "
-                    "Pour utiliser le tool, remplis le champ 'question' avec la question posée."
-                ),
-
-            ])
-
-            system_message_content = prompt_template.invoke({
-                "name": self.ai_information.get("name", "une IA")
-            }).to_string()
-            system_message = SystemMessage(system_message_content)
-
-            # 2️⃣ Construire le prompt complet avec messages utilisateur
-            prompt = [system_message] + state["messages"]
+            # Create prompt without RAG context
+            prompt = build_prompt_without_context(
+                state["messages"],
+                self.ai_information.get("name")
+            )
 
             logger.debug("Launch LLM call")
-            llm_with_tools = self.llm_processor.llm.bind_tools([retrieve])
-            response = llm_with_tools.invoke(prompt)
+            llm_with_tools = self.llm.bind_tools([retrieve])
+            response_messages = self.execute_llm(llm_with_tools, prompt)
 
-            logger.debug(f"LLM responded: {getattr(response, 'content', None)}")
-            logger.debug(f"Tool calls (if any): {getattr(response, 'tool_calls', None)}")
-
-            return {"messages": [response]}
+            return response_messages
         except Exception as e:
             logger.exception(f"❌ Error in query_or_respond: {e}")
             raise
 
-    # ---------------------------------------------------------
-    # 🔹 Step 3 — Generate final answer
-    # ---------------------------------------------------------
+
     def generate(self, state: MessagesState):
         logger.debug("🔹 Entering generate()")
-
         try:
             # Récupérer les messages de type "tool"
             recent_tool_messages = []
@@ -157,13 +137,30 @@ class RAGPipeline:
 
             tool_messages = recent_tool_messages[::-1]
             docs_content = "\n\n".join(msg.content for msg in tool_messages)
-
             logger.debug(f"🧩 Docs content passed to LLMProcessor ({len(docs_content)} chars)")
 
-            response = self.llm_processor.execute(state, self.ai_information, docs_content)
-            final_message = AIMessage(content=response['answer'])  # ✅ objet compatible
 
-            return {"messages": [final_message]}
+            prompt = build_prompt_with_context(
+                state["messages"],
+                self.ai_information.get("name"),
+                docs_content
+            )
+
+            response_messages = self.execute_llm(self.llm, prompt)
+            return response_messages
         except Exception as e:
             logger.exception(f"❌ Error in generate: {e}")
             raise
+
+
+    @staticmethod
+    def execute_llm(llm, prompt):
+        response = llm.invoke(prompt)
+
+        logger.debug(f"LLM responded: {getattr(response, 'content', None)}")
+        logger.debug(f"Tool calls (if any): {getattr(response, 'tool_calls', None)}")
+
+        return {"messages": [response]}
+
+
+
