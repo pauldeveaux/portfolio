@@ -1,9 +1,7 @@
-import asyncio
 import logging
-import traceback
 
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from fastapi import APIRouter
+from pydantic import BaseModel, Field
 
 from app.services.rag.embedding_document_store import EmbeddingDocumentStore
 from app.services.rag.rag_pipeline import RAGPipeline
@@ -24,6 +22,7 @@ class MessageModel(BaseModel):
         message (str): message to send to the chatbot
     """
     message: str
+    session_id: str = Field(..., alias="sessionId")
 
 
 @router.get(
@@ -56,8 +55,9 @@ async def ask_question(payload: MessageModel):
         dict: Original message and generated answer.
     """
     query = payload.message
+    session_id = payload.session_id
 
-    response = rag.execute(question=query)
+    response = rag.execute(question=query, session_id=session_id)
 
     ret = {
         "message": payload.message,

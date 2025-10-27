@@ -8,7 +8,7 @@ from langchain_core.documents import Document
 from langgraph.graph import StateGraph, MessagesState, END
 from langchain_core.messages import HumanMessage
 from langchain.chat_models import init_chat_model
-
+from langgraph.checkpoint.memory import MemorySaver
 
 from app.core.config import settings
 from app.services.rag.embedding_document_store import EmbeddingDocumentStore
@@ -21,11 +21,13 @@ logger.setLevel(logging.DEBUG)  # 👈 assure-toi d’avoir le niveau debug acti
 
 class State(BaseModel):
     question: str
+    thread_id: str = None
     context: List[Document] = None
     answer: str = ""
 
 
 vector_store = EmbeddingDocumentStore()
+memory = MemorySaver()
 
 
 @tool(response_format="content_and_artifact", description="Retrieves documents related to the portfolio or its owner")
@@ -80,15 +82,16 @@ class RAGPipeline:
         graph_builder.add_edge("tools", "generate")
         graph_builder.add_edge("generate", END)
 
-        self.graph = graph_builder.compile()
+        self.graph = graph_builder.compile(checkpointer=memory)
 
 
-    def execute(self, question: str):
+    def execute(self, question: str, session_id: str) -> str:
         logger.info(f"🟢 Starting RAG pipeline for question: {question!r}")
-        initial_state = {"messages": [HumanMessage(content=question)]}
+        initial_state = { "messages": [HumanMessage(content=question)]}
 
         try:
-            result = self.graph.invoke(initial_state)
+            config = {"configurable": {"thread_id": session_id}}
+            result = self.graph.invoke(initial_state, config)
             logger.debug(f"RESULTS : {result}")
 
             messages = result.get("messages", [])
@@ -124,7 +127,7 @@ class RAGPipeline:
             raise
 
 
-    def generate(self, state: MessagesState):
+    def generate(self, state: MessagesState, thread_id: str):
         logger.debug("🔹 Entering generate()")
         try:
             # Récupérer les messages de type "tool"
@@ -146,7 +149,7 @@ class RAGPipeline:
                 docs_content
             )
 
-            response_messages = self.execute_llm(self.llm, prompt)
+            response_messages = self.execute_llm(self.llm, prompt, thread_id)
             return response_messages
         except Exception as e:
             logger.exception(f"❌ Error in generate: {e}")
