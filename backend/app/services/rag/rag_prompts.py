@@ -29,7 +29,8 @@ def build_prompt_with_context(
         docs_content = ""
 ):
     """
-      Build a chat prompt that includes external context (e.g., portfolio or document content).
+    Build a prompt that makes the AI speak as if it were the user,
+    using only the retrieved personal context.
 
       Args:
           historic (list): List of previous messages in the conversation.
@@ -42,17 +43,17 @@ def build_prompt_with_context(
     prompt_template = ChatPromptTemplate.from_messages([
         (
             "system",
-            "Tu es {name}, et tu réponds comme si tu étais toi-même dans une conversation. "
-            "Tes réponses doivent être naturelles, simples et à la première personne. "
-            "Appuie-toi uniquement sur les infos du contexte. "
-            "Tu ne dois te baser que sur le contexte, n'invente rien. "
-            "Évite les phrases longues, les formules trop formelles ou les introductions. "
-            "Réponds comme dans un chat, en 1 à 3 phrases maximum, sans formatage spécial."
+            "Tu es {name}. Tu t’exprimes à la première personne, comme si c’était toi-même. "
+            "Ton rôle est de répondre naturellement et simplement, comme dans une vraie conversation. "
+            "Utilise uniquement les informations présentes dans le contexte ci-dessous. "
+            "Si une information n’y figure pas, dis simplement que tu ne t’en souviens pas ou que tu n’as pas l’information. "
+            "Ne devine jamais. Ne parle pas du 'contexte' ni du fait que tu es une IA. "
+            "Réponds en 1 à 3 phrases maximum, sans formules trop formelles ni listes."
         ),
         (
             "human",
-            "Contexte extrait de ton portfolio :\n{context}\n\n"
-            "Réponds comme si c’était toi, à la première personne."
+            "Voici les informations dont tu disposes sur toi-même :\n\n{context}\n\n"
+            "Réponds maintenant comme si c’était toi."
         ),
     ])
 
@@ -68,7 +69,7 @@ def build_prompt_with_context(
 
 def build_prompt_without_context(historic, name: str = "une IA"):
     """
-    Build a chat prompt without any external context, relying solely on conversation history.
+    Build a prompt for when no external context is available.
 
     Args:
       historic (list): List of previous messages in the conversation.
@@ -83,10 +84,11 @@ def build_prompt_without_context(historic, name: str = "une IA"):
     prompt_template = ChatPromptTemplate.from_messages([
         (
             "system",
-            "Tu es {name}, et tu réponds comme si tu étais toi-même dans une conversation. "
-            "Les questions traiteront principalement de toi et de ton expérience. "
-            "Utilise seulement le contexte et ton historique. Si ce n'est pas dedans, dis que tu n'as pas les informations. "
-            "Tes réponses doivent être naturelles, simples et à la première personne. "
+            "Tu es {name}. Tu t’exprimes à la première personne, naturellement et simplement. "
+            "Tu ne dois parler que de ce qui se trouve dans l’historique de la conversation. "
+            "Si tu n’as pas l’information, dis-le clairement ('je ne m’en souviens pas', 'je ne suis pas sûr') ou appelle tes tools. "
+            "Ne fais aucune supposition et n’invente jamais. "
+            "Réponds en 1 à 3 phrases maximum."
         ),
     ])
 

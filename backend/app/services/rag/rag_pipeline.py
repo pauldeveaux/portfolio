@@ -1,4 +1,5 @@
 import logging
+import re
 from typing import List
 from dotenv import load_dotenv
 
@@ -45,7 +46,15 @@ class RetrieveState(BaseModel):
 
 
 
-@tool(response_format="content_and_artifact", description="Retrieves personal document information (experience, projects, skills, formation) relevant to the question asked.")
+@tool(
+    response_format="content_and_artifact",
+    description=(
+        "Récupère les informations personnelles de l'utilisateur (expérience, projets, compétences, formation, autre) "
+        "pertinentes à la question posée. "
+        "Le contenu renvoyé représente la mémoire de la personne, sur laquelle elle peut baser ses réponses. "
+        "Ne pas inventer d'informations absentes des documents."
+    )
+)
 def retrieve(state: RetrieveState):
     """
      Retrieve documents relevant to a user's question from the vector store.
@@ -118,6 +127,7 @@ class RAGPipeline:
         graph_builder.add_node(self.tools)
         graph_builder.add_node(self.generate)
         graph_builder.add_node(self.cleanup_messages)
+        graph_builder.add_node(self.cleanup_markdown)
         graph_builder.add_node("summarize", self.summarization_node)
 
         graph_builder.add_edge(START, "summarize")
@@ -129,7 +139,8 @@ class RAGPipeline:
         )
         graph_builder.add_edge("tools", "generate")
         graph_builder.add_edge("generate", "cleanup_messages")
-        graph_builder.add_edge("cleanup_messages", END)
+        graph_builder.add_edge("cleanup_messages", "cleanup_markdown")
+        graph_builder.add_edge("cleanup_markdown", END)
 
 
         self.graph = graph_builder.compile(checkpointer=memory)
@@ -258,6 +269,34 @@ class RAGPipeline:
                 skip_next = False
 
         return {"messages": [RemoveMessage(id=m.id) for m in messages_to_remove]}
+
+
+    @staticmethod
+    def cleanup_markdown(state: MessagesState):
+        """
+        Clean up markdown formatting in the latest AI message.
+
+        Args:
+            state (MessagesState): Current conversation messages.
+
+        Returns:
+            dict: Updated messages with cleaned AI response.
+        """
+        logger.debug("🔹 Entering cleanup_markdown()")
+
+        for message in reversed(state["messages"]):
+            if message.type == "ai":
+                text = message.content
+                text = re.sub(r'(```.*?```)', '', text, flags=re.DOTALL)  # code blocks
+                text = re.sub(r'`([^`]*)`', r'\1', text)  # code inline
+                text = re.sub(r'\*\*(.*?)\*\*', r'\1', text)  # bold
+                text = re.sub(r'\*(.*?)\*', r'\1', text)  # italic
+                text = re.sub(r'\[(.*?)\]\(.*?\)', r'\1', text)  # links
+                text = re.sub(r'#+\s*(.*)', r'\1', text)  # titles
+                message.content = text.strip()
+                break
+
+        return {"messages": state["messages"]}
 
 
     @staticmethod
