@@ -22,7 +22,7 @@ export async function sendChatbotMessage(message: ChatMessage) {
                     sessionId
                 },
             },
-            15000
+            60000
         );
     } catch (err: unknown) {
         if (err instanceof TimeoutError) {
