@@ -4,7 +4,7 @@ from typing import List
 from dotenv import load_dotenv
 
 from langsmith import traceable
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from langchain_core.tools import tool
 from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_core.documents import Document
@@ -41,7 +41,7 @@ class RetrieveState(BaseModel):
         answer (str, optional): Generated answer for the question.
     """
     question: str
-    context: List[Document] = None
+    context: List[Document] = Field(default_factory=list)
     answer: str = ""
 
 
