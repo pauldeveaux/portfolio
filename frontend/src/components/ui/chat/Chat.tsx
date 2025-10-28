@@ -193,6 +193,7 @@ export default function Chat({defaultAIMessage}: ChatProps) {
                     onKeyDown={handleKeyDown}
                 />
                 <button
+                    id="chatbot-send-button"
                     className={`flex-shrink-0 px-5 py-3 rounded-2xl font-semibold transition-colors
                         ${waiting
                         ? "bg-gray-400 text-gray-200 cursor-not-allowed"
