@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ai_documents",
+  "info": {
+    "singularName": "ai-document",
+    "pluralName": "ai-documents",
+    "displayName": "AI_Document"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    }
+  }
+}

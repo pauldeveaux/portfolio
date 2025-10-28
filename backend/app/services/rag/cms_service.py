@@ -266,9 +266,11 @@ class CMSService:
         all_docs += self._fetch_table(
             "contact-links", title_keys=["socialMedia"], content_keys=["text"], link_keys=["link"], category_name="Contacts", aggregate_documents=True
         )
-
         all_docs += self._fetch_table(
             "homepage", title_keys=["textSectionTitle"], content_keys=["textSectionText"], link_keys=[], category_name="Plus sur toi"
+        )
+        all_docs += self._fetch_table(
+            "ai-documents", title_keys=["title"], content_keys=["text"], category_name="Informations"
         )
 
         return all_docs

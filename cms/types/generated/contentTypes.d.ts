@@ -430,6 +430,35 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAiDocumentAiDocument extends Struct.CollectionTypeSchema {
+  collectionName: 'ai_documents';
+  info: {
+    displayName: 'AI_Document';
+    pluralName: 'ai-documents';
+    singularName: 'ai-document';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::ai-document.ai-document'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    text: Schema.Attribute.Text;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiAiGlobalAiGlobal extends Struct.SingleTypeSchema {
   collectionName: 'ai_globals';
   info: {
@@ -1177,6 +1206,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::ai-document.ai-document': ApiAiDocumentAiDocument;
       'api::ai-global.ai-global': ApiAiGlobalAiGlobal;
       'api::contact-link.contact-link': ApiContactLinkContactLink;
       'api::experience.experience': ApiExperienceExperience;
