@@ -1,36 +1,39 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type {Metadata} from "next";
+import Script from 'next/script';
+import {Geist, Geist_Mono} from "next/font/google";
 import "../components/style/globals.css";
 import "react-vertical-timeline-component/style.min.css";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+    variable: "--font-geist-sans",
+    subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+    variable: "--font-geist-mono",
+    subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio - Paul Deveaux",
-  description: "Bienvenue sur le portfolio de Paul Deveaux, ingénieur en intelligence artificielle.",
+    title: "Portfolio - Paul Deveaux",
+    description: "Bienvenue sur le portfolio de Paul Deveaux, ingénieur en intelligence artificielle.",
 };
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
+                                       children,
+                                   }: Readonly<{
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="fr">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
-  );
+    return (
+        <html lang="fr">
+            <GoogleTagManager gtmId="GTM-PPF7XDZN"/>
+            <body
+                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
+            {children}
+            </body>
+        </html>
+    );
 }
