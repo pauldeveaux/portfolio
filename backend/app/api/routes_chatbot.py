@@ -20,6 +20,7 @@ class MessageModel(BaseModel):
 
     Attributes:
         message (str): message to send to the chatbot
+        session_id (str): session identifier
     """
     message: str
     session_id: str = Field(..., alias="sessionId")

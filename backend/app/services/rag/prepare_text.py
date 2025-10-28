@@ -1,41 +1,47 @@
-
-
-
 def prepare_text(titles: list, contents: list, links: list):
     """
-    Prépare un texte complet pour le RAG, en formatant titres, contenus et liens.
+    Prepare a complete text for RAG by formatting titles, contents, and links.
 
     Args:
-        titles (list): Liste de titres.
-        contents (list): Liste de contenus/textes.
-        links (list): Liste de liens (URLs ou emails).
+        titles (list): List of titles.
+        contents (list): List of content strings.
+        links (list): List of links (URLs or emails).
 
     Returns:
-        tuple: (title_text, full_text) où full_text est le texte complet.
+        tuple: (title_text, full_text) where full_text is the combined formatted text.
     """
 
-    # Formatage des titres
+    # Format titles
     title_text = ""
     if titles:
-        title_text = "[Titre] : " + " - ".join(titles) + "\n\n"
+        title_text = "[Title]: " + " - ".join(titles) + "\n\n"
 
-    # Formatage des contenus
+    # Format contents
     content_text = ""
     if contents:
-        content_text = "\n\n".join(contents) + "\n\n"  # Ajouter un saut entre sections
+        content_text = "\n\n".join(contents) + "\n\n"  # Add spacing between sections
 
-    # Formatage des liens
+    # Format links
     link_text = ""
     if links:
-        # Chaque lien sur sa ligne avec un "- " et un label optionnel si nécessaire
-        link_text = "[Liens] :\n" + "\n".join(f"- {link}" for link in links)
+        # Each link on its own line with a "- " prefix
+        link_text = "[Links]:\n" + "\n".join(f"- {link}" for link in links)
 
-    # Texte complet
+    # Combine all parts
     full_text = f"{title_text}{content_text}{link_text}".strip()
 
     return title_text.strip(), full_text
 
 
-def concatenate_texts(texts):
+def concatenate_texts(texts: list):
+    """
+    Concatenate multiple text sections into a single text with separators.
+
+    Args:
+        texts (list): List of text strings to concatenate.
+
+    Returns:
+        str: Combined text with sections separated by "\n\n---\n\n".
+    """
     full_text = "\n\n---\n\n".join(texts)
     return full_text

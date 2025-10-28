@@ -76,16 +76,17 @@ class CMSService:
         category: Optional[str] = None
     ) -> DocumentModel:
         """
-        Clean and normalize a raw CMS document into a standard DocumentModel.
+        Clean a raw CMS document into a normalized DocumentModel.
 
         Args:
             cms_document (dict): Raw CMS document data.
-            title_key (str | list[str]): Key(s) used to extract the title.
-            content_key (str | list[str]): Key(s) used to extract the content.
-            category (str, optional): Category or table name for the document.
+            title_keys (List[str]): Keys to extract title fields.
+            content_keys (List[str]): Keys to extract content fields.
+            link_keys (List[str], optional): Keys to extract links (URLs or emails).
+            category (str, optional): Optional category or table name.
 
         Returns:
-            DocumentModel: Normalized and cleaned document.
+            DocumentModel: Normalized, cleaned document ready for RAG.
         """
         doc_id = cms_document.get("documentId")
         updated_at = self._parse_date(cms_document.get("updatedAt"))
@@ -116,6 +117,19 @@ class CMSService:
             link_keys: Optional[List[str]],
             category: Optional[str] = None
     ) -> DocumentModel:
+        """
+        Aggregate and clean multiple CMS documents into a single DocumentModel.
+
+        Args:
+            cms_documents (List[dict]): List of raw CMS documents.
+            title_keys (List[str]): Keys to extract title fields.
+            content_keys (List[str]): Keys to extract content fields.
+            link_keys (List[str], optional): Keys to extract links (optional).
+            category (str, optional): Category or table name.
+
+        Returns:
+            DocumentModel: Aggregated and cleaned document.
+        """
         if not cms_documents:
             raise ValueError("cms_documents cannot be empty")
 
@@ -160,6 +174,21 @@ class CMSService:
         aggregate_documents: bool = False,
         params: dict = None,
     ) -> List[DocumentModel]:
+        """
+        Fetch and clean documents from a specific CMS table.
+
+        Args:
+            route (str): CMS API route for the table.
+            title_keys (List[str]): Keys to extract title fields.
+            content_keys (List[str]): Keys to extract content fields.
+            link_keys (List[str], optional): Keys to extract links.
+            category_name (str, optional): Category name for the documents.
+            aggregate_documents (bool, optional): If True, aggregate multiple documents into one.
+            params (dict, optional): Query parameters for the API request.
+
+        Returns:
+            List[DocumentModel]: List of cleaned documents.
+        """
         if not link_keys:
             link_keys = []
 
@@ -179,6 +208,7 @@ class CMSService:
 
         return documents
 
+
     def fetch_document(
         self,
         table: str,
@@ -188,7 +218,20 @@ class CMSService:
         link_keys: List[str],
         params: dict = None,
     ) -> Optional[DocumentModel]:
+        """
+        Fetch and clean a single document by ID from a CMS table.
 
+        Args:
+           table (str): Table name in the CMS.
+           document_id (str): ID of the document to fetch.
+           title_keys (List[str]): Keys to extract title fields.
+           content_keys (List[str]): Keys to extract content fields.
+           link_keys (List[str]): Keys to extract links.
+           params (dict, optional): Query parameters for the API request.
+
+        Returns:
+           DocumentModel | None: Cleaned document or None if not found.
+        """
         route = f"{table}/{document_id}"
         response = self._fetch_cms(route, params=params)
         item = response.get("data")
@@ -197,6 +240,7 @@ class CMSService:
             return None
 
         return self._clean_document(item, title_keys, content_keys, link_keys)
+
 
     def fetch_all(self) -> List[DocumentModel]:
         """
@@ -229,7 +273,14 @@ class CMSService:
 
         return all_docs
 
+
     def fetch_ai_information(self):
+        """
+        Fetch global AI-related information from the CMS.
+
+        Returns:
+            dict | None: CMS data for AI configuration or metadata.
+        """
         ai_info = self._fetch_cms("ai-global")
         return ai_info.get("data")
 
