@@ -4,7 +4,7 @@ import React, {useEffect, useRef, useState} from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 import {Send} from "lucide-react";
 import {useIsMobile} from "@/components/features/hooks/useIsMobile";
-import {sendChatbotMessage} from "@/lib/backend/chatbot";
+import {ChatbotError, sendChatbotMessage} from "@/lib/backend/chatbot";
 
 
 /**
@@ -117,7 +117,11 @@ export default function Chat({defaultAIMessage}: ChatProps) {
             replacePendingMessageByAnswer(response.answer, pendingIndex)
         }
         catch(err) {
-            replacePendingMessageByAnswer("Désolé, je ne peux pas répondre pour le moment.", pendingIndex, "error")
+            let errorMessage = "Désolé, je ne peux pas répondre pour le moment.";
+            if (err instanceof ChatbotError) {
+                errorMessage = err.message;
+            }
+            replacePendingMessageByAnswer(errorMessage, pendingIndex, "error")
         }
         finally {
             setWaiting(false)
