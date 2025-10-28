@@ -16,8 +16,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  title: "Portfolio - Paul Deveaux",
+  description: "Portfolio de Paul Deveaux, ingénieur en intelligence artificielle, présentant ses projets et réalisations.",
+  alternates: {
+    canonical: "https://paul-deveaux.fr",
+  },
+  openGraph: {
     title: "Portfolio - Paul Deveaux",
-    description: "Bienvenue sur le portfolio de Paul Deveaux, ingénieur en intelligence artificielle.",
+    description: "Portfolio de Paul Deveaux, ingénieur en intelligence artificielle, présentant ses projets et réalisations.",
+    url: "https://paul-deveaux.fr",
+    siteName: "Paul Deveaux",
+    images: [{ url: "https://paul-deveaux.fr/og-image.png", width: 1200, height: 630 }],
+    locale: "fr_FR",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
