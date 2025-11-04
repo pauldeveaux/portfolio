@@ -53,7 +53,7 @@ export default function Message({text, type}: ChatMessageProps) {
             style={{whiteSpace: "pre-wrap"}} // preserve line breaks
         >
             {type === "pending" ? (
-                <div className="flex gap-1 w-6 h-4 align-center">
+                <div className="flex gap-1 w-6 h-4 align-center font-sans">
                     {/* Animated typing dots */}
                     <motion.span
                         animate={{opacity: [0.2, 1, 0.2]}}
