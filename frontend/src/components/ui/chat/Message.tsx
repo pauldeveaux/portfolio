@@ -83,17 +83,18 @@ export default function Message({text, type}: ChatMessageProps) {
                     </motion.span>
                 </div>
             ) : (
-                <Linkify options={linkifyOptions}>
-                    <ReactMarkdown
-                        children={text}
-                        components={{
-                            a: ({node, ...props}) => (
-                                <a {...props} target="_blank" rel="noopener noreferrer"
-                                   className="text-blue-600 underline"/>
-                            ),
-                        }}
-                    />
-                </Linkify>
+                <ReactMarkdown
+                    children={text || ""}
+                    components={{
+                        a: ({node, ...props}) => (
+                            <a {...props} target="_blank" rel="noopener noreferrer"
+                               className="text-blue-600 underline"/>
+                        ),
+                        p: ({children}) => (
+                            <Linkify options={linkifyOptions}>{children}</Linkify>
+                        ),
+                    }}
+                />
             )}
         </motion.div>
     );
