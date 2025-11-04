@@ -1,4 +1,6 @@
 import {motion} from "motion/react";
+import ReactMarkdown from "react-markdown";
+import Linkify from "linkify-react";
 
 /**
  * Props for a chat message.
@@ -44,6 +46,12 @@ const messageStyles: Record<ChatMessageProps["type"], string> = {
  * - Pending messages display three animated dots.
  */
 export default function Message({text, type}: ChatMessageProps) {
+    const linkifyOptions = {
+        target: "_blank",
+        rel: "noopener noreferrer",
+        className: "text-blue-600 underline",
+    };
+
     return (
         <motion.div
             initial={{opacity: 0, y: 10}} // slide up + fade in
@@ -75,7 +83,17 @@ export default function Message({text, type}: ChatMessageProps) {
                     </motion.span>
                 </div>
             ) : (
-                text
+                <Linkify options={linkifyOptions}>
+                    <ReactMarkdown
+                        children={text}
+                        components={{
+                            a: ({node, ...props}) => (
+                                <a {...props} target="_blank" rel="noopener noreferrer"
+                                   className="text-blue-600 underline"/>
+                            ),
+                        }}
+                    />
+                </Linkify>
             )}
         </motion.div>
     );
