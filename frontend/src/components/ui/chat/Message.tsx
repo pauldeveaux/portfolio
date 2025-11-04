@@ -1,4 +1,5 @@
 import {motion} from "motion/react";
+import ReactMarkdown from "react-markdown";
 
 /**
  * Props for a chat message.
@@ -75,7 +76,19 @@ export default function Message({text, type}: ChatMessageProps) {
                     </motion.span>
                 </div>
             ) : (
-                text
+                <ReactMarkdown
+                    children={text}
+                    components={{
+                        a: ({node, ...props}) => (
+                            <a
+                                {...props}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 underline"
+                            />
+                        ),
+                    }}
+                />
             )}
         </motion.div>
     );
