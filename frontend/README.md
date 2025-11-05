@@ -25,6 +25,19 @@ It’s fully responsive and includes interactive UI features, animations, and pa
 
 ---
 
+## Environment Variables
+
+Copy `.env.example` to `.env` and fill in the required values:
+
+```bash
+cp .env.example .env
+```
+
+Variables include database access, API keys, email settings, etc.  
+Never commit the `.env` file containing secrets.
+
+---
+
 ## Quick Start
 
 ```bash
@@ -36,12 +49,15 @@ npm run dev
 
 Open **http://localhost:3000**
 
+
 ---
 
-## Notes
+## License
 
-- Fully responsive and mobile-friendly.
-- Components are modular and reusable.
-- Smooth animations enhance user experience.
+© 2025 Paul Deveaux \| All rights reserved.  
+This project is provided for consultation only.  
+Any use, modification, reproduction, or distribution is prohibited without the express permission of the author.
 
+---
 
+Paul Deveaux
