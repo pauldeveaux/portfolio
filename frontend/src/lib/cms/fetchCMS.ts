@@ -9,9 +9,20 @@
  * @returns Promise resolving to an array of T
  */
 export async function fetchCMS<T>(endpoint: string, token?: string): Promise<T[]> {
+    console.log(`Fetching CMS data from ${process.env.CMS_API_URL}/api${endpoint}`);
+
+    const headers: Record<string, string> = {
+        'User-Agent': 'Next.js Fetch',
+        'Accept': 'application/json',
+    };
+
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
     const res = await fetch(`${process.env.CMS_API_URL}/api${endpoint}`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-        cache: "no-store", // always fetch fresh data
+        headers,
+        cache: 'no-store',
     });
 
     if (!res.ok) throw new Error(`Failed to fetch ${endpoint}: ${res.statusText}`);
