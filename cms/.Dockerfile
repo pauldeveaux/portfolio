@@ -28,9 +28,10 @@ WORKDIR /app
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app ./
 
-RUN mkdir -p /app/public/uploads
+RUN addgroup -S strapi && adduser -S strapi -G strapi
+RUN mkdir -p /app/public/uploads && chown -R strapi:strapi /app
 
-USER root
+USER strapi
 
 EXPOSE 1337
 CMD ["yarn", "start"]

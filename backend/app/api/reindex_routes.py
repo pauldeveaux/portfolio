@@ -1,7 +1,10 @@
+import hmac
 import logging
 
-from fastapi import APIRouter, Form, HTTPException
+from fastapi import APIRouter, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse
+
+from app.main import limiter
 
 from app.core.config import settings
 from app.services.rag.cms_service import cms
@@ -43,7 +46,8 @@ async def reindex_form():
 
 
 @router.post("/reindex")
-async def reindex_post(password: str = Form(...)):
+@limiter.limit("3/hour")
+async def reindex_post(request: Request, password: str = Form(...)):
     """
     Perform CMS documents reindexing after verifying admin password.
 
@@ -57,7 +61,7 @@ async def reindex_post(password: str = Form(...)):
         HTTPException: If the password is incorrect (401 Unauthorized).
     """
     # Verify admin password
-    if password != ADMIN_PASSWORD:
+    if not hmac.compare_digest(password, ADMIN_PASSWORD):
         raise HTTPException(status_code=401, detail="Unauthorized")
 
     embedding_db.clear_collection()

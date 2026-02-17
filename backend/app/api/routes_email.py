@@ -1,7 +1,9 @@
 from smtplib import SMTPException
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, EmailStr, Field
+
 from app.services.email_service import send_email
+from app.main import limiter
 
 router = APIRouter(prefix="/email", tags=["Email"])
 
@@ -16,10 +18,10 @@ class ContactFormModel(BaseModel):
         email (EmailStr): Sender's email address.
         message (str): Message content.
     """
-    first_name: str = Field(..., alias="firstName")
-    last_name: str = Field(..., alias="lastName")
+    first_name: str = Field(..., alias="firstName", max_length=100)
+    last_name: str = Field(..., alias="lastName", max_length=100)
     email: EmailStr
-    message: str
+    message: str = Field(..., max_length=5000)
 
 
 @router.get(
@@ -41,7 +43,8 @@ def get_email_status():
     summary="Send a contact form message",
     response_description="Email sent successfully"
 )
-def contact(form: ContactFormModel):
+@limiter.limit("3/minute")
+def contact(request: Request, form: ContactFormModel):
     """
     Send a message from the contact form via email.
 
@@ -56,8 +59,10 @@ def contact(form: ContactFormModel):
         dict: Success message if the email is sent.
     """
     try:
-        subject = f"Portfolio - Message from '{form.first_name} {form.last_name}'"
-        body = f"From : {form.first_name} {form.last_name} <{form.email}>\n\n{form.message}"
+        first = form.first_name.replace("\r", "").replace("\n", "")
+        last = form.last_name.replace("\r", "").replace("\n", "")
+        subject = f"Portfolio - Message from '{first} {last}'"
+        body = f"From : {first} {last} <{form.email}>\n\n{form.message}"
         send_email(subject, form.email, body)
         return {"message": "Email sent successfully!"}
     except SMTPException:

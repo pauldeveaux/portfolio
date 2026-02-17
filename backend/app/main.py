@@ -7,11 +7,18 @@ import logging
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 from app.api import main_router
 from app.core.config import settings
 
+limiter = Limiter(key_func=get_remote_address)
+
 app = FastAPI(title="Portfolio API")
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.include_router(main_router)
 
 
@@ -27,10 +34,10 @@ logger = logging.getLogger(__name__)
 # CORS Middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_ORIGIN],  # frontend URL
-    allow_methods=["*"],                      # allow GET, POST, OPTIONS, etc.
-    allow_headers=["*"],                      # allow custom headers like Content-Type
-    allow_credentials=True,                   # allow cookies / auth
+    allow_origins=[settings.FRONTEND_ORIGIN],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type"],
+    allow_credentials=True,
 )
 
 

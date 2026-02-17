@@ -1,7 +1,9 @@
 import logging
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from pydantic import BaseModel, Field
+
+from app.main import limiter
 
 from app.services.rag.embedding_document_store import EmbeddingDocumentStore
 from app.services.rag.rag_pipeline import RAGPipeline
@@ -22,8 +24,8 @@ class MessageModel(BaseModel):
         message (str): message to send to the chatbot
         session_id (str): session identifier
     """
-    message: str
-    session_id: str = Field(..., alias="sessionId")
+    message: str = Field(..., max_length=2000)
+    session_id: str = Field(..., alias="sessionId", max_length=100)
 
 
 @router.get(
@@ -45,7 +47,8 @@ def get_chatbot_status():
     summary="Ask a question to the chatbot",
     response_description="The generated answer from the chatbot"
 )
-async def ask_question(payload: MessageModel):
+@limiter.limit("10/minute")
+async def ask_question(request: Request, payload: MessageModel):
     """
     Send a message to the RAG chatbot and return the answer.
 
