@@ -4,7 +4,7 @@ import logging
 from fastapi import APIRouter, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse
 
-from app.main import limiter
+from app.core.limiter import limiter
 
 from app.core.config import settings
 from app.services.rag.cms_service import cms

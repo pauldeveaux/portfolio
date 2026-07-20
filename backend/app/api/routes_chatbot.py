@@ -3,7 +3,7 @@ import logging
 from fastapi import APIRouter, Request
 from pydantic import BaseModel, Field
 
-from app.main import limiter
+from app.core.limiter import limiter
 
 from app.services.rag.embedding_document_store import EmbeddingDocumentStore
 from app.services.rag.rag_pipeline import RAGPipeline

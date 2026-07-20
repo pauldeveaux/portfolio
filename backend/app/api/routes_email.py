@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, EmailStr, Field
 
 from app.services.email_service import send_email
-from app.main import limiter
+from app.core.limiter import limiter
 
 router = APIRouter(prefix="/email", tags=["Email"])
 
