@@ -9,6 +9,8 @@ class Settings(BaseSettings):
 
     FRONTEND_ORIGIN: str = "http://localhost:3000"
 
+    CHATBOT_DAILY_BUDGET: int = 300
+
     MISTRAL_MODEL_NAME: str
     MISTRAL_API_KEY: str
 

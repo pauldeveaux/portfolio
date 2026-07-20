@@ -3,6 +3,7 @@ import logging
 from fastapi import APIRouter, Request
 from pydantic import BaseModel, Field
 
+from app.core.config import settings
 from app.core.limiter import limiter
 
 from app.services.rag.embedding_document_store import EmbeddingDocumentStore
@@ -47,7 +48,11 @@ def get_chatbot_status():
     summary="Ask a question to the chatbot",
     response_description="The generated answer from the chatbot"
 )
-@limiter.limit("10/minute")
+@limiter.limit("10/minute;40/day")
+@limiter.limit(
+    lambda: f"{settings.CHATBOT_DAILY_BUDGET}/day",
+    key_func=lambda request: "global",
+)
 async def ask_question(request: Request, payload: MessageModel):
     """
     Send a message to the RAG chatbot and return the answer.

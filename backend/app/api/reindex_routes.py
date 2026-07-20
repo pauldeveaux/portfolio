@@ -20,7 +20,8 @@ ADMIN_PASSWORD = settings.ADMIN_PASSWORD
 
 
 @router.get("/reindex", response_class=HTMLResponse)
-async def reindex_form():
+@limiter.limit("5/hour")
+async def reindex_form(request: Request):
     """
     Display an HTML form to trigger CMS reindexing.
 
