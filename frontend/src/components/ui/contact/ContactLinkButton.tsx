@@ -17,10 +17,10 @@ export default function ContactLinkButton({ socialMedia, imageUrl, text, link }:
                 flex items-center gap-3
                 w-full sm:w-auto
                 p-4
-                bg-gradient-to-r from-purple-50 via-white to-cyan-50
+                bg-white
                 border border-gray-200
-                rounded-2xl shadow-md hover:shadow-xl
-                transition-all duration-300
+                rounded-2xl shadow-sm hover:shadow-lg hover:border-main-1/40
+                transition-all duration-300 hover:-translate-y-0.5
             "
         >
             {/* Logo image */}

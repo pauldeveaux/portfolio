@@ -2,6 +2,7 @@
 import { ArrowUp } from "lucide-react";
 import Section, { SectionProps } from "@/components/ui/layout/Section";
 import ButtonLink from "@/components/ui/buttons/ButtonLink";
+import { motion } from "motion/react";
 
 /**
  * Props for the FooterSection component.
@@ -32,12 +33,29 @@ export default function FooterSection({ license, navLinks, ...sectionProps }: Fo
             <div className="w-full text-font-light-1 pt-12 pb-5 relative">
 
                 {/* Scroll to Top Button */}
-                <button
+                <motion.button
                     onClick={scrollToTop}
-                    className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-600 via-cyan-500 to-emerald-500 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 hover:cursor-pointer"
+                    className="
+                        absolute -top-6 left-1/2 -translate-x-1/2
+                        text-main-3
+                        p-3 rounded-full
+                        shadow-lg
+                        border-2 border-main-1
+                        hover:scale-110 hover:shadow-2xl hover:cursor-pointer
+                        transition-all duration-300
+                    "
+                    animate={{
+                        background: [
+                            "linear-gradient(to right, #fff, #E6FFFE, #D4FFFD)",
+                            "linear-gradient(to right, #D4FFFD, #fff, #E6FFFE)",
+                            "linear-gradient(to right, #E6FFFE, #D4FFFD, #fff)",
+                            "linear-gradient(to right, #fff, #E6FFFE, #D4FFFD)",
+                        ]
+                    }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                 >
                     <ArrowUp size={24} />
-                </button>
+                </motion.button>
 
                 {/* Main container */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

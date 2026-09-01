@@ -1,6 +1,6 @@
 "use client";
 
-import {motion} from "framer-motion";
+import {motion} from "motion/react";
 import React, {useState} from "react";
 import {sendEmail} from "@/lib/backend/email";
 import {ContactFormData} from "@/types/Contact";
@@ -71,7 +71,7 @@ export default function ContactForm() {
             initial={{opacity: 0, y: 20}} // slide up + fade in animation
             animate={{opacity: 1, y: 0}}
             transition={{duration: 0.5}}
-            className="px-7 w-full max-w-3xl mx-auto mt-12 space-y-4 sm:px-4"
+            className="w-full max-w-3xl mx-auto mt-12 space-y-5 bg-white border border-gray-200 rounded-2xl shadow-sm p-8 sm:p-10"
         >
             <div className="flex flex-col sm:flex-row gap-4">
                 <input
@@ -81,7 +81,7 @@ export default function ContactForm() {
                     value={formData.firstName}
                     onChange={handleChange}
                     required
-                    className="flex-1 w-full bg-transparent border-b py-2 focus:outline-none"
+                    className="flex-1 w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-main-1/40 focus:border-main-1 transition-all"
                 />
                 <input
                     type="text"
@@ -90,7 +90,7 @@ export default function ContactForm() {
                     value={formData.lastName}
                     onChange={handleChange}
                     required
-                    className="flex-1 w-full bg-transparent border-b py-2 focus:outline-none"
+                    className="flex-1 w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-main-1/40 focus:border-main-1 transition-all"
                 />
             </div>
 
@@ -101,7 +101,7 @@ export default function ContactForm() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full bg-transparent border-b py-2 focus:outline-none"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-main-1/40 focus:border-main-1 transition-all"
             />
 
             <textarea
@@ -111,7 +111,7 @@ export default function ContactForm() {
                 onChange={handleChange}
                 rows={5}
                 required
-                className="w-full bg-transparent border p-3 rounded-md focus:outline-none"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-main-1/40 focus:border-main-1 transition-all resize-none"
             />
 
             <motion.button
@@ -119,7 +119,7 @@ export default function ContactForm() {
                 disabled={loading}
                 whileHover={{scale: loading ? 1 : 1.05}}
                 whileTap={{scale: loading ? 1 : 0.95}}
-                className={`bg-main-3 text-font-light-1 w-full py-2 px-4 rounded-md transition-colors 
+                className={`bg-main-1 text-white w-full py-3 px-4 rounded-lg font-medium shadow-sm hover:shadow-md hover:bg-main-2 transition-all
                 ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:cursor-pointer'}`}
             >
                 {loading ? (
