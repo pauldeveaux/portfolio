@@ -175,7 +175,7 @@ export default function Chat({defaultAIMessage}: ChatProps) {
             md:w-2xl">
             <div
                 ref={chatContainerRef}
-                className="flex-1 overflow-y-auto mb-4 flex flex-col gap-2"
+                className="flex-1 overflow-y-auto mb-4 flex flex-col gap-2 pr-2 scrollbar-thin"
             >
                 {messages.map((msg, idx) => (
                     <Message key={idx} text={msg.text} type={msg.type}/>
