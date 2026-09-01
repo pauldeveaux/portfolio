@@ -95,7 +95,7 @@ export default function Header({ title, navLinks }: HeaderProps) {
                 </Link>
 
                 {/* Desktop navigation */}
-                <nav className="hidden lg:flex items-center gap-8">
+                <nav className="hidden lg:flex items-center gap-8" style={{fontFamily: "var(--font-poppins), sans-serif"}}>
                     {navLinks?.map((link) => (
                         <ButtonLink
                             key={`${link.label}-${link.href}`}
