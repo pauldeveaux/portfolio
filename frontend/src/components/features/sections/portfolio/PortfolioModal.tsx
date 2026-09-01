@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, ReactNode, useState } from "react";
 import Image from "next/image";
+import { X } from "lucide-react";
 
 /**
  * Props for the PortfolioModal component.
@@ -27,6 +28,15 @@ interface PortfolioModalProps {
 export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markdownNode }: PortfolioModalProps) {
     const [imageError, setImageError] = useState(false);
     const fallBackUrl = "/images/fallback.png";
+
+    // Close on Escape key
+    useEffect(() => {
+        const handleEsc = (e: KeyboardEvent) => {
+            if (e.key === "Escape") onClose();
+        };
+        if (isOpen) window.addEventListener("keydown", handleEsc);
+        return () => window.removeEventListener("keydown", handleEsc);
+    }, [isOpen, onClose]);
 
     // Disable body scroll when modal is open
     useEffect(() => {
@@ -62,23 +72,23 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
 
                     {/* Modal container */}
                     <motion.div
-                        className="relative bg-main-5 rounded-xl flex flex-col overflow-hidden
-                        mx-4 sm:mx-10 sm:my-0 max-w-4xl w-full z-5 max-h-[85vh] sm:max-h-[90vh]"
+                        className="relative bg-gray-50 rounded-2xl flex flex-col overflow-hidden
+                        mx-4 sm:mx-6 max-w-5xl w-full z-5 max-h-[85vh] sm:max-h-[90vh] shadow-2xl"
                         onClick={(e) => e.stopPropagation()} // Prevent click propagation
-                        initial={{ scale: 0.5 }}
-                        animate={{ scale: 1 }}
-                        exit={{ scale: 0.5 }}
-                        transition={{ duration: 0.25 }}
+                        initial={{ scale: 0.9, y: 30 }}
+                        animate={{ scale: 1, y: 0 }}
+                        exit={{ scale: 0.9, y: 30 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
                     >
                         {/* Header with title and close button */}
-                        <div className="sticky top-0 bg-main-5 z-10 p-6 border-b border-separator-light rounded-t-xl">
+                        <div className="sticky top-0 bg-gray-50 z-10 px-6 py-5 border-b border-gray-200 rounded-t-2xl flex items-center justify-between">
+                            <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
                             <button
-                                className="absolute top-4 right-4 text-separator-light hover:text-separator-dark hover:cursor-pointer"
+                                className="text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-full p-1.5 transition-colors hover:cursor-pointer"
                                 onClick={onClose}
                             >
-                                ✕
+                                <X size={20} />
                             </button>
-                            <h2 className="text-3xl font-bold">{title}</h2>
                         </div>
 
                         {/* Scrollable content */}
@@ -91,7 +101,7 @@ export default function PortfolioModal({ isOpen, onClose, title, imageUrl, markd
                                 height={400}
                                 unoptimized={true}
                                 onError={() => setImageError(true)}
-                                className="w-full max-h-[50vh] object-contain mb-4 rounded-lg border border-button-light-2 shadow-md"
+                                className="w-full max-h-[50vh] object-contain mb-6 rounded-xl border border-gray-100 shadow-sm"
                             />
 
                             {/* Markdown content */}

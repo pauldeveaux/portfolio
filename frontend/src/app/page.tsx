@@ -52,7 +52,7 @@ export default async function HomePage() {
 
             < TextSection
                 id="about"
-                className="bg-main-4 text-font-dark-1"
+                className="bg-main-4 text-white"
                 title={sections.textSectionTitle}
                 text={sections.textSectionText}
             />

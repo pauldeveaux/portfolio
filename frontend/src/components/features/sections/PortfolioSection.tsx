@@ -93,7 +93,7 @@ export default function PortfolioSection({
                 ref={sectionRef}
                 className="flex flex-col items-center py-20 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8"
             >
-                <h2 className="text-5xl font-bold mb-20 text-center text-font-light-1">{title}</h2>
+                <h2 className="text-5xl font-bold mb-10 text-center text-font-light-1">{title}</h2>
 
                 {/* Grid of portfolio projects */}
                 <div className="grid grid-cols-1 grid-flow-dense sm:grid-cols-2 lg:grid-cols-3 auto-rows-auto gap-6 p-1 sm:p-2 w-full transition-all duration-300 ease-in-out">
@@ -110,7 +110,7 @@ export default function PortfolioSection({
                                 }
                                 setExpanded(!expanded);
                             }}
-                            className="px-6 py-3 bg-button-light-1 border border-button-light-2 text-font-dark-1 font-bold rounded-lg shadow transition cursor-pointer"
+                            className="px-6 py-3 bg-white text-main-3 font-semibold rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer"
                             whileHover={{
                                 scale: 1.05,
                                 boxShadow: "0px 10px 20px rgba(0,0,0,0.15)",

@@ -48,14 +48,13 @@ export default function PortfolioCard({
     return (
         <>
             <motion.div
-                className={`relative group flex flex-col rounded-xl 
-                overflow-hidden shadow-xl bg-main-5 hover:shadow-lg p-1 hover:cursor-pointer
-                transition-shadow duration-300 w-full ${className}`}
+                className={`relative group flex flex-col rounded-xl
+                overflow-hidden bg-white/95 backdrop-blur-sm border border-white/30 hover:shadow-2xl hover:shadow-black/20 p-1 hover:cursor-pointer
+                shadow-lg transition-all duration-300 w-full ${className}`}
                 onClick={openModal}
                 whileHover={{scale: hoverScale[size]}}
-                transition={{duration: 0.3}}
+                transition={{duration: 0}}
             >
-                {/* Project image with fallback */}
                 <Image
                     src={imageError ? fallBackUrl : imageUrl}
                     alt={title}

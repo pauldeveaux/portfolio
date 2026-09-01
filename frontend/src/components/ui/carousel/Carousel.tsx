@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import CarouselCard, { CarouselCardProps } from "@/components/ui/carousel/CarouselCard";
 
 /** Props for the Carousel component */
@@ -8,68 +8,64 @@ interface CarouselProps {
   cards: Array<CarouselCardProps>;
 }
 
+const AUTO_SPEED = 0.05;
+const FRICTION = 0.005;
+
 /**
  * Infinite, auto-scrolling horizontal carousel component with mouse and touch drag support.
  *
- * - Automatically scrolls horizontally with base speed.
- * - Supports manual dragging with momentum.
- * - Touch gestures detect vertical scrolling and disable horizontal movement.
- * - Seamlessly loops through the same set of cards for an infinite effect.
+ * Uses CSS transform instead of scrollLeft for reliable cross-browser animation.
+ * Supports manual dragging with momentum and seamless infinite looping.
  */
 export default function Carousel({ cards }: CarouselProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const scrollBreakpointRef = useRef(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const velocityRef = useRef(0); // horizontal scroll speed for momentum
+
+  const offsetRef = useRef(0);
+  const isDraggingRef = useRef(false);
+  const velocityRef = useRef(0);
+  const autoDirectionRef = useRef(1); // 1 = right, -1 = left
   const rafRef = useRef<number | null>(null);
   const lastTsRef = useRef<number | null>(null);
 
-  /** Main animation loop: auto-scroll and momentum scrolling */
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
+  const getBreakpoint = useCallback(() => {
     const firstCard = cardRef.current;
-    if (!scrollContainer || !firstCard) return;
+    const track = trackRef.current;
+    if (!firstCard || !track) return 0;
+    const gap = parseFloat(getComputedStyle(track).columnGap || "0");
+    return cards.length * (firstCard.offsetWidth + gap);
+  }, [cards.length]);
 
-    const AUTO_SPEED = 0.05; // px/ms (~50px/s)
-    const FRICTION = 0.005;  // exponential decay for momentum
+  const applyTransform = useCallback(() => {
+    if (trackRef.current) {
+      trackRef.current.style.transform = `translateX(${-offsetRef.current}px)`;
+    }
+  }, []);
 
+  /** Main animation loop */
+  useEffect(() => {
     const step = (ts: number) => {
-      if (!scrollContainer || !firstCard) return;
       if (lastTsRef.current === null) lastTsRef.current = ts;
       const dt = Math.max(0, ts - lastTsRef.current);
       lastTsRef.current = ts;
 
-      // Compute total scroll width for one full loop
-      const style = getComputedStyle(scrollContainer);
-      const gap = parseFloat(style.columnGap || style.gap || "0");
-      scrollBreakpointRef.current = cards.length * (firstCard.offsetWidth + gap);
+      const bp = getBreakpoint();
 
-      if (!isDragging) {
-        const autoDirection = velocityRef.current !== 0 ? Math.sign(velocityRef.current) : 1;
-
-        // Apply momentum if present
-        if (Math.abs(velocityRef.current) > 0) {
+      if (!isDraggingRef.current && bp > 0) {
+        if (Math.abs(velocityRef.current) > 0.01) {
           velocityRef.current *= Math.exp(-FRICTION * dt);
-          if (Math.abs(velocityRef.current) < AUTO_SPEED) velocityRef.current = AUTO_SPEED * autoDirection;
-          let nextScroll = scrollContainer.scrollLeft - velocityRef.current * dt;
-          nextScroll = nextScroll < 0
-            ? scrollBreakpointRef.current + (nextScroll % scrollBreakpointRef.current)
-            : nextScroll % scrollBreakpointRef.current;
-          scrollContainer.scrollLeft = nextScroll;
+          offsetRef.current -= velocityRef.current * dt;
+          if (Math.abs(velocityRef.current) < 0.01) velocityRef.current = 0;
         } else {
-          // Default auto-scroll
-          let nextScroll = scrollContainer.scrollLeft - AUTO_SPEED * dt;
-          nextScroll = nextScroll < 0
-            ? scrollBreakpointRef.current + (nextScroll % scrollBreakpointRef.current)
-            : nextScroll % scrollBreakpointRef.current;
-          scrollContainer.scrollLeft = nextScroll;
+          offsetRef.current += AUTO_SPEED * dt * autoDirectionRef.current;
         }
-      }
 
-      // Keep scroll position within loop range
-      if (scrollBreakpointRef.current > 0) {
-        scrollContainer.scrollLeft %= scrollBreakpointRef.current;
+        // Wrap around for infinite loop
+        while (offsetRef.current >= bp) offsetRef.current -= bp;
+        while (offsetRef.current < 0) offsetRef.current += bp;
+
+        applyTransform();
       }
 
       rafRef.current = requestAnimationFrame(step);
@@ -82,18 +78,15 @@ export default function Carousel({ cards }: CarouselProps) {
       rafRef.current = null;
       lastTsRef.current = null;
     };
-  }, [isDragging, cards.length]);
+  }, [getBreakpoint, applyTransform]);
 
-  /** Mouse drag handler for horizontal scroll with momentum */
+  /** Mouse drag handler */
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-
-    setIsDragging(true);
+    isDraggingRef.current = true;
     velocityRef.current = 0;
 
     const startX = e.pageX;
-    const scrollLeftStart = scrollContainer.scrollLeft;
+    const startOffset = offsetRef.current;
     let lastX = startX;
     let lastTime = performance.now();
 
@@ -101,15 +94,18 @@ export default function Carousel({ cards }: CarouselProps) {
       const curX = ev.pageX;
       const now = performance.now();
       const dx = curX - startX;
-      const scrollPos = scrollLeftStart - dx;
+      const bp = getBreakpoint();
 
-      scrollContainer.scrollLeft =
-        scrollPos < 0
-          ? scrollBreakpointRef.current + (scrollPos % scrollBreakpointRef.current)
-          : scrollPos % scrollBreakpointRef.current;
+      let newOffset = startOffset - dx;
+      if (bp > 0) {
+        while (newOffset >= bp) newOffset -= bp;
+        while (newOffset < 0) newOffset += bp;
+      }
+      offsetRef.current = newOffset;
+      applyTransform();
 
       const dt = Math.max(1, now - lastTime);
-      velocityRef.current = ((curX - lastX) / dt) * 0.2;
+      velocityRef.current = ((curX - lastX) / dt) * 0.8;
       lastX = curX;
       lastTime = now;
     };
@@ -117,7 +113,10 @@ export default function Carousel({ cards }: CarouselProps) {
     const onMouseUp = () => {
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
-      setIsDragging(false);
+      if (Math.abs(velocityRef.current) > 0.01) {
+        autoDirectionRef.current = velocityRef.current > 0 ? -1 : 1;
+      }
+      isDraggingRef.current = false;
     };
 
     window.addEventListener("mousemove", onMouseMove);
@@ -126,15 +125,12 @@ export default function Carousel({ cards }: CarouselProps) {
 
   /** Touch drag handler with vertical scroll detection */
   const onTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-
-    setIsDragging(true);
+    isDraggingRef.current = true;
     velocityRef.current = 0;
 
     const startX = e.touches[0].pageX;
     const startY = e.touches[0].pageY;
-    const scrollLeftStart = scrollContainer.scrollLeft;
+    const startOffset = offsetRef.current;
     let lastX = startX;
     let lastTime = performance.now();
     let isVerticalScroll = false;
@@ -149,12 +145,15 @@ export default function Carousel({ cards }: CarouselProps) {
       if (isVerticalScroll) return;
 
       const now = performance.now();
-      const scrollPos = scrollLeftStart - dx;
+      const bp = getBreakpoint();
 
-      scrollContainer.scrollLeft =
-        scrollPos < 0
-          ? scrollBreakpointRef.current + (scrollPos % scrollBreakpointRef.current)
-          : scrollPos % scrollBreakpointRef.current;
+      let newOffset = startOffset - dx;
+      if (bp > 0) {
+        while (newOffset >= bp) newOffset -= bp;
+        while (newOffset < 0) newOffset += bp;
+      }
+      offsetRef.current = newOffset;
+      applyTransform();
 
       const dt = Math.max(1, now - lastTime);
       velocityRef.current = ((curX - lastX) / dt) * 1.5;
@@ -167,7 +166,10 @@ export default function Carousel({ cards }: CarouselProps) {
     const onTouchEnd = () => {
       window.removeEventListener("touchmove", onTouchMove as EventListener);
       window.removeEventListener("touchend", onTouchEnd as EventListener);
-      setIsDragging(false);
+      if (Math.abs(velocityRef.current) > 0.01) {
+        autoDirectionRef.current = velocityRef.current > 0 ? -1 : 1;
+      }
+      isDraggingRef.current = false;
     };
 
     window.addEventListener("touchmove", onTouchMove as EventListener, { passive: false });
@@ -180,21 +182,26 @@ export default function Carousel({ cards }: CarouselProps) {
 
   return (
     <div
-      ref={scrollRef}
-      className="flex max-w-4xl mx-auto justify-start gap-6 py-5 overflow-x-hidden scrollbar-hide touch-pan-x"
+      ref={containerRef}
+      className="max-w-4xl mx-auto py-5 overflow-hidden touch-pan-x"
       onMouseDown={onMouseDown}
       onTouchStart={onTouchStart}
       style={{ touchAction: "pan-y", cursor: "grab" }}
     >
-      {skillsArray.map((skill, index) => (
-        <div
-          key={index}
-          ref={index === 0 ? cardRef : null}
-          className="shrink-0 select-none h-64"
-        >
-          <CarouselCard name={skill.name} description={skill.description} />
-        </div>
-      ))}
+      <div
+        ref={trackRef}
+        className="flex justify-start gap-6 will-change-transform"
+      >
+        {skillsArray.map((skill, index) => (
+          <div
+            key={index}
+            ref={index === 0 ? cardRef : null}
+            className="shrink-0 select-none h-64"
+          >
+            <CarouselCard name={skill.name} description={skill.description} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

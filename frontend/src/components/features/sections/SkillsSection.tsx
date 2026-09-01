@@ -87,8 +87,8 @@ export default function SkillsSection({title, categories, ...sectionProps}: Skil
                                 onClick={() => setActiveIndex(index)}
                                 className={`px-6 py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 hover:cursor-pointer whitespace-nowrap ${
                                     index === activeIndex
-                                        ? "bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-white shadow-md scale-105"
-                                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                        ? "bg-white text-main-3 shadow-lg scale-105 font-bold"
+                                        : "bg-white/20 text-white border border-white/30 hover:bg-white/30"
                                 }`}
                             >
                                 {category.title}
