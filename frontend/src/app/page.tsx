@@ -3,6 +3,7 @@ import HeroSection from "@/components/features/sections/HeroSection";
 import ContactSection from "@/components/features/sections/ContactSection";
 import FooterSection from "@/components/features/sections/FooterSection";
 import SkillsSection from "@/components/features/sections/SkillsSection";
+import CertificationsSection from "@/components/features/sections/CertificationsSection";
 import TextSection from "@/components/features/sections/TextSection";
 import TimelineSection from "@/components/features/sections/TimelineSection";
 import ChatSection from "@/components/features/sections/ChatSection";
@@ -17,6 +18,7 @@ export default async function HomePage() {
     const {
         sections,
         skillCategories,
+        certifications,
         projects,
         experiences,
         contactLinks
@@ -30,6 +32,7 @@ export default async function HomePage() {
                     {"label": "À propos", "href": "about"},
                     {"label": "Chat IA", "href": "chat"},
                     {"label": "Compétences", "href": "skills"},
+                    {"label": "Certifications", "href": "certifications"},
                     {"label": "Parcours", "href": "timeline"},
                     {"label": "Portfolio", "href": "portfolio"},
                     {"label": "Contact", "href": "contact"},
@@ -87,6 +90,13 @@ export default async function HomePage() {
                 categories={skillCategories ?? []}
             />
 
+            <CertificationsSection
+                id="certifications"
+                title={sections.certificationsSectionTitle}
+                className="bg-white/10 text-font-light-1"
+                certifications={certifications ?? []}
+            />
+
             <TimelineSection
                 id="timeline"
                 title={sections.timelineSectionTitle}
@@ -119,6 +129,7 @@ export default async function HomePage() {
                     {"label": "À propos", "href": "about"},
                     {"label": "Chat IA", "href": "chat"},
                     {"label": "Compétences", "href": "skills"},
+                    {"label": "Certifications", "href": "certifications"},
                     {"label": "Parcours", "href": "timeline"},
                     {"label": "Portfolio", "href": "portfolio"},
                     {"label": "Contact", "href": "contact"},

@@ -8,6 +8,7 @@ export type HomepageSectionsData = {
     chatSectionTitle: string;
     chatSectionDefaultAIMessage: string;
     skillsSectionTitle: string;
+    certificationsSectionTitle: string;
     timelineSectionTitle: string;
     portfolioSectionTitle: string;
     contactSectionTitle: string;

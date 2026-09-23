@@ -4,6 +4,7 @@ import {getHomepageSectionsData} from "@/lib/cms/singles/getHomepageSectionData"
 import {getSkills} from "@/lib/cms/components/getSkills";
 import {getExperiences} from "@/lib/cms/components/getExperiences";
 import {getContactLink} from "@/lib/cms/components/getContactLink";
+import {getCertifications} from "@/lib/cms/components/getCertifications";
 
 /**
  * Map of fetcher functions for each section of the homepage.
@@ -48,6 +49,7 @@ export default async function getHomepageData(): Promise<HomepageData> {
         sections: getHomepageSectionsData,
         projects: getProjects,
         skillCategories: getSkills,
+        certifications: getCertifications,
         experiences: getExperiences,
         contactLinks: getContactLink,
     };
