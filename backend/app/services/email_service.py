@@ -18,7 +18,8 @@ def send_email(subject: str, sender: str, body: str, recipient: str = None):
 
     msg = EmailMessage()
     msg["Subject"] = subject
-    msg["From"] = sender
+    msg["From"] = settings.EMAIL_USER
+    msg["Reply-To"] = sender
     msg["To"] = recipient
     msg.set_content(body)
 

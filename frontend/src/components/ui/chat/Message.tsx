@@ -1,28 +1,21 @@
 import {motion} from "motion/react";
 import ReactMarkdown from "react-markdown";
-import Linkify from "linkify-react";
 
 /**
  * Props for a chat message.
  */
 export interface ChatMessageProps {
-    /** Text content of the message */
+    id: string;
     text: string;
-    /** Type of message:
-     * - `user` for user messages
-     * - `ai` for AI messages
-     * - `pending` for typing indicator
-     */
     type: "user" | "ai" | "pending" | "error";
 }
 
 /**
  * A placeholder message used to simulate AI typing.
  */
-export const PENDING_MESSAGE: ChatMessageProps = {
-    type: "pending",
-    text: ""
-};
+export function createPendingMessage(): ChatMessageProps {
+    return { id: crypto.randomUUID(), type: "pending", text: "" };
+}
 
 
 /**
@@ -46,12 +39,6 @@ const messageStyles: Record<ChatMessageProps["type"], string> = {
  * - Pending messages display three animated dots.
  */
 export default function Message({text, type}: ChatMessageProps) {
-    const linkifyOptions = {
-        target: "_blank",
-        rel: "noopener noreferrer",
-        className: "text-blue-600 underline",
-    };
-
     return (
         <motion.div
             initial={{opacity: 0, y: 10}} // slide up + fade in
@@ -86,12 +73,9 @@ export default function Message({text, type}: ChatMessageProps) {
                 <ReactMarkdown
                     children={text || ""}
                     components={{
-                        a: ({node, ...props}) => (
+                        a: ({node: _, ...props}) => (
                             <a {...props} target="_blank" rel="noopener noreferrer"
                                className="text-blue-600 underline"/>
-                        ),
-                        p: ({children}) => (
-                            <Linkify options={linkifyOptions}>{children}</Linkify>
                         ),
                     }}
                 />

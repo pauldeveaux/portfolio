@@ -41,11 +41,10 @@ class CMSService:
         headers = headers or {}
 
         if self.api_key:
-            headers = {
+            headers.update({
                 "Authorization": f"Bearer {self.api_key}",
-                "User-Agent": "Mozilla/5.0 (compatible; MyBackend/1.0)",
                 "Accept": "application/json",
-            }
+            })
 
         response = requests.get(url, params=params, headers=headers, timeout=10)
         response.raise_for_status()

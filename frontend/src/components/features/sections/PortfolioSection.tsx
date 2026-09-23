@@ -83,7 +83,7 @@ export default function PortfolioSection({
             if (project.size === "medium") colSpanClass = "sm:col-span-2 lg:col-span-2";
             if (project.size === "large") colSpanClass = "sm:col-span-2 lg:col-span-3";
 
-            return <PortfolioCard key={index} {...project} className={colSpanClass} />;
+            return <PortfolioCard key={project.title} {...project} className={colSpanClass} />;
         });
     };
 

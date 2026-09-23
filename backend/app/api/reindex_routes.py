@@ -15,9 +15,6 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/rag", tags=["rag"])
 embedding_db = EmbeddingDocumentStore()
 
-# Admin password (store in environment variable for security)
-ADMIN_PASSWORD = settings.ADMIN_PASSWORD
-
 
 @router.get("/reindex", response_class=HTMLResponse)
 @limiter.limit("5/hour")
@@ -62,7 +59,7 @@ async def reindex_post(request: Request, password: str = Form(...)):
         HTTPException: If the password is incorrect (401 Unauthorized).
     """
     # Verify admin password
-    if not hmac.compare_digest(password, ADMIN_PASSWORD):
+    if not hmac.compare_digest(password, settings.ADMIN_PASSWORD):
         raise HTTPException(status_code=401, detail="Unauthorized")
 
     embedding_db.clear_collection()

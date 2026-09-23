@@ -2,6 +2,7 @@ import {ReactNode, useCallback, useState} from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 
 /**
  * Converts a Markdown string into a React component using `ReactMarkdown`.
@@ -17,20 +18,20 @@ export function stringToReactMarkdown(markdownContent: string): ReactNode {
         <div className="prose prose-inherit !max-w-full text-current markdown-content">
             <ReactMarkdown
                 remarkPlugins={[remarkGfm]} // enable GFM features
-                rehypePlugins={[rehypeRaw]} // allow embedded HTML
+                rehypePlugins={[rehypeRaw, rehypeSanitize]}
                 components={{
-                    p: ({node, ...props}) => <p className="text-inherit" {...props} />,
-                    li: ({node, ...props}) => <li className="text-inherit" {...props} />,
-                    h1: ({node, ...props}) => <h1 className="text-inherit" {...props} />,
-                    h2: ({node, ...props}) => <h2 className="text-inherit" {...props} />,
-                    h3: ({node, ...props}) => <h3 className="text-inherit" {...props} />,
-                    h4: ({node, ...props}) => <h4 className="text-inherit" {...props} />,
-                    h5: ({node, ...props}) => <h5 className="text-inherit" {...props} />,
-                    h6: ({node, ...props}) => <h6 className="text-inherit" {...props} />,
-                    a: ({node, ...props}) => <a className="text-inherit underline" {...props} />,
-                    strong: ({node, ...props}) => <strong className="text-inherit font-bold" {...props} />,
-                    b: ({node, ...props}) => <b className="text-inherit font-bold" {...props} />,
-                    em: ({node, ...props}) => <em className="text-inherit italic" {...props} />,
+                    p: ({node: _, ...props}) => <p className="text-inherit" {...props} />,
+                    li: ({node: _, ...props}) => <li className="text-inherit" {...props} />,
+                    h1: ({node: _, ...props}) => <h1 className="text-inherit" {...props} />,
+                    h2: ({node: _, ...props}) => <h2 className="text-inherit" {...props} />,
+                    h3: ({node: _, ...props}) => <h3 className="text-inherit" {...props} />,
+                    h4: ({node: _, ...props}) => <h4 className="text-inherit" {...props} />,
+                    h5: ({node: _, ...props}) => <h5 className="text-inherit" {...props} />,
+                    h6: ({node: _, ...props}) => <h6 className="text-inherit" {...props} />,
+                    a: ({node: _, ...props}) => <a className="text-inherit underline" {...props} />,
+                    strong: ({node: _, ...props}) => <strong className="text-inherit font-bold" {...props} />,
+                    b: ({node: _, ...props}) => <b className="text-inherit font-bold" {...props} />,
+                    em: ({node: _, ...props}) => <em className="text-inherit italic" {...props} />,
                 }}
             >
                 {markdownContent}

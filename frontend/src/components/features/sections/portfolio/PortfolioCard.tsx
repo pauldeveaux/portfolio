@@ -61,7 +61,6 @@ export default function PortfolioCard({
                     alt={title}
                     width={800}
                     height={400}
-                    unoptimized={true}
                     onError={() => setImageError(true)}
                     className="w-full h-56 object-cover"
                 />
@@ -72,9 +71,9 @@ export default function PortfolioCard({
                     <div className="flex items-center justify-between gap-5">
                         <p className="text-font-dark-2 italic">{description}</p>
                         <div className="flex flex-col sm:flex-row gap-2">
-                            {tags && tags.map((tag, idx) => (
+                            {tags && tags.map((tag) => (
                                 <span
-                                    key={idx}
+                                    key={tag}
                                     className="text-sm px-3 py-1 rounded-full bg-button-light-accent/80 text-font-light-1 shadow-xl"
                                 >
                                     {tag}

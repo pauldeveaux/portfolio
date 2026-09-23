@@ -9,7 +9,9 @@
  * @returns Promise resolving to an array of T
  */
 export async function fetchCMS<T>(endpoint: string, token?: string): Promise<T[]> {
-    console.log(`Fetching CMS data from ${process.env.CMS_API_URL}/api${endpoint}`);
+    if (process.env.NODE_ENV === 'development') {
+        console.log(`Fetching CMS data from ${process.env.CMS_API_URL}/api${endpoint}`);
+    }
 
     const headers: Record<string, string> = {
         'User-Agent': 'Next.js Fetch',

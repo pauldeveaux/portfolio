@@ -21,14 +21,27 @@ from app.services.rag.rag_prompts import build_prompt_without_context, build_pro
 from app.services.rag.cms_service import cms
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 
 # To ensure environment variables are loaded before loading langsmith
 load_dotenv()
 
-vector_store = EmbeddingDocumentStore()
-memory = InMemorySaver()
+_vector_store = None
+_memory = None
+
+
+def get_vector_store():
+    global _vector_store
+    if _vector_store is None:
+        _vector_store = EmbeddingDocumentStore()
+    return _vector_store
+
+
+def get_memory():
+    global _memory
+    if _memory is None:
+        _memory = InMemorySaver()
+    return _memory
 
 
 class RetrieveState(BaseModel):
@@ -69,7 +82,7 @@ def retrieve(state: RetrieveState):
     logger.debug(f"🔹 Entering retrieve() for question: {state.question!r}")
 
     try:
-        retrieved_docs, scores = vector_store.similarity_search(state.question)
+        retrieved_docs, scores = get_vector_store().similarity_search(state.question)
 
         serialized = "\n\n".join(
             f"Source: {doc.metadata}\nContent: {doc.page_content}"
@@ -97,7 +110,7 @@ class RAGPipeline:
 
     def __init__(self):
         self.ai_information = cms.fetch_ai_information()
-        self.vector_store = vector_store
+        self.vector_store = get_vector_store()
 
         self.model = settings.MISTRAL_MODEL_NAME
         self.llm = init_chat_model(
@@ -143,7 +156,7 @@ class RAGPipeline:
         graph_builder.add_edge("cleanup_markdown", END)
 
 
-        self.graph = graph_builder.compile(checkpointer=memory)
+        self.graph = graph_builder.compile(checkpointer=get_memory())
 
 
     @traceable
@@ -168,6 +181,10 @@ class RAGPipeline:
 
             messages = result.get("messages", [])
             last_ai_message = next((m for m in reversed(messages) if m.type == "ai"), None)
+
+            if last_ai_message is None:
+                logger.error("No AI message found in pipeline result")
+                return ""
 
             logger.info("✅ RAG pipeline execution completed successfully.")
             logger.debug(f"Final result: {last_ai_message}")

@@ -58,18 +58,14 @@ export default function WaveStyleSeparator({
     className = ""
 }: WaveStyleSeparatorProps) {
 
-    // Tailwind rotation class (e.g., "rotate-90"). Only works with predefined Tailwind rotation utilities.
-    const rotationClassName = `rotate-${rotation}`;
-    // Horizontal flip
     const flipXClassName = flipX ? "scale-x-[-1]" : "";
-    // Vertical flip
     const flipYClassName = flipY ? "scale-y-[-1]" : "";
 
     return (
         <div className="w-full overflow-hidden leading-none">
             <svg
-                className={clsx("w-full", className, rotationClassName, flipXClassName, flipYClassName)}
-                style={{ height: `${height}px` }} // Inline style used for dynamic height
+                className={clsx("w-full", className, flipXClassName, flipYClassName)}
+                style={{ height: `${height}px`, transform: rotation ? `rotate(${rotation}deg)` : undefined }}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 1440 320"
                 preserveAspectRatio="none"

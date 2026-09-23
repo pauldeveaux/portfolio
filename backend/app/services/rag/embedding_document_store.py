@@ -76,7 +76,7 @@ class EmbeddingDocumentStore:
                 host=settings.CHROMA_API_URL
             )
             logger.info("✅ Connected to remote ChromaDB.")
-        except ValueError:
+        except Exception:
             logger.warning("⚠️ Could not connect to ChromaDB. Fallback on memory storage.")
             self.vector_store = Chroma(
                 collection_name=self.params.collection_name,

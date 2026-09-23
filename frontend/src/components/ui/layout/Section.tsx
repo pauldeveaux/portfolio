@@ -24,7 +24,7 @@ export interface SectionProps extends React.HTMLAttributes<HTMLElement> {
  * @param ref - forwarded ref to the section element
  * @returns JSX.Element
  */
-const Section = forwardRef<HTMLDivElement, SectionProps>(
+const Section = forwardRef<HTMLElement, SectionProps>(
     ({ id, children, className, height, style, ...other }, ref) => {
         return (
             <section

@@ -5,7 +5,10 @@ class Settings(BaseSettings):
     """
     Application configuration loaded from environment variables.
     """
+    DEBUG: bool = False
+
     ADMIN_PASSWORD: str
+    STRAPI_WEBHOOK_SECRET: str = ""
 
     FRONTEND_ORIGIN: str = "http://localhost:3000"
 

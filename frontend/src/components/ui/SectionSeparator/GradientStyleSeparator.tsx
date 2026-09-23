@@ -26,17 +26,12 @@ export default function GradientStyleSeparator({
     maskBgClassName,
     height = 20
 }: GradientSeparatorProps) {
-    // Generate Tailwind height class dynamically, e.g., "h-20"
-    const heightClassName = `h-${height}`;
-
     return (
-        <div className="relative bottom-0 w-full h-20">
-            {/* Background gradient */}
+        <div className="relative bottom-0 w-full" style={{ height: `${height * 4}px` }}>
             <div className={clsx("bottom-0 left-0 w-full h-full", bgClassName)} />
 
-            {/* Optional overlay / mask */}
             {maskBgClassName && (
-                <div className={clsx("absolute inset-0 pointer-events-none", heightClassName, maskBgClassName)} />
+                <div className={clsx("absolute inset-0 pointer-events-none h-full", maskBgClassName)} />
             )}
         </div>
     );

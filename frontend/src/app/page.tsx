@@ -12,6 +12,14 @@ import WaveStyleSeparator from "@/components/ui/SectionSeparator/WaveStyleSepara
 import GradientStyleSeparator from "@/components/ui/SectionSeparator/GradientStyleSeparator";
 import getHomepageData from "@/lib/cms/getHomepageData";
 
+const NAV_LINKS = [
+    {"label": "À propos", "href": "about"},
+    {"label": "Chat IA", "href": "chat"},
+    {"label": "Compétences", "href": "skills"},
+    {"label": "Parcours", "href": "timeline"},
+    {"label": "Portfolio", "href": "portfolio"},
+    {"label": "Contact", "href": "contact"},
+];
 
 export default async function HomePage() {
     const {
@@ -26,14 +34,7 @@ export default async function HomePage() {
         <div className="bg-background min-h-screen">
             <Header
                 title={sections.headerTitle}
-                navLinks={[
-                    {"label": "À propos", "href": "about"},
-                    {"label": "Chat IA", "href": "chat"},
-                    {"label": "Compétences", "href": "skills"},
-                    {"label": "Parcours", "href": "timeline"},
-                    {"label": "Portfolio", "href": "portfolio"},
-                    {"label": "Contact", "href": "contact"},
-                ]}
+                navLinks={NAV_LINKS}
             />
 
             <BlurryParticles/>
@@ -115,14 +116,7 @@ export default async function HomePage() {
                 id="footer"
                 className={"bg-main-3"}
                 license={sections.footerLicense}
-                navLinks={[
-                    {"label": "À propos", "href": "about"},
-                    {"label": "Chat IA", "href": "chat"},
-                    {"label": "Compétences", "href": "skills"},
-                    {"label": "Parcours", "href": "timeline"},
-                    {"label": "Portfolio", "href": "portfolio"},
-                    {"label": "Contact", "href": "contact"},
-                ]}/>
+                navLinks={NAV_LINKS}/>
         </div>
     );
 }

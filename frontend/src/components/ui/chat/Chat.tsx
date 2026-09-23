@@ -1,5 +1,5 @@
 'use client';
-import Message, {ChatMessageProps, PENDING_MESSAGE} from "@/components/ui/chat/Message";
+import Message, {ChatMessageProps, createPendingMessage} from "@/components/ui/chat/Message";
 import React, {useEffect, useRef, useState} from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 import {Send} from "lucide-react";
@@ -16,32 +16,18 @@ export interface ChatProps {
     defaultAIMessage: string;
 }
 
+function createMessage(type: ChatMessageProps['type'], text: string): ChatMessageProps {
+    return { id: crypto.randomUUID(), type, text };
+}
 
-/**
- * Chat component.
- *
- * Provides an interactive chat interface with simulated AI responses.
- *
- * Features:
- * - Auto-scroll to bottom on new messages.
- * - Pending message placeholder to simulate typing.
- * - Handles sending messages via Enter or button click.
- * - Responsive UI with textarea resizing.
- */
 export default function Chat({defaultAIMessage}: ChatProps) {
-    const messagesEndRef = useRef<HTMLDivElement>(null); // Ref to scroll to bottom
-    const textareaRef = useRef<HTMLTextAreaElement>(null); // Ref to read input value
-    const chatContainerRef = useRef<HTMLDivElement>(null); // Ref to scrollable container
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const chatContainerRef = useRef<HTMLDivElement>(null);
 
-
-    // Default ai greeting message
-    const AIMessage: ChatMessageProps = {
-        type: "ai",
-        text: defaultAIMessage
-    };
-
-
-    const [messages, setMessages] = useState<ChatMessageProps[]>([AIMessage]); // Chat messages
+    const [messages, setMessages] = useState<ChatMessageProps[]>(() => [
+        createMessage("ai", defaultAIMessage)
+    ]);
     const [waiting, setWaiting] = useState(false); // Prevent multiple sends during pending state
     const isMobile = useIsMobile(); // Custom hook to detect mobile screen
 
@@ -59,98 +45,49 @@ export default function Chat({defaultAIMessage}: ChatProps) {
     }, [messages]);
 
 
-    /**
-     * Replace pending message by an AI answer
-     *
-     * @param answerMessage - The message that will replace the pending message
-     * @param pendingIndex - The index of the pending message to replace
-     * @param type -
-     */
     const replacePendingMessageByAnswer = (
         answerMessage: string,
         pendingIndex: number,
         type?: ChatMessageProps['type']
     ) => {
         setMessages((prev) => {
-                const newMessages = [...prev];
-
-                // Only replace if the last message is still pending
-                if (newMessages[pendingIndex]?.type === "pending") {
-                    newMessages[pendingIndex] = {
-                        type: type ? type : "ai",
-                        text: answerMessage
-                    };
-                }
-
-                return newMessages;
-            });
+            const newMessages = [...prev];
+            if (newMessages[pendingIndex]?.type === "pending") {
+                newMessages[pendingIndex] = createMessage(type ?? "ai", answerMessage);
+            }
+            return newMessages;
+        });
     }
 
-
-    /**
-     * Simulates an AI response by replacing the last pending message.
-     *
-     * @param pendingIndex - Index of the pending message to replace
-     */
-    const simulateResponse = (pendingIndex: number) => {
-        setWaiting(true);
-
-        setTimeout(() => {
-            replacePendingMessageByAnswer("🚧 Je ne suis pas encore disponible pour le moment 🚧", pendingIndex)
-
-            setWaiting(false); // Allow new messages to be sent
-        }, 2000); // Simulated response delay
-    };
-
-
-    /**
-     * Send a message to the backend to get an answer
-     *
-     * @param message - Message to send to the backend
-     * @param pendingIndex - Index of the pending message to replace
-     */
     const sendMessage = async (message: string, pendingIndex: number) => {
         setWaiting(true);
-
         try {
             const response = await sendChatbotMessage({message: message});
-            replacePendingMessageByAnswer(response.answer, pendingIndex)
-        }
-        catch(err) {
+            replacePendingMessageByAnswer(response.answer, pendingIndex);
+        } catch(err) {
             let errorMessage = "Désolé, je ne peux pas répondre pour le moment.";
             if (err instanceof ChatbotError) {
                 errorMessage = err.message;
             }
-            replacePendingMessageByAnswer(errorMessage, pendingIndex, "error")
-        }
-        finally {
-            setWaiting(false)
+            replacePendingMessageByAnswer(errorMessage, pendingIndex, "error");
+        } finally {
+            setWaiting(false);
         }
     }
 
-    /**
-     * Handles sending a message.
-     * Adds user's message and a pending message, then triggers simulated response.
-     */
     const handleSend = () => {
-        if (waiting) return; // Prevent sending multiple messages simultaneously
+        if (waiting) return;
         if (!textareaRef.current) return;
 
         const text = textareaRef.current.value.trim();
         if (!text) return;
 
-        const userMessage: ChatMessageProps = {type: "user", text};
-        textareaRef.current.value = ""; // Clear input
+        const userMessage = createMessage("user", text);
+        const pendingMessage = createPendingMessage();
+        textareaRef.current.value = "";
 
-        setMessages((prev) => {
-            const next = [...prev, userMessage, PENDING_MESSAGE];
-            const pendingIndex = next.length - 1;
-
-            // Simulate AI response
-            sendMessage(text, pendingIndex);
-
-            return next;
-        });
+        setMessages((prev) => [...prev, userMessage, pendingMessage]);
+        sendMessage(text, messages.length + 1);
     };
 
     /**
@@ -177,8 +114,8 @@ export default function Chat({defaultAIMessage}: ChatProps) {
                 ref={chatContainerRef}
                 className="flex-1 overflow-y-auto mb-4 flex flex-col gap-2"
             >
-                {messages.map((msg, idx) => (
-                    <Message key={idx} text={msg.text} type={msg.type}/>
+                {messages.map((msg) => (
+                    <Message key={msg.id} id={msg.id} text={msg.text} type={msg.type}/>
                 ))}
                 <div ref={messagesEndRef}/>
             </div>
