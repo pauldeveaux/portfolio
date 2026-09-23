@@ -35,6 +35,9 @@
     "skillsSectionTitle": {
       "type": "string"
     },
+    "certificationsSectionTitle": {
+      "type": "string"
+    },
     "timelineSectionTitle": {
       "type": "string"
     },

@@ -488,6 +488,40 @@ export interface ApiAiGlobalAiGlobal extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiCertificationCertification
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'certifications';
+  info: {
+    displayName: 'Certification';
+    pluralName: 'certifications';
+    singularName: 'certification';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    date: Schema.Attribute.Date;
+    image: Schema.Attribute.Media<'images'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::certification.certification'
+    > &
+      Schema.Attribute.Private;
+    pdf: Schema.Attribute.Media<'files'>;
+    provider: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    sortOrder: Schema.Attribute.Integer;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiContactLinkContactLink extends Struct.CollectionTypeSchema {
   collectionName: 'contact_links';
   info: {
@@ -570,6 +604,7 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    certificationsSectionTitle: Schema.Attribute.String;
     chatSectionDefaultAIMessage: Schema.Attribute.Text;
     chatSectionTitle: Schema.Attribute.String;
     contactSectionTitle: Schema.Attribute.String;
@@ -1208,6 +1243,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::ai-document.ai-document': ApiAiDocumentAiDocument;
       'api::ai-global.ai-global': ApiAiGlobalAiGlobal;
+      'api::certification.certification': ApiCertificationCertification;
       'api::contact-link.contact-link': ApiContactLinkContactLink;
       'api::experience.experience': ApiExperienceExperience;
       'api::homepage.homepage': ApiHomepageHomepage;
