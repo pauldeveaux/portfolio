@@ -1,3 +1,13 @@
+// Origins allowed to embed CMS content (e.g. certification PDFs) in an <iframe>.
+// Extra origins can be added via FRAME_ANCESTORS (comma-separated).
+const frameAncestors = [
+  "'self'",
+  'https://paul-deveaux.fr',
+  'https://www.paul-deveaux.fr',
+  'http://localhost:3000',
+  ...(process.env.FRAME_ANCESTORS || '').split(',').map((o) => o.trim()).filter(Boolean),
+];
+
 module.exports = [
   'strapi::errors',
   {
@@ -9,7 +19,7 @@ module.exports = [
           'connect-src': ["'self'", 'https:'],
           'img-src': ["'self'", 'data:', 'blob:', 'https://market-assets.strapi.io'],
           'media-src': ["'self'", 'data:', 'blob:'],
-          'frame-ancestors': ["'self'", 'https://paul-deveaux.fr', 'http://localhost:3000'],
+          'frame-ancestors': frameAncestors,
           upgradeInsecureRequests: null,
         },
       },
