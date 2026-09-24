@@ -1,6 +1,10 @@
 import {AnimatePresence, motion} from "motion/react";
 import {useEffect} from "react";
-import {X} from "lucide-react";
+import {ExternalLink, X} from "lucide-react";
+import dynamic from "next/dynamic";
+
+// pdf.js relies on browser APIs, so the viewer is only loaded client-side
+const PdfViewer = dynamic(() => import("./PdfViewer"), {ssr: false});
 
 /**
  * Props for the CertificationModal component.
@@ -19,7 +23,7 @@ interface CertificationModalProps {
 /**
  * CertificationModal component.
  *
- * Displays a modal embedding the certification PDF.
+ * Displays a modal rendering the certification PDF.
  * Disables body scroll when open and supports fade/scale animations.
  */
 export default function CertificationModal({isOpen, onClose, title, pdfUrl}: CertificationModalProps) {
@@ -75,22 +79,40 @@ export default function CertificationModal({isOpen, onClose, title, pdfUrl}: Cer
                         transition={{duration: 0.2, ease: "easeOut"}}
                     >
                         {/* Header with title and close button */}
-                        <div className="shrink-0 bg-gray-50 z-10 px-6 py-5 border-b border-gray-200 rounded-t-2xl flex items-center justify-between gap-4">
-                            <h2 className="text-2xl font-bold text-gray-900 truncate">{title}</h2>
-                            <button
-                                className="text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-full p-1.5 transition-colors hover:cursor-pointer shrink-0"
-                                onClick={onClose}
-                            >
-                                <X size={20}/>
-                            </button>
+                        <div className="shrink-0 bg-gray-50 z-10 px-4 py-3 sm:px-6 sm:py-5 border-b border-gray-200 rounded-t-2xl flex items-center justify-between gap-2 sm:gap-4">
+                            <h2 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">{title}</h2>
+                            <div className="flex items-center gap-1 shrink-0">
+                                <a
+                                    href={pdfUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    title="Ouvrir le PDF dans un nouvel onglet"
+                                    className="text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-full p-1.5 transition-colors"
+                                >
+                                    <ExternalLink size={20}/>
+                                </a>
+                                <button
+                                    className="text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-full p-1.5 transition-colors hover:cursor-pointer"
+                                    onClick={onClose}
+                                >
+                                    <X size={20}/>
+                                </button>
+                            </div>
                         </div>
 
-                        {/* Embedded PDF */}
-                        <iframe
-                            src={pdfUrl}
-                            title={title}
-                            className="flex-1 w-full"
-                        />
+                        {/* PDF pages */}
+                        <div className="flex-1 overflow-y-auto overscroll-contain p-2 sm:p-4 bg-gray-200">
+                            <PdfViewer
+                                url={pdfUrl}
+                                error={
+                                    <p className="text-center text-gray-600 py-16">
+                                        Impossible d&apos;afficher le PDF.{" "}
+                                        <a href={pdfUrl} target="_blank" rel="noopener noreferrer"
+                                           className="underline">Ouvrir le fichier</a>
+                                    </p>
+                                }
+                            />
+                        </div>
                     </motion.div>
                 </motion.div>
             )}
